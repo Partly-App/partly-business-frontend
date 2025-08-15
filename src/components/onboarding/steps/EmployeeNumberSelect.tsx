@@ -25,7 +25,7 @@ const EmployeeNumberSelect = () => {
 
   return (
     <section className="mx-auto max-w-lg px-6 py-10">
-      <div className="mb-8 flex flex-col items-center">
+      <div className="mb-12 flex flex-col items-center">
         <h1 className="mb-2 text-center font-montserratAlt text-2xl font-bold">
           Let's build a{" "}
           <span className="font-black text-yellow-default">well-being</span>{" "}
