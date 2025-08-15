@@ -21,6 +21,7 @@ type ButtonProps = {
   fullRounded?: boolean
   className?: string
   containerClassName?: string
+  containsIconOnly?: boolean
   children?: React.ReactNode
   disabled?: boolean
   onClick?: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"]
@@ -50,49 +51,49 @@ const colorMap: Record<
   { bg: string; text: string; border: string }
 > = {
   black: {
-    bg: "bg-black",
-    text: "text-white",
-    border: "border-white",
+    bg: "bg-black-default",
+    text: "text-white-default",
+    border: "border-white-default",
   },
   white: {
     bg: "bg-white-mellow",
-    text: "text-black",
-    border: "border-black",
+    text: "text-black-default",
+    border: "border-black-default",
   },
   yellow: {
-    bg: "bg-yellow",
-    text: "text-black",
-    border: "border-black",
+    bg: "bg-yellow-default",
+    text: "text-black-default",
+    border: "border-black-default",
   },
   purple: {
-    bg: "bg-purple",
-    text: "text-white",
-    border: "border-white",
+    bg: "bg-purple-default",
+    text: "text-white-default",
+    border: "border-white-default",
   },
   grey: {
     bg: "bg-grey-dark",
-    text: "text-white",
-    border: "border-white",
+    text: "text-white-default",
+    border: "border-white-default",
   },
   green: {
-    bg: "bg-green",
-    text: "text-black",
-    border: "border-black",
+    bg: "bg-green-default",
+    text: "text-black-default",
+    border: "border-black-default",
   },
   red: {
-    bg: "bg-red",
-    text: "text-black",
-    border: "border-black",
+    bg: "bg-red-default",
+    text: "text-black-default",
+    border: "border-black-default",
   },
   blue: {
-    bg: "bg-blue",
-    text: "text-white",
-    border: "border-white",
+    bg: "bg-blue-default-default",
+    text: "text-white-default",
+    border: "border-white-default",
   },
   transparent: {
     bg: "bg-transparent",
-    text: "text-black",
-    border: "border-black",
+    text: "text-black-default",
+    border: "border-black-default",
   },
 }
 
@@ -103,6 +104,7 @@ export const Button: React.FC<ButtonProps> = ({
   fullRounded,
   className,
   containerClassName,
+  containsIconOnly,
   children,
   disabled,
   onClick,
@@ -111,36 +113,31 @@ export const Button: React.FC<ButtonProps> = ({
   const { bg, text, border } = colorMap[color]
 
   return (
-    <div
+    <button
+      type={type}
+      disabled={disabled}
       className={clsx(
-        "inline-block",
+        "flex items-center justify-center font-inter font-medium transition-colors duration-300 hover:bg-opacity-70",
         fullRounded ? "rounded-full" : "rounded-[12px]",
         hasBorder && "border-2",
         hasBorder && border,
         containerClassName,
+        sizeMap[size],
+        fontSizeMap[size],
+        gapMap[size],
+        bg,
+        text,
+        fullRounded ? "rounded-full" : "rounded-[12px]",
+        hasBorder && "border-2",
+        hasBorder && border,
+        disabled && "pointer-events-none opacity-50",
+        containsIconOnly && "aspect-square",
+        className,
       )}
+      onClick={onClick}
     >
-      <button
-        type={type}
-        disabled={disabled}
-        className={clsx(
-          "flex items-center justify-center font-inter font-medium transition-colors duration-300 hover:bg-opacity-70",
-          sizeMap[size],
-          fontSizeMap[size],
-          gapMap[size],
-          bg,
-          text,
-          fullRounded ? "rounded-full" : "rounded-[12px]",
-          hasBorder && "border-2",
-          hasBorder && border,
-          disabled && "pointer-events-none opacity-50",
-          className,
-        )}
-        onClick={onClick}
-      >
-        {children}
-      </button>
-    </div>
+      {children}
+    </button>
   )
 }
 
