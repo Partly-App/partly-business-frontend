@@ -1,0 +1,87 @@
+/* globals.css (or any imported stylesheet) */
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border: none; /* no borders */
+  outline: none;
+  border-radius: 9999px; /* full radius */
+  background: linear-gradient(
+    to right,
+    #7a6bf4 0%,
+    #7a6bf4 var(--pos, 0%),
+    #e6e6e6 var(--pos, 0%),
+    #e6e6e6 100%
+  );
+  /* no hover effects */
+}
+
+/* Chrome/Safari/Edge track */
+.range::-webkit-slider-runnable-track {
+  height: 6px;
+  background: transparent; /* we paint on the input background */
+  border: none;
+  border-radius: 9999px;
+}
+
+/* Chrome/Safari/Edge thumb */
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border: none;
+  outline: 4px solid #c3acff;
+  border-radius: 50%;
+  background: #7a6bf4;
+  margin-top: -3px;
+}
+
+/* Firefox track + progress (FF needs these two) */
+.range::-moz-range-track {
+  height: 6px;
+  background: #e6e6e6;
+  border: none;
+  border-radius: 9999px;
+}
+.range::-moz-range-progress {
+  height: 6px;
+  background: #7a6bf4; /* left/active part */
+  border: none;
+  border-radius: 9999px;
+}
+
+/* Firefox thumb */
+.range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  outline: 4px solid #c3acff;
+  background: #7a6bf4;
+  box-shadow: none;
+}
+
+/* IE/old Edge fallback (optional) */
+.range::-ms-track {
+  height: 12px;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.range::-ms-fill-lower {
+  background: #7a6bf4;
+  border-radius: 9999px;
+}
+.range::-ms-fill-upper {
+  background: #e6e6e6;
+  border-radius: 9999px;
+}
+.range::-ms-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: #7a6bf4;
+}
