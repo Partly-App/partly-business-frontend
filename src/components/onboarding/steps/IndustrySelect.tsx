@@ -65,7 +65,7 @@ const IndustrySelect = () => {
                   : "bg-transparent",
               )}
             ></div>
-            <span className="capitalize">{label}</span>
+            <span>{label}</span>
           </button>
         ))}
       </div>
@@ -74,7 +74,7 @@ const IndustrySelect = () => {
         disabled={selectedIndustry.length === 0}
         size="L"
         color="purple"
-        className="mt-18 w-full"
+        className="mt-14 w-full"
       >
         Continue
       </Button>

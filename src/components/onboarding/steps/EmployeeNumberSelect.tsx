@@ -78,7 +78,7 @@ const EmployeeNumberSelect = () => {
         aria-label="range"
       />
 
-      <Button size="L" color="purple" className="mt-18 w-full">
+      <Button size="L" color="purple" className="mt-14 w-full">
         Continue
       </Button>
     </section>
