@@ -117,7 +117,7 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       disabled={disabled}
       className={clsx(
-        "flex items-center justify-center font-inter font-medium transition-[colors,opacity] duration-300 hover:bg-opacity-70",
+        "flex items-center justify-center font-inter font-medium duration-300 hover:bg-opacity-70",
         fullRounded ? "rounded-full" : "rounded-[12px]",
         hasBorder && "border-2",
         hasBorder && border,
