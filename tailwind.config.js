@@ -159,6 +159,10 @@ module.exports = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(24px)" },
         },
+        bounceSlowXS: {
+          "0%, 100%": { transform: "translateY(6px)" },
+          "50%": { transform: "translateY(0px)" },
+        },
         "float-3d-a": {
           "0%, 100%": {
             transform: "translateY(0) rotateX(0deg) rotateZ(0deg)",
@@ -183,6 +187,7 @@ module.exports = {
       animation: {
         appear: "appear 2s ease-out forwards",
         bounceSlow: "bounceSlow 5s ease-in-out infinite",
+        bounceSlowXS: "bounceSlowXS 5s ease-in-out infinite",
         "float-3d-a": "float-3d-a 8s ease-in-out infinite",
         "float-3d-b": "float-3d-b 8.5s ease-in-out infinite",
         "float-3d-c": "float-3d-c 9s ease-in-out infinite",
