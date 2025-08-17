@@ -36,6 +36,7 @@
   border-radius: 50%;
   background: #7a6bf4;
   margin-top: -3px;
+  cursor: grab;
 }
 
 /* Firefox track + progress (FF needs these two) */
@@ -61,6 +62,7 @@
   outline: 4px solid #c3acff;
   background: #7a6bf4;
   box-shadow: none;
+  cursor: grab;
 }
 
 /* IE/old Edge fallback (optional) */

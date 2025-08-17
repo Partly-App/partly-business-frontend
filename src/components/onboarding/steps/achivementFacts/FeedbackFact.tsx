@@ -1,7 +1,8 @@
 import Button from "@/components/shared/Button"
 import Image from "next/image"
+import { OnboardingStepType } from "../../types"
 
-const FeedbackFact = () => {
+const FeedbackFact = ({ onNext }: OnboardingStepType) => {
   return (
     <section className="mx-auto max-w-lg px-6 py-10">
       <div className="mb-6 flex flex-col items-center">
@@ -41,7 +42,12 @@ const FeedbackFact = () => {
         and create feedback-rich cultures
       </p>
 
-      <Button size="L" color="purple" className="mt-10 w-full">
+      <Button
+        size="L"
+        color="purple"
+        className="mt-10 w-full"
+        onClick={() => onNext()}
+      >
         Continue
       </Button>
     </section>

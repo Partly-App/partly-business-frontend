@@ -2,6 +2,7 @@ import Button from "@/components/shared/Button"
 import clsx from "clsx"
 import Image from "next/image"
 import { useState } from "react"
+import { OnboardingStepType } from "../types"
 
 const DEPARTMENTS = [
   { label: "HR", imgSrc: "/images/departments/hr.png" },
@@ -12,9 +13,9 @@ const DEPARTMENTS = [
   { label: "Other", imgSrc: "/images/departments/other-departments.png" },
 ]
 
-const DepartmentSelect = () => {
+const DepartmentSelect = ({ onNext, data }: OnboardingStepType) => {
   const [selectedDepartment, setSelectedDepartment] = useState<Array<string>>(
-    [],
+    data?.department || [],
   )
 
   const handleSelect = (department: string) => {
@@ -29,6 +30,7 @@ const DepartmentSelect = () => {
       setSelectedDepartment((prev) => [...prev, department])
     }
   }
+
   return (
     <section className="mx-auto max-w-lg px-6 py-10">
       <div className="mb-12 flex flex-col items-center">
@@ -78,6 +80,9 @@ const DepartmentSelect = () => {
         size="L"
         color="purple"
         className="mt-14 w-full"
+        onClick={() => {
+          onNext({ department: selectedDepartment })
+        }}
       >
         Continue
       </Button>

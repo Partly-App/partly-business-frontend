@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from "react"
 
 import Button from "@/components/shared/Button"
 import { Minus, Plus } from "react-feather"
+import { OnboardingStepType } from "../types"
 import "./styles.css"
 
 const MIN = 5
 const MAX = 250
 
-const EmployeeNumberSelect = () => {
-  const [count, setCount] = useState(5)
+const EmployeeNumberSelect = ({ onNext, data }: OnboardingStepType) => {
+  const [count, setCount] = useState(data?.numberOfEmployees || 5)
 
   const ref = useRef<HTMLInputElement>(null)
 
@@ -40,6 +41,7 @@ const EmployeeNumberSelect = () => {
       <div className="mb-3 flex items-center justify-between">
         <Button
           containsIconOnly
+          disabled={count === MIN}
           size="S"
           color="white"
           onClick={() => setCount((prev) => (prev !== MIN ? prev - 1 : prev))}
@@ -51,6 +53,7 @@ const EmployeeNumberSelect = () => {
         </span>
         <Button
           containsIconOnly
+          disabled={count === MAX}
           size="S"
           color="white"
           onClick={() => setCount((prev) => (prev !== MAX ? prev + 1 : prev))}
@@ -78,7 +81,14 @@ const EmployeeNumberSelect = () => {
         aria-label="range"
       />
 
-      <Button size="L" color="purple" className="mt-14 w-full">
+      <Button
+        size="L"
+        color="purple"
+        className="mt-14 w-full"
+        onClick={() => {
+          onNext({ numberOfEmployees: count })
+        }}
+      >
         Continue
       </Button>
     </section>

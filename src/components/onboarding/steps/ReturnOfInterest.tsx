@@ -1,8 +1,9 @@
 import Button from "@/components/shared/Button"
 import clsx from "clsx"
 import Image from "next/image"
+import { OnboardingStepType } from "../types"
 
-const ReturnOfInterest = () => {
+const ReturnOfInterest = ({ onNext }: OnboardingStepType) => {
   return (
     <section className="mx-auto max-w-lg px-6 py-10">
       <div className="mb-6 flex flex-col items-center">
@@ -55,7 +56,7 @@ const ReturnOfInterest = () => {
             className="animate-bounceSlowXS relative top-4 object-contain [animation-delay:0.6s]"
           />
         </div>
-        <div className="flex flex-col items-center relative z-[5]">
+        <div className="relative z-[5] flex flex-col items-center">
           <span className="font-bold opacity-50">of up to</span>
           <span className="font-montserratAlt text-18xl font-black leading-[1] text-green-default">
             800%
@@ -73,7 +74,12 @@ const ReturnOfInterest = () => {
         </span>
       </div>
 
-      <Button size="L" color="purple" className="mt-8 w-full">
+      <Button
+        size="L"
+        color="purple"
+        className="mt-8 w-full"
+        onClick={() => onNext()}
+      >
         Continue
       </Button>
     </section>

@@ -4,17 +4,18 @@ import Button from "@/components/shared/Button"
 import CheckCircle from "@/components/shared/icons/CheckCircle"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
+import { OnboardingStepType } from "../types"
 
 const LABELS = [
   "Analyzing company's needs",
-  "Setting up your departments",
   "Creating your personal dashboard",
+  "Setting up your departments",
 ]
 
 const STEP_DURATION = 2500
 const FPS = 30
 
-const LoaderStep = () => {
+const LoaderStep = ({ onNext }: OnboardingStepType) => {
   const [progress, setProgress] = useState<number[]>(
     Array(LABELS.length).fill(0),
   )

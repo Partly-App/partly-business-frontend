@@ -3,8 +3,9 @@
 import Button from "@/components/shared/Button"
 import clsx from "clsx"
 import { useState } from "react"
+import { AchivementKeys, OnboardingStepType } from "../types"
 
-const ACHIEVEMENTS = [
+const ACHIEVEMENTS: Array<{ key: AchivementKeys; label: string }> = [
   {
     key: "tension",
     label: "Reduce workplace tension",
@@ -31,17 +32,18 @@ const ACHIEVEMENTS = [
   },
 ]
 
-const WhatToAchieve = () => {
-  const [selected, setSelected] = useState<Array<string>>([])
+const WhatToAchieve = ({ onNext, data }: OnboardingStepType) => {
+  const [selected, setSelected] = useState<
+    Array<{ key: AchivementKeys; label: string }>
+  >(data?.whatToAchieve || [])
 
-  const handleSelect = (industry: string) => {
-    const isSelected = selected.find((item) => item === industry)
-    console.log(isSelected)
+  const handleSelect = (achivement: { key: AchivementKeys; label: string }) => {
+    const isSelected = selected.find((item) => item.key === achivement.key)
 
     if (isSelected) {
-      setSelected((prev) => prev.filter((item) => item !== industry))
+      setSelected((prev) => prev.filter((item) => item.key !== achivement.key))
     } else {
-      setSelected((prev) => [...prev, industry])
+      setSelected((prev) => [...prev, achivement])
     }
   }
 
@@ -62,30 +64,33 @@ const WhatToAchieve = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        {ACHIEVEMENTS.map((item) => (
-          <button
-            key={item.key}
-            className={clsx(
-              "flex w-full items-center gap-3 rounded-lg px-5 py-4",
-              "transition-[colors.transform]",
-              selected.includes(item.label)
-                ? "scale-[97%] bg-purple-default"
-                : "bg-white-default/10",
-            )}
-            onClick={() => handleSelect(item.label)}
-          >
-            <div
+        {ACHIEVEMENTS.map((item) => {
+          const isSelected = selected.some(
+            (selectedItem) => item.key === selectedItem.key,
+          )
+          return (
+            <button
+              key={item.key}
               className={clsx(
-                "h-3 w-3 rounded-[3px] outline outline-1 outline-white-default/50",
-                "transition-colors",
-                selected.includes(item.label)
-                  ? "bg-white-default/50"
-                  : "bg-transparent",
+                "flex w-full items-center gap-3 rounded-lg px-5 py-4",
+                "transition-[colors.transform]",
+                !!isSelected
+                  ? "scale-[97%] bg-purple-default"
+                  : "bg-white-default/10",
               )}
-            ></div>
-            <span className="text-left">{item.label}</span>
-          </button>
-        ))}
+              onClick={() => handleSelect(item)}
+            >
+              <div
+                className={clsx(
+                  "h-3 w-3 rounded-[3px] outline outline-1 outline-white-default/50",
+                  "transition-colors",
+                  !!isSelected ? "bg-white-default/50" : "bg-transparent",
+                )}
+              ></div>
+              <span className="text-left">{item.label}</span>
+            </button>
+          )
+        })}
       </div>
 
       <Button
@@ -93,6 +98,9 @@ const WhatToAchieve = () => {
         size="L"
         color="purple"
         className="mt-10 w-full"
+        onClick={() => {
+          onNext({ whatToAchieve: selected })
+        }}
       >
         Continue
       </Button>

@@ -1,7 +1,8 @@
 import Button from "@/components/shared/Button"
 import Image from "next/image"
+import { OnboardingStepType } from "../../types"
 
-const ConflictFact = () => {
+const ConflictFact = ({ onNext }: OnboardingStepType) => {
   return (
     <section className="mx-auto max-w-lg px-6 py-10">
       <div className="mb-6 flex flex-col items-center">
@@ -36,7 +37,12 @@ const ConflictFact = () => {
         </span>
       </p>
 
-      <Button size="L" color="purple" className="mt-10 w-full">
+      <Button
+        size="L"
+        color="purple"
+        className="mt-10 w-full"
+        onClick={() => onNext()}
+      >
         Continue
       </Button>
     </section>

@@ -1,6 +1,7 @@
 import Button from "@/components/shared/Button"
 import clsx from "clsx"
 import { useState } from "react"
+import { OnboardingStepType } from "../types"
 
 const INDUSTRIES = [
   "Finance",
@@ -15,9 +16,9 @@ const INDUSTRIES = [
   "Other",
 ]
 
-const IndustrySelect = () => {
+const IndustrySelect = ({ onNext, data }: OnboardingStepType) => {
   const [selectedIndustry, setSelectedIndustry] = useState<typeof INDUSTRIES>(
-    [],
+    data?.industry || [],
   )
 
   const handleSelect = (industry: string) => {
@@ -75,6 +76,9 @@ const IndustrySelect = () => {
         size="L"
         color="purple"
         className="mt-14 w-full"
+        onClick={() => {
+          onNext({ industry: selectedIndustry })
+        }}
       >
         Continue
       </Button>

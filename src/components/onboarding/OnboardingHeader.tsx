@@ -17,7 +17,17 @@ const OnboardingHeader = ({
   return (
     <header className="px-8 py-4">
       <div className="flex items-center justify-between pb-4">
-        <Button size="S" color="grey" onClick={onBack}>
+        <Button
+          size="S"
+          color="grey"
+          onClick={onBack}
+          className={clsx(
+            "transition-opacity duration-500",
+            currentStep === 1 || currentStep === totalSteps
+              ? "pointer-events-none !opacity-0"
+              : "opacity-100",
+          )}
+        >
           <ArrowLeft size={16} className="text-white-default" />
           Back
         </Button>
@@ -39,15 +49,29 @@ const OnboardingHeader = ({
             Partly
           </span>
         </div>
-        <div className="flex min-w-20 justify-end">
+        <div
+          className={clsx(
+            "flex min-w-20 justify-end transition-opacity duration-500",
+            currentStep === totalSteps
+              ? "pointer-events-none !opacity-0"
+              : "opacity-100",
+          )}
+        >
           <span className="font-montserratAlt text-sm font-black opacity-50">
             {currentStep} / {totalSteps}
           </span>
         </div>
       </div>
-      <div className="relative h-1 w-full rounded-full bg-white-default/25">
+      <div
+        className={clsx(
+          "relative h-1 w-full rounded-full bg-white-default/25 transition-opacity duration-500",
+          currentStep === totalSteps
+            ? "pointer-events-none !opacity-0"
+            : "opacity-100",
+        )}
+      >
         <div
-          className="absolute left-0 h-1 rounded-full bg-purple-default transition-all duration-300"
+          className="absolute left-0 h-1 rounded-full bg-purple-default transition-all duration-500"
           style={{ width: `${(currentStep / totalSteps) * 100}%` }}
         />
       </div>
