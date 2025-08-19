@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      companies: {
+        Row: {
+          achivementGoals: string[] | null
+          createdAt: string
+          id: string
+          industry: string[]
+          name: string
+          numberOfEmployees: number
+        }
+        Insert: {
+          achivementGoals?: string[] | null
+          createdAt?: string
+          id?: string
+          industry: string[]
+          name: string
+          numberOfEmployees: number
+        }
+        Update: {
+          achivementGoals?: string[] | null
+          createdAt?: string
+          id?: string
+          industry?: string[]
+          name?: string
+          numberOfEmployees?: number
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           conversationType: Database["public"]["Enums"]["conversationType"]
@@ -39,6 +66,35 @@ export type Database = {
             columns: ["userId"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      departments: {
+        Row: {
+          companyId: string
+          createdAt: string
+          id: string
+          name: string
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
@@ -373,7 +429,10 @@ export type Database = {
       profiles: {
         Row: {
           avatarUrl: string | null
+          companyId: string | null
+          companyRole: string | null
           currentStreak: number
+          departmentId: string | null
           fullName: string | null
           hasPassedPathZero: boolean
           id: string
@@ -382,7 +441,10 @@ export type Database = {
         }
         Insert: {
           avatarUrl?: string | null
+          companyId?: string | null
+          companyRole?: string | null
           currentStreak?: number
+          departmentId?: string | null
           fullName?: string | null
           hasPassedPathZero?: boolean
           id: string
@@ -391,14 +453,32 @@ export type Database = {
         }
         Update: {
           avatarUrl?: string | null
+          companyId?: string | null
+          companyRole?: string | null
           currentStreak?: number
+          departmentId?: string | null
           fullName?: string | null
           hasPassedPathZero?: boolean
           id?: string
           lastActiveDate?: string
           longestStreak?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_departmentId_fkey"
+            columns: ["departmentId"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       progress: {
         Row: {

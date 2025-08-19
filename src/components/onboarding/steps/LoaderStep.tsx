@@ -22,7 +22,9 @@ const LoaderStep = ({ onNext }: OnboardingStepType) => {
   const [activeStep, setActiveStep] = useState(-1)
 
   useEffect(() => {
-    if (activeStep >= LABELS.length) return
+    if (activeStep >= LABELS.length) {
+      onNext()
+    }
 
     const startTimeout = setTimeout(() => {
       const intervalMs = 1000 / FPS
@@ -112,19 +114,6 @@ const LoaderStep = ({ onNext }: OnboardingStepType) => {
           )
         })}
       </div>
-
-      <Button
-        size="L"
-        disabled={activeStep !== LABELS.length}
-        color="purple"
-        className="mt-14 w-full"
-        containerClassName={clsx(
-          "transition-opacity duration-300 delay-500",
-          activeStep === LABELS.length ? "opacity-100" : "!opacity-0",
-        )}
-      >
-        Continue
-      </Button>
     </section>
   )
 }

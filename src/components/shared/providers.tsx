@@ -26,19 +26,18 @@ export function SupabaseProvider({ children }: { children: ReactNode }) {
     ),
   )
 
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_, session) => {
-      // Handle session updates here if needed
-      // e.g. update state, route user, etc.
-      console.log("Auth state changed:", session)
-    })
+  // useEffect(() => {
+  //   const {
+  //     data: { subscription },
+  //   } = supabase.auth.onAuthStateChange((_, session) => {
+  //     // Handle session updates here if needed
+  //     // e.g. update state, route user, etc.
+  //   })
 
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [supabase])
+  //   return () => {
+  //     subscription.unsubscribe()
+  //   }
+  // }, [supabase])
 
   return (
     <SupabaseContext.Provider value={supabase}>

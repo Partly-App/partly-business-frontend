@@ -7,6 +7,7 @@ import EmployeeNumberSelect from "./steps/EmployeeNumberSelect"
 import IndustrySelect from "./steps/IndustrySelect"
 import LoaderStep from "./steps/LoaderStep"
 import ReturnOfInterest from "./steps/ReturnOfInterest"
+import SignUpContent from "./steps/SignUpContent"
 import WhatToAchieve from "./steps/WhatToAchieve"
 import AchivementFacts from "./steps/achivementFacts"
 import { AchivementKeys } from "./types"
@@ -26,6 +27,7 @@ const STEPS = [
   WhatToAchieve,
   AchivementFacts,
   LoaderStep,
+  SignUpContent,
 ]
 
 const OnboardingPageContent = () => {
