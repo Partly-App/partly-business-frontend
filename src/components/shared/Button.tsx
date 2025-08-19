@@ -6,13 +6,14 @@ type ButtonColor =
   | "white"
   | "yellow"
   | "purple"
+  | "greyLight"
   | "grey"
   | "green"
   | "red"
   | "blue"
   | "transparent"
 
-type ButtonSize = "S" | "M" | "L"
+type ButtonSize = "XS" | "S" | "M" | "L"
 
 type ButtonProps = {
   color: ButtonColor
@@ -29,18 +30,28 @@ type ButtonProps = {
 }
 
 const sizeMap: Record<ButtonSize, string> = {
-  S: "min-h-[32px] min-w-[32px] px-2.5 py-2",
+  XS: "min-h-[24px] min-w-[24px] px-3 py-2",
+  S: "min-h-[32px] min-w-[32px] px-3 py-2",
   M: "min-h-[42px] min-w-[42px] px-4 py-3",
   L: "min-h-[52px] min-w-[52px] px-6 py-4",
 }
 
+const borderRadiusMap: Record<ButtonSize, string> = {
+  XS: "rounded-md",
+  S: "rounded-lg",
+  M: "rounded-xl",
+  L: "rounded-xl",
+}
+
 const fontSizeMap: Record<ButtonSize, string> = {
+  XS: "text-xs", // 14px
   S: "text-sm", // 14px
   M: "text-base", // 16px
   L: "text-base", // 16px
 }
 
 const gapMap: Record<ButtonSize, string> = {
+  XS: "gap-2", // 8px
   S: "gap-2", // 8px
   M: "gap-2.5", // 10px
   L: "gap-3.5", // 14px
@@ -72,6 +83,11 @@ const colorMap: Record<
   },
   grey: {
     bg: "bg-grey-dark",
+    text: "text-white-default",
+    border: "border-white-default",
+  },
+  greyLight: {
+    bg: "bg-grey-default",
     text: "text-white-default",
     border: "border-white-default",
   },
@@ -118,7 +134,7 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={clsx(
         "flex items-center justify-center font-inter font-medium duration-300 hover:bg-opacity-70",
-        fullRounded ? "rounded-full" : "rounded-[12px]",
+        "leading-none",
         hasBorder && "border-2",
         hasBorder && border,
         containerClassName,
@@ -127,7 +143,7 @@ export const Button: React.FC<ButtonProps> = ({
         gapMap[size],
         bg,
         text,
-        fullRounded ? "rounded-full" : "rounded-[12px]",
+        fullRounded ? "rounded-full" : borderRadiusMap[size],
         hasBorder && "border-2",
         hasBorder && border,
         disabled && "pointer-events-none opacity-50",

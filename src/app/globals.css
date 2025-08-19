@@ -4,6 +4,6 @@
 
 @layer base {
   body {
-    @apply font-inter text-white-default leading-normal bg-black-light;
+    @apply bg-black-light font-inter leading-normal text-white-default;
   }
 }
