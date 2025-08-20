@@ -133,8 +133,11 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       disabled={disabled}
       className={clsx(
-        "flex items-center justify-center font-inter font-medium duration-300 hover:bg-opacity-70",
+        "flex items-center justify-center font-inter font-medium duration-300",
         "leading-none",
+        color === "transparent"
+          ? "hover:bg-white-default/25"
+          : "hover:bg-opacity-70",
         hasBorder && "border-2",
         hasBorder && border,
         containerClassName,
