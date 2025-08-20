@@ -4,8 +4,10 @@ import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { Activity, ChevronsLeft, Table, Users } from "react-feather"
+import Support from "../shared/icons/Help"
+import Settings from "../shared/icons/Settings"
 
 const TABS = [
   {
@@ -25,15 +27,32 @@ const TABS = [
   },
 ]
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true)
+const BOTTOM_TABS = [
+  {
+    url: "/dashboard/settings",
+    label: "Settings",
+    icon: <Settings size={20} className="shrink-0" />,
+  },
+  {
+    url: "/dashboard/support",
+    label: "Support",
+    icon: <Support size={20} className="shrink-0" />,
+  },
+]
 
+const Sidebar = ({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean
+  setIsOpen: Dispatch<SetStateAction<boolean>>
+}) => {
   const pathname = usePathname()
 
   return (
     <div
       className={clsx(
-        "relative h-screen bg-grey-dark py-4 transition-all",
+        "fixed left-0 flex h-screen flex-col bg-grey-dark py-4 transition-all",
         isOpen ? "w-44" : "w-15",
       )}
     >
@@ -75,31 +94,59 @@ const Sidebar = () => {
         )}
       </div>
 
-      <div className="flex flex-col gap-2 px-3">
-        {TABS.map((item) => (
-          <Link
-            key={item.label}
-            href={item.url}
-            className={clsx(
-              "flex w-full items-center gap-3 rounded-lg p-2 transition-colors",
-              pathname === item.url
-                ? "bg-purple-default text-black-default"
-                : "hover:bg-white-default/10",
-            )}
-          >
-            {item.icon}
-            {isOpen && (
-              <span
-                className={clsx(
-                  "font-montserratAlt text-sm font-bold leading-none",
-                  "animate-appearFast opacity-0 [animation-delay:0.1s]",
-                )}
-              >
-                {item.label}
-              </span>
-            )}
-          </Link>
-        ))}
+      <div className="flex flex-1 flex-col justify-between px-3">
+        <div className="flex flex-col gap-2">
+          {TABS.map((item) => (
+            <Link
+              key={item.label}
+              href={item.url}
+              className={clsx(
+                "flex w-full items-center gap-3 rounded-lg p-2 transition-colors",
+                pathname === item.url
+                  ? "bg-purple-default text-black-default"
+                  : "hover:bg-white-default/10",
+              )}
+            >
+              {item.icon}
+              {isOpen && (
+                <span
+                  className={clsx(
+                    "font-montserratAlt text-sm font-bold leading-none",
+                    "animate-appearFast opacity-0 [animation-delay:0.1s]",
+                  )}
+                >
+                  {item.label}
+                </span>
+              )}
+            </Link>
+          ))}
+        </div>
+        <div className="flex flex-col gap-2">
+          {BOTTOM_TABS.map((item) => (
+            <Link
+              key={item.label}
+              href={item.url}
+              className={clsx(
+                "flex w-full items-center gap-3 rounded-lg p-2 transition-colors",
+                pathname === item.url
+                  ? "bg-purple-default text-black-default"
+                  : "hover:bg-white-default/10 text-white-default",
+              )}
+            >
+              {item.icon}
+              {isOpen && (
+                <span
+                  className={clsx(
+                    "font-montserratAlt text-sm font-bold leading-none",
+                    "animate-appearFast opacity-0 [animation-delay:0.1s]",
+                  )}
+                >
+                  {item.label}
+                </span>
+              )}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   )
