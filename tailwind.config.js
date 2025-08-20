@@ -186,6 +186,7 @@ module.exports = {
       },
       animation: {
         appear: "appear 2s ease-out forwards",
+        appearFast: "appear 1s ease-out forwards",
         bounceSlow: "bounceSlow 5s ease-in-out infinite",
         bounceSlowXS: "bounceSlowXS 5s ease-in-out infinite",
         "float-3d-a": "float-3d-a 8s ease-in-out infinite",

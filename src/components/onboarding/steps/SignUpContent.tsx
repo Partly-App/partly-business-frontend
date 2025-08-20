@@ -279,7 +279,7 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
           />
           <span
             className={clsx(
-              "h-4 w-4 aspect-square rounded-sm bg-white-mellow transition-colors",
+              "aspect-square h-4 w-4 rounded-sm bg-white-mellow transition-colors",
               "peer-checked:border-purple-default peer-checked:bg-purple-default",
             )}
           />
