@@ -10,7 +10,9 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-      <main className={clsx(isOpen ? "pl-44" : "pl-15")}>{children}</main>
+      <main className={clsx("transition-all", isOpen ? "pl-44" : "pl-15")}>
+        {children}
+      </main>
     </>
   )
 }
