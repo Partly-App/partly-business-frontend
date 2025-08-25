@@ -1,11 +1,11 @@
 import { Journey } from "@/types/journey"
-import { getStruggleColor } from "@/utils/colors"
 import clsx from "clsx"
 import Image from "next/image"
-import InfoContainer from "../shared/containers/InfoContainer"
-import WellBeingScore from "./WellBeingScore"
+import InfoContainer from "../../shared/containers/InfoContainer"
+import WellBeingScore from "../WellBeingScore"
+import StruggleContent from "./StruggleContent"
 
-type DashboardPageContentProps = {
+export type OverviewPageContentProps = {
   mostEngagedJourney: Journey
   scores: {
     confidenceNow: number
@@ -15,7 +15,13 @@ type DashboardPageContentProps = {
     angerNow: number
     angerPrev: number
   }
-  currentChallenges: Array<{ label: string; weight: number; note: string }>
+  currentChallenges: Array<{
+    label: string
+    weight: number
+    note: string
+    fixSubtitle: string
+    fixTips: Array<string>
+  }>
 }
 
 const JOURNEYS_SRCS: Record<
@@ -40,11 +46,11 @@ const JOURNEYS_SRCS: Record<
   shame: { label: "", color: "", imgSrc: "" },
 }
 
-const DashboardPageContent = ({
+const OverviewPageContent = ({
   mostEngagedJourney,
   scores,
   currentChallenges,
-}: DashboardPageContentProps) => {
+}: OverviewPageContentProps) => {
   const anxietyChange = scores.anxietyNow - scores.anxietyPrev
   const angerChange = scores.angerNow - scores.angerPrev
   const confidenceChange = scores.confidenceNow - scores.confidencePrev
@@ -166,35 +172,7 @@ const DashboardPageContent = ({
             </span>
           </div>
         </InfoContainer>
-        <InfoContainer className="col-span-2">
-          <span className="font-montserratAlt font-bold">
-            Current <span className="font-black">Struggles</span>
-          </span>
-
-          <div className="relative mt-4 grid flex-1 grid-cols-3 items-center justify-center gap-3">
-            {currentChallenges
-              .sort((a, b) => b.weight - a.weight)
-              .map((item) => {
-                const weight = item.weight * 100
-                const struggleColor = getStruggleColor(weight)
-
-                return (
-                  <div
-                    key={item.label}
-                    className={clsx(
-                      "col-span-1 flex aspect-video items-center justify-center rounded-xl p-2",
-                      "cursor-pointer transition-transform hover:scale-95",
-                    )}
-                    style={{ backgroundColor: struggleColor }}
-                  >
-                    <span className="text-center text-sm font-bold text-black-default">
-                      {item.label}
-                    </span>
-                  </div>
-                )
-              })}
-          </div>
-        </InfoContainer>
+        <StruggleContent currentChallenges={currentChallenges} />
       </div>
       <div className="flex items-center justify-center pb-6 pt-12">
         <span className="font-montserratAlt text-xl font-bold opacity-25">
@@ -205,4 +183,4 @@ const DashboardPageContent = ({
   )
 }
 
-export default DashboardPageContent
+export default OverviewPageContent
