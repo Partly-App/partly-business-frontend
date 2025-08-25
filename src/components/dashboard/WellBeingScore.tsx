@@ -2,6 +2,7 @@ import clsx from "clsx"
 
 type WellBeingScoreProps = {
   score: number // 0-100
+  prevScore?: number
   size?: number
 }
 
@@ -40,9 +41,14 @@ const scoreToPosition = (score: number) => {
   }
 }
 
-const WellBeingScore = ({ score, size = 130 }: WellBeingScoreProps) => {
+const WellBeingScore = ({
+  score,
+  prevScore,
+  size = 130,
+}: WellBeingScoreProps) => {
   const clampedScore = Math.max(0, Math.min(100, score))
   const indicator = scoreToPosition(clampedScore)
+  const scoreDifference = score - (prevScore || 0)
 
   const height = (size * 80) / 130 // keep aspect ratio
 
@@ -74,19 +80,37 @@ const WellBeingScore = ({ score, size = 130 }: WellBeingScoreProps) => {
       </svg>
       <div className="absolute bottom-0 mb-1 w-full text-center">
         <div>
-          <div
-            className={clsx(
-              "text-white font-montserratAlt font-black",
-              size >= 220
-                ? "text-6xl"
-                : size >= 180
-                  ? "text-3xl"
-                  : size >= 150
-                    ? "text-base"
-                    : "text-sm",
+          <div className="relative mx-auto w-fit">
+            <span
+              className={clsx(
+                "text-white font-montserratAlt font-black",
+                size >= 220
+                  ? "text-6xl"
+                  : size >= 180
+                    ? "text-3xl"
+                    : size >= 150
+                      ? "text-base"
+                      : "text-sm",
+              )}
+            >
+              {clampedScore}
+            </span>
+            {prevScore && scoreDifference !== 0 && (
+              <span
+                className={clsx(
+                  "absolute -right-9 bottom-2 my-auto h-fit text-xs leading-none",
+                  scoreDifference > 0
+                    ? "text-green-default"
+                    : "text-red-default",
+                )}
+              >
+                {scoreDifference > 0 && "+"}
+                {scoreDifference}{" "}
+                <span className="text-[8px] font-medium text-white-default opacity-50">
+                  7d
+                </span>
+              </span>
             )}
-          >
-            {clampedScore}
           </div>
           <div
             className={clsx(
