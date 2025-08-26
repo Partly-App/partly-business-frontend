@@ -99,14 +99,26 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
       .from("profiles")
       .update({
         fullName: data.name,
-        companyRole: "Admin",
-        companyId,
-        departmentId,
       })
       .eq("id", userId)
 
     if (error) {
-      console.log(error)
+      console.log("Profile name update: ", error)
+      setIsLoading(false)
+      return
+    }
+
+    if (!companyId) return
+
+    const { error: employeeError } = await supabase.from("employees").upsert({
+      role: "Admin",
+      companyId,
+      departmentId,
+      userId,
+    })
+
+    if (employeeError) {
+      console.log("Employee profile upsert error: ", error)
       setIsLoading(false)
       return
     }

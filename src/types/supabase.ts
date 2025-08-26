@@ -99,6 +99,55 @@ export type Database = {
           },
         ]
       }
+      employees: {
+        Row: {
+          companyId: string
+          createdAt: string
+          departmentId: string | null
+          id: string
+          role: string | null
+          userId: string
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          departmentId?: string | null
+          id?: string
+          role?: string | null
+          userId: string
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          departmentId?: string | null
+          id?: string
+          role?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_departmentId_fkey"
+            columns: ["departmentId"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feedback: {
         Row: {
           createdAt: string
@@ -429,10 +478,7 @@ export type Database = {
       profiles: {
         Row: {
           avatarUrl: string | null
-          companyId: string | null
-          companyRole: string | null
           currentStreak: number
-          departmentId: string | null
           fullName: string | null
           hasPassedPathZero: boolean
           id: string
@@ -441,10 +487,7 @@ export type Database = {
         }
         Insert: {
           avatarUrl?: string | null
-          companyId?: string | null
-          companyRole?: string | null
           currentStreak?: number
-          departmentId?: string | null
           fullName?: string | null
           hasPassedPathZero?: boolean
           id: string
@@ -453,32 +496,14 @@ export type Database = {
         }
         Update: {
           avatarUrl?: string | null
-          companyId?: string | null
-          companyRole?: string | null
           currentStreak?: number
-          departmentId?: string | null
           fullName?: string | null
           hasPassedPathZero?: boolean
           id?: string
           lastActiveDate?: string
           longestStreak?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "profiles_companyId_fkey"
-            columns: ["companyId"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "profiles_departmentId_fkey"
-            columns: ["departmentId"]
-            isOneToOne: false
-            referencedRelation: "departments"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       progress: {
         Row: {
