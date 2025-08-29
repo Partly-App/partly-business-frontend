@@ -11,17 +11,17 @@ import Settings from "../shared/icons/Settings"
 
 const TABS = [
   {
-    url: "/dashboard",
+    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9",
     label: "Overview",
     icon: <Table size={20} className="shrink-0" />,
   },
   {
-    url: "/dashboard/employees",
+    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/employees",
     label: "Employees",
     icon: <Users size={20} className="shrink-0" />,
   },
   {
-    url: "/dashboard/analytics",
+    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/analytics",
     label: "Analytics",
     icon: <Activity size={20} className="shrink-0" />,
   },
@@ -29,12 +29,12 @@ const TABS = [
 
 const BOTTOM_TABS = [
   {
-    url: "/dashboard/settings",
+    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/settings",
     label: "Settings",
     icon: <Settings size={20} className="shrink-0" />,
   },
   {
-    url: "/dashboard/support",
+    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/support",
     label: "Support",
     icon: <Support size={20} className="shrink-0" />,
   },
