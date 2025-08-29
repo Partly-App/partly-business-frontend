@@ -29,7 +29,7 @@ const StruggleContent = ({ currentChallenges }: StruggleContentProps) => {
               const struggleColor = getStruggleColor(weight)
 
               return (
-                <>
+                <div key={item.label} className="contents">
                   <Modal
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
@@ -38,7 +38,6 @@ const StruggleContent = ({ currentChallenges }: StruggleContentProps) => {
                     <></>
                   </Modal>
                   <div
-                    key={item.label}
                     className={clsx(
                       "col-span-1 flex aspect-video items-center justify-center rounded-xl p-2",
                       "relative cursor-pointer transition-transform hover:scale-95",
@@ -53,7 +52,7 @@ const StruggleContent = ({ currentChallenges }: StruggleContentProps) => {
                       {item.weight * 10}/<span className="opacity-50">10</span>
                     </span>
                   </div>
-                </>
+                </div>
               )
             })}
         </div>
