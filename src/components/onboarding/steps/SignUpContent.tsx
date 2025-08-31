@@ -86,6 +86,50 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
       }
     }
 
+    const { data: departmentScoreData, error: departmentScoreError } =
+      await supabase
+        .from("departmentScores")
+        .upsert({ score: 50, reason: null, departmentId: departmentData.id })
+        .select("id")
+        .single()
+
+    if (!departmentScoreData || departmentScoreError) {
+      console.error(
+        "Error creating initial department score: ",
+        departmentScoreError,
+      )
+    } else {
+      const { error: departmentSubScoreError } = await supabase
+        .from("departmentSubScores")
+        .upsert([
+          {
+            score: 50,
+            reason: null,
+            departmentScoreId: departmentScoreData.id,
+            type: "anxiety",
+          },
+          {
+            score: 50,
+            reason: null,
+            departmentScoreId: departmentScoreData.id,
+            type: "anger",
+          },
+          {
+            score: 50,
+            reason: null,
+            departmentScoreId: departmentScoreData.id,
+            type: "confidence",
+          },
+        ])
+
+      if (departmentSubScoreError) {
+        console.error(
+          "Error creating initial department sub scores: ",
+          departmentSubScoreError,
+        )
+      }
+    }
+
     return {
       companyId: companyData.id,
       departmentId: departmentData.id,
@@ -106,6 +150,44 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
       console.log("Profile name update: ", error)
       setIsLoading(false)
       return
+    }
+
+    const { data: score, error: scoreError } = await supabase
+      .from("scores")
+      .upsert({ score: 50, reason: null, userId: userId })
+      .select("id")
+      .single()
+
+    if (scoreError) {
+      console.error("Error creating initial profile score: ", scoreError)
+    } else {
+      const { error: subScoreError } = await supabase.from("subScores").upsert([
+        {
+          score: 50,
+          reason: null,
+          scoreId: score.id,
+          type: "anxiety",
+        },
+        {
+          score: 50,
+          reason: null,
+          scoreId: score.id,
+          type: "anger",
+        },
+        {
+          score: 50,
+          reason: null,
+          scoreId: score.id,
+          type: "confidence",
+        },
+      ])
+
+      if (subScoreError) {
+        console.error(
+          "Error creating initial profile sub scores: ",
+          subScoreError,
+        )
+      }
     }
 
     if (!companyId) return
