@@ -1,12 +1,19 @@
 "use client"
 
+import { useSupabase } from "@/components/shared/providers"
 import { getRandomColor } from "@/utils/colors"
 import clsx from "clsx"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Plus, User } from "react-feather"
+import DepartmentSidebar from "./DepartmentSidebar"
 import { EmployeesPageContentProps } from "./EmployeesPageContent"
 
 const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
+  const [openedDepartmentId, setOpenedDepartmentId] = useState("")
+  const [isSidebarMounted, setIsSidebarMounted] = useState(false)
+
+  const supabase = useSupabase()
+
   const employeeCountPerDepartment = useMemo(() => {
     const departmentEmployeeCounts = new Map<string, number>()
 
@@ -22,6 +29,13 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
     return departmentEmployeeCounts
   }, [departments, employees])
 
+  const openSidebar = (id?: string) => {
+    if (id) {
+      setOpenedDepartmentId(id)
+      setIsSidebarMounted(true)
+    }
+  }
+
   return (
     <>
       <div className="mb-4 px-6">
@@ -30,7 +44,7 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
       <div
         className={clsx(
           "flex gap-4 overflow-x-auto px-6 pb-2",
-          "scrollbar-track-transparent scrollbar-thumb-white-default/25 scrollbar-thin",
+          "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white-default/25",
         )}
       >
         <div
@@ -44,7 +58,9 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
         </div>
 
         {departments?.map((item) => {
-          const color = getRandomColor(["transparent"])
+          const color = item.id
+            ? getRandomColor(item.id, ["transparent"])
+            : undefined
           const count = item.id
             ? employeeCountPerDepartment.get(item.id) || 0
             : 0
@@ -53,18 +69,19 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
             <div
               key={item.id}
               className={clsx(
-                "relative aspect-video rounded-xl px-4 py-6",
+                "relative aspect-video w-40 rounded-xl px-4 py-6",
                 "flex shrink-0 items-center justify-center",
                 "cursor-pointer transition-transform hover:scale-95",
-                color.backgroundColor,
-                color.color,
+                color?.backgroundColor,
+                color?.color,
               )}
+              onClick={() => openSidebar(item.id)}
             >
               <div className="absolute right-2 top-2 flex items-center gap-1">
                 <span className="font-montserratAlt text-sm font-bold leading-none">
                   {count}
                 </span>
-                <User size={14} className={color.color} />
+                <User size={14} className={color?.color} />
               </div>
               <span className="text-center font-montserratAlt font-black">
                 {item.name}
@@ -73,6 +90,17 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
           )
         })}
       </div>
+      {isSidebarMounted && (
+        <DepartmentSidebar
+          isOpen={!!openedDepartmentId}
+          title={
+            departments?.find((item) => item.id == openedDepartmentId)?.name
+          }
+          id={openedDepartmentId}
+          onClose={() => setOpenedDepartmentId("")}
+          onExited={() => setIsSidebarMounted(false)}
+        />
+      )}
     </>
   )
 }

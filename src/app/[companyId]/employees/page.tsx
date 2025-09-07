@@ -31,8 +31,8 @@ const EmployeesPage = async ({ params }: { params: { companyId: string } }) => {
     )
     .eq("companyId", companyId as string)
 
-  if (employeesError) {
-    console.log("Error fetching departments: ", employeesError)
+  if (!employees?.length || employeesError) {
+    console.log("Error fetching employees: ", employeesError)
   }
 
   return (

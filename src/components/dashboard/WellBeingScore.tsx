@@ -4,6 +4,7 @@ type WellBeingScoreProps = {
   score: number // 0-100
   prevScore?: number
   size?: number
+  className?: string
 }
 
 const SEGMENTS = [
@@ -45,6 +46,7 @@ const WellBeingScore = ({
   score,
   prevScore,
   size = 130,
+  className,
 }: WellBeingScoreProps) => {
   const clampedScore = Math.max(0, Math.min(100, score))
   const indicator = scoreToPosition(clampedScore)
@@ -54,7 +56,7 @@ const WellBeingScore = ({
 
   return (
     <div
-      className="relative flex items-center justify-center"
+      className={clsx("relative flex items-center justify-center", className)}
       style={{ width: size, height }}
     >
       <svg width={size} height={height} viewBox="0 0 130 80">
@@ -84,13 +86,15 @@ const WellBeingScore = ({
             <span
               className={clsx(
                 "text-white font-montserratAlt font-black",
-                size >= 220
-                  ? "text-6xl"
-                  : size >= 180
-                    ? "text-3xl"
-                    : size >= 150
-                      ? "text-base"
-                      : "text-sm",
+                size >= 280
+                  ? "text-12xl"
+                  : size >= 220
+                    ? "text-6xl"
+                    : size >= 180
+                      ? "text-3xl"
+                      : size >= 150
+                        ? "text-base"
+                        : "text-sm",
               )}
             >
               {clampedScore}
@@ -98,15 +102,23 @@ const WellBeingScore = ({
             {prevScore && scoreDifference !== 0 && (
               <span
                 className={clsx(
-                  "absolute -right-9 bottom-2 my-auto h-fit text-xs leading-none",
+                  "absolute my-auto h-fit leading-none",
                   scoreDifference > 0
                     ? "text-green-default"
                     : "text-red-default",
+                  size >= 240
+                    ? "-right-11 bottom-3 text-base"
+                    : "-right-9 bottom-2 text-xs",
                 )}
               >
                 {scoreDifference > 0 && "+"}
                 {scoreDifference}{" "}
-                <span className="text-[8px] font-medium text-white-default opacity-50">
+                <span
+                  className={clsx(
+                    "font-medium text-white-default opacity-50",
+                    size >= 240 ? "text-[10px]" : "text-[8px]",
+                  )}
+                >
                   7d
                 </span>
               </span>
@@ -115,7 +127,7 @@ const WellBeingScore = ({
           <div
             className={clsx(
               "font-medium text-white-default/50",
-              size >= 180 ? "text-lg" : "text-base",
+              size >= 240 ? "text-xl" : size >= 180 ? "text-lg" : "text-base",
             )}
           >
             {clampedScore <= 29
