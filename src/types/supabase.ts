@@ -99,6 +99,73 @@ export type Database = {
           },
         ]
       }
+      departmentScores: {
+        Row: {
+          createdAt: string
+          departmentId: string
+          fixSuggestion: string | null
+          id: string
+          score: number
+        }
+        Insert: {
+          createdAt?: string
+          departmentId: string
+          fixSuggestion?: string | null
+          id?: string
+          score?: number
+        }
+        Update: {
+          createdAt?: string
+          departmentId?: string
+          fixSuggestion?: string | null
+          id?: string
+          score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departmentWellbeingScore_departmentId_fkey"
+            columns: ["departmentId"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      departmentSubScores: {
+        Row: {
+          createdAt: string
+          departmentScoreId: string
+          id: string
+          reason: string | null
+          score: number
+          type: Database["public"]["Enums"]["journeyTag"]
+        }
+        Insert: {
+          createdAt?: string
+          departmentScoreId: string
+          id?: string
+          reason?: string | null
+          score?: number
+          type: Database["public"]["Enums"]["journeyTag"]
+        }
+        Update: {
+          createdAt?: string
+          departmentScoreId?: string
+          id?: string
+          reason?: string | null
+          score?: number
+          type?: Database["public"]["Enums"]["journeyTag"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departmentSubScores_departmentScoreId_fkey"
+            columns: ["departmentScoreId"]
+            isOneToOne: false
+            referencedRelation: "departmentScores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           companyId: string
@@ -570,6 +637,41 @@ export type Database = {
           },
         ]
       }
+      scores: {
+        Row: {
+          createdAt: string
+          fixSuggestion: string | null
+          id: string
+          reason: string | null
+          score: number
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          fixSuggestion?: string | null
+          id?: string
+          reason?: string | null
+          score?: number
+          userId: string
+        }
+        Update: {
+          createdAt?: string
+          fixSuggestion?: string | null
+          id?: string
+          reason?: string | null
+          score?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wellbeingScore_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       steps: {
         Row: {
           createdAt: string
@@ -601,6 +703,41 @@ export type Database = {
             columns: ["momentId"]
             isOneToOne: false
             referencedRelation: "moments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subScores: {
+        Row: {
+          createdAt: string
+          id: string
+          reason: string | null
+          score: number
+          scoreId: string
+          type: Database["public"]["Enums"]["journeyTag"]
+        }
+        Insert: {
+          createdAt?: string
+          id?: string
+          reason?: string | null
+          score?: number
+          scoreId: string
+          type: Database["public"]["Enums"]["journeyTag"]
+        }
+        Update: {
+          createdAt?: string
+          id?: string
+          reason?: string | null
+          score?: number
+          scoreId?: string
+          type?: Database["public"]["Enums"]["journeyTag"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subScores_scoreId_fkey"
+            columns: ["scoreId"]
+            isOneToOne: false
+            referencedRelation: "scores"
             referencedColumns: ["id"]
           },
         ]
