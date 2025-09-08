@@ -12,7 +12,7 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
   const [openedDepartmentId, setOpenedDepartmentId] = useState("")
   const [isSidebarMounted, setIsSidebarMounted] = useState(false)
 
-  const [emblaRef] = useEmblaCarousel()
+  const [emblaRef] = useEmblaCarousel({dragFree: true})
 
   const employeeCountPerDepartment = useMemo(() => {
     const departmentEmployeeCounts = new Map<string, number>()
@@ -65,7 +65,7 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
               <div
                 key={item.id}
                 className={clsx(
-                  "embla__slide relative aspect-video w-40 min-w-[0] flex-[0,0,100%] rounded-xl px-4 py-6",
+                  "relative aspect-video w-40 rounded-xl px-4 py-6",
                   "flex shrink-0 items-center justify-center",
                   "cursor-pointer transition-transform hover:scale-95",
                   color?.backgroundColor,
