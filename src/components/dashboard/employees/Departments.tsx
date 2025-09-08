@@ -1,6 +1,5 @@
 "use client"
 
-import { useSupabase } from "@/components/shared/providers"
 import { getRandomColor } from "@/utils/colors"
 import clsx from "clsx"
 import { useMemo, useState } from "react"
@@ -12,16 +11,14 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
   const [openedDepartmentId, setOpenedDepartmentId] = useState("")
   const [isSidebarMounted, setIsSidebarMounted] = useState(false)
 
-  const supabase = useSupabase()
-
   const employeeCountPerDepartment = useMemo(() => {
     const departmentEmployeeCounts = new Map<string, number>()
 
     employees?.forEach((emp) => {
-      if (emp.departmentId) {
+      if (emp.department?.id) {
         departmentEmployeeCounts.set(
-          emp.departmentId,
-          (departmentEmployeeCounts.get(emp.departmentId) || 0) + 1,
+          emp.department.id,
+          (departmentEmployeeCounts.get(emp.department.id) || 0) + 1,
         )
       }
     })
