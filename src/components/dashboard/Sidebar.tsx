@@ -4,7 +4,7 @@ import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { Activity, ChevronsLeft, Table, Users } from "react-feather"
 import Support from "../shared/icons/Help"
 import Settings from "../shared/icons/Settings"
@@ -52,7 +52,7 @@ const Sidebar = ({
   return (
     <div
       className={clsx(
-        "fixed left-0 flex h-screen flex-col bg-grey-dark py-4 transition-all",
+        "fixed left-0 h-screen flex-col bg-grey-dark py-4 transition-all sm:flex hidden",
         isOpen ? "w-44" : "w-15",
       )}
     >
@@ -130,7 +130,7 @@ const Sidebar = ({
                 "flex w-full items-center gap-3 rounded-lg p-2 transition-colors",
                 pathname === item.url
                   ? "bg-purple-default text-black-default"
-                  : "hover:bg-white-default/10 text-white-default",
+                  : "text-white-default hover:bg-white-default/10",
               )}
             >
               {item.icon}

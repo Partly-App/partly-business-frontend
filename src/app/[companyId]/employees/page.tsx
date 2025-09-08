@@ -20,7 +20,10 @@ const EmployeesPage = async ({ params }: { params: { companyId: string } }) => {
     .select(
       `
         id,
-        departmentId,
+        department:departmentId (
+          id,
+          name
+        ),
         role,
         profile:userId (
           id,

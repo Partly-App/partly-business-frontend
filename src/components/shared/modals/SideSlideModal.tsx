@@ -55,7 +55,7 @@ const SideSlideModal = ({
       >
         <div
           className={clsx(
-            "fixed bottom-0 right-0 top-0 z-50 h-screen md:w-1/2 xl:w-1/3",
+            "fixed bottom-0 right-0 top-0 z-50 h-screen w-full md:w-1/2 xl:w-1/3",
             "overflow-y-auto bg-grey-dark p-4 shadow-lg",
             "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white-default/25",
           )}

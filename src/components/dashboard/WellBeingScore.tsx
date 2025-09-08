@@ -4,6 +4,7 @@ type WellBeingScoreProps = {
   score: number // 0-100
   prevScore?: number
   size?: number
+  mini?: boolean
   className?: string
 }
 
@@ -46,6 +47,7 @@ const WellBeingScore = ({
   score,
   prevScore,
   size = 130,
+  mini,
   className,
 }: WellBeingScoreProps) => {
   const clampedScore = Math.max(0, Math.min(100, score))
@@ -70,6 +72,8 @@ const WellBeingScore = ({
             fill="none"
           />
         ))}
+
+
         <circle
           cx={indicator.x}
           cy={indicator.y}
@@ -99,7 +103,7 @@ const WellBeingScore = ({
             >
               {clampedScore}
             </span>
-            {prevScore && scoreDifference !== 0 && (
+            {!mini && prevScore && scoreDifference !== 0 && (
               <span
                 className={clsx(
                   "absolute my-auto h-fit leading-none",
@@ -124,24 +128,26 @@ const WellBeingScore = ({
               </span>
             )}
           </div>
-          <div
-            className={clsx(
-              "font-medium text-white-default/50",
-              size >= 240 ? "text-xl" : size >= 180 ? "text-lg" : "text-base",
-            )}
-          >
-            {clampedScore <= 29
-              ? "At Risk"
-              : clampedScore <= 49
-                ? "Low"
-                : clampedScore <= 69
-                  ? "Can Improve"
-                  : clampedScore <= 89
-                    ? "Doing Well"
-                    : clampedScore <= 100
-                      ? "Thriving"
-                      : "Normal"}
-          </div>
+          {!mini && (
+            <div
+              className={clsx(
+                "font-medium text-white-default/50",
+                size >= 240 ? "text-xl" : size >= 180 ? "text-lg" : "text-base",
+              )}
+            >
+              {clampedScore <= 29
+                ? "At Risk"
+                : clampedScore <= 49
+                  ? "Low"
+                  : clampedScore <= 69
+                    ? "Can Improve"
+                    : clampedScore <= 89
+                      ? "Doing Well"
+                      : clampedScore <= 100
+                        ? "Thriving"
+                        : "Normal"}
+            </div>
+          )}
         </div>
       </div>
     </div>
