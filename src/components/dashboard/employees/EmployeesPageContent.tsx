@@ -18,7 +18,7 @@ const EmployeesPageContent = ({
   employees,
 }: EmployeesPageContentProps) => {
   return (
-    <main className="realtive min-h-screen w-full py-4 sm:px-4 sm:py-8">
+    <main className="realtive min-h-screen w-full py-4 sm:py-8">
       <Departments departments={departments} employees={employees} />
       {employees && <EmployeesList employees={employees} />}
     </main>

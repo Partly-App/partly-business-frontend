@@ -9,7 +9,7 @@ type EmployeesProps = {
 const EmployeesList = ({ employees }: EmployeesProps) => {
   return (
     <div className="mt-8">
-      <div className="mb-4 flex items-center gap-2 px-6">
+      <div className="mb-4 flex items-center gap-2 px-5 sm:px-9">
         <h1 className="font-montserratAlt text-4xl font-black leading-none">
           Employees
         </h1>
@@ -19,16 +19,18 @@ const EmployeesList = ({ employees }: EmployeesProps) => {
           </span>
         </Button>
       </div>
-      <div className="flex items-center px-7">
+      <div className="flex items-center px-5 sm:px-9">
         <p className="w-1/3 font-bold opacity-25">Name</p>
-        <p className="w-1/3 font-bold opacity-25 text-center">Department</p>
-        <p className="w-1/3 font-bold opacity-25 text-right">Well-being Score</p>
+        <p className="w-1/3 text-center font-bold opacity-25">Department</p>
+        <p className="w-1/3 text-right font-bold opacity-25">
+          Well-being Score
+        </p>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col px-3 sm:px-7">
         {employees?.map((item) => (
           <div key={item.id}>
             <EmployeeRow employee={item} />
-            <div className="mx-auto h-[1px] w-[94%] bg-white-default/10" />
+            <div className="mx-auto h-[1px] w-[98%] bg-white-default/10" />
           </div>
         ))}
       </div>

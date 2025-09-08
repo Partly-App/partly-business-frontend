@@ -9,7 +9,7 @@ type EmployeeRowProps = {
 
 const EmployeeRow = ({ employee }: EmployeeRowProps) => {
   return (
-    <div className="mx-4 flex items-center gap-4 py-1">
+    <div className="flex items-center gap-4 py-1">
       <div
         className={clsx(
           "w-full cursor-pointer rounded-xl px-2 py-3 transition-colors",
