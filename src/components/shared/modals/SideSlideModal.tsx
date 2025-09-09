@@ -55,13 +55,15 @@ const SideSlideModal = ({
       >
         <div
           className={clsx(
-            "fixed bottom-0 right-0 top-0 z-50 h-screen w-full md:w-1/2 xl:w-1/3",
+            "fixed bottom-0 right-0 top-0 z-50 flex h-screen w-full flex-col md:w-1/2 xl:w-1/3",
             "overflow-y-auto bg-grey-dark p-4 shadow-lg",
             "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white-default/25",
           )}
         >
           <div className="flex items-center justify-between gap-6">
-            <h3 className="font-montserratAlt text-xl font-black">{title}</h3>
+            <h3 className="font-montserratAlt text-xl font-black opacity-50">
+              {title}
+            </h3>
             <Button
               color="transparent"
               size="S"
@@ -94,7 +96,7 @@ const SideSlideModal = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
             as="div"
-            className="relative"
+            className="flex-1"
           >
             {children}
           </Transition>
