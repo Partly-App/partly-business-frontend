@@ -156,7 +156,7 @@ const DepartmentSidebar = ({
           <span
             className={clsx(
               "mx-auto block text-center font-montserratAlt text-4xl",
-              "font-black leading-none opacity-50",
+              "font-black leading-none",
             )}
           >
             Well-being
@@ -201,36 +201,39 @@ const DepartmentSidebar = ({
                       )}
                   </div>
                 </div>
-
-                <div
-                  className={clsx(
-                    "relative overflow-hidden",
-                    showMoreMap.confidence ? "h-fit" : "h-18",
-                  )}
-                >
-                  {!showMoreMap.confidence && (
-                    <div className="absolute bottom-0 top-0 h-full w-full bg-gradient-to-t from-grey-dark to-transparent" />
-                  )}
-                  <span>{currentSubScoreByType?.confidence.reason}</span>
-                </div>
-                {!showMoreMap.confidence &&
-                  currentSubScoreByType?.confidence.reason &&
-                  currentSubScoreByType.confidence.reason.length > 60 && (
-                    <span
+                {currentSubScoreByType?.confidence.reason && (
+                  <>
+                    <div
                       className={clsx(
-                        "-mt-2 block w-fit cursor-pointer text-sm font-bold opacity-75",
-                        "transition-transform duration-200 hover:scale-[0.97]",
+                        "relative overflow-hidden",
+                        showMoreMap.confidence ? "h-fit" : "h-18",
                       )}
-                      onClick={() =>
-                        setShowMoreMap((prev) => ({
-                          ...prev,
-                          confidence: true,
-                        }))
-                      }
                     >
-                      Show more...
-                    </span>
-                  )}
+                      {!showMoreMap.confidence && (
+                        <div className="absolute bottom-0 top-0 h-full w-full bg-gradient-to-t from-grey-dark to-transparent" />
+                      )}
+                      <span>{currentSubScoreByType?.confidence.reason}</span>
+                    </div>
+                    {!showMoreMap.confidence &&
+                      currentSubScoreByType?.confidence.reason &&
+                      currentSubScoreByType.confidence.reason.length > 60 && (
+                        <span
+                          className={clsx(
+                            "-mt-2 block w-fit cursor-pointer text-sm font-bold opacity-75",
+                            "transition-transform duration-200 hover:scale-[0.97]",
+                          )}
+                          onClick={() =>
+                            setShowMoreMap((prev) => ({
+                              ...prev,
+                              confidence: true,
+                            }))
+                          }
+                        >
+                          Show more...
+                        </span>
+                      )}
+                  </>
+                )}
               </div>
 
               <div className="flex flex-col gap-4">
@@ -263,36 +266,39 @@ const DepartmentSidebar = ({
                       )}
                   </div>
                 </div>
-
-                <div
-                  className={clsx(
-                    "relative overflow-hidden",
-                    showMoreMap.anxiety ? "h-fit" : "h-18",
-                  )}
-                >
-                  {!showMoreMap.anxiety && (
-                    <div className="absolute bottom-0 top-0 h-full w-full bg-gradient-to-t from-grey-dark to-transparent" />
-                  )}
-                  <span>{currentSubScoreByType?.anxiety.reason}</span>
-                </div>
-                {!showMoreMap.anxiety &&
-                  currentSubScoreByType?.anxiety.reason &&
-                  currentSubScoreByType.anxiety.reason.length > 60 && (
-                    <span
+                {currentSubScoreByType?.anxiety.reason && (
+                  <>
+                    <div
                       className={clsx(
-                        "-mt-2 block w-fit cursor-pointer text-sm font-bold opacity-75",
-                        "transition-transform duration-200 hover:scale-[0.97]",
+                        "relative overflow-hidden",
+                        showMoreMap.anxiety ? "h-fit" : "h-18",
                       )}
-                      onClick={() =>
-                        setShowMoreMap((prev) => ({
-                          ...prev,
-                          anxiety: true,
-                        }))
-                      }
                     >
-                      Show more...
-                    </span>
-                  )}
+                      {!showMoreMap.anxiety && (
+                        <div className="absolute bottom-0 top-0 h-full w-full bg-gradient-to-t from-grey-dark to-transparent" />
+                      )}
+                      <span>{currentSubScoreByType?.anxiety.reason}</span>
+                    </div>
+                    {!showMoreMap.anxiety &&
+                      currentSubScoreByType?.anxiety.reason &&
+                      currentSubScoreByType.anxiety.reason.length > 60 && (
+                        <span
+                          className={clsx(
+                            "-mt-2 block w-fit cursor-pointer text-sm font-bold opacity-75",
+                            "transition-transform duration-200 hover:scale-[0.97]",
+                          )}
+                          onClick={() =>
+                            setShowMoreMap((prev) => ({
+                              ...prev,
+                              anxiety: true,
+                            }))
+                          }
+                        >
+                          Show more...
+                        </span>
+                      )}
+                  </>
+                )}
               </div>
 
               <div className="flex flex-col gap-4">
@@ -325,47 +331,58 @@ const DepartmentSidebar = ({
                       )}
                   </div>
                 </div>
-
-                <div
-                  className={clsx(
-                    "relative overflow-hidden",
-                    showMoreMap.anger ? "h-fit" : "h-18",
-                  )}
-                >
-                  {!showMoreMap.anger && (
-                    <div className="absolute bottom-0 top-0 h-full w-full bg-gradient-to-t from-grey-dark to-transparent" />
-                  )}
-                  <span>{currentSubScoreByType?.anger.reason}</span>
-                </div>
-                {!showMoreMap.anger &&
-                  currentSubScoreByType?.anger.reason &&
-                  currentSubScoreByType.anger.reason.length > 60 && (
-                    <span
+                {currentSubScoreByType?.anger.reason && (
+                  <>
+                    <div
                       className={clsx(
-                        "-mt-2 block w-fit cursor-pointer text-sm font-bold opacity-75",
-                        "transition-transform duration-200 hover:scale-[0.97]",
+                        "relative overflow-hidden",
+                        showMoreMap.anger ? "h-fit" : "h-18",
                       )}
-                      onClick={() =>
-                        setShowMoreMap((prev) => ({
-                          ...prev,
-                          anger: true,
-                        }))
-                      }
                     >
-                      Show more...
-                    </span>
-                  )}
+                      {!showMoreMap.anger && (
+                        <div className="absolute bottom-0 top-0 h-full w-full bg-gradient-to-t from-grey-dark to-transparent" />
+                      )}
+                      <span>{currentSubScoreByType?.anger.reason}</span>
+                    </div>
+                    {!showMoreMap.anger &&
+                      currentSubScoreByType?.anger.reason &&
+                      currentSubScoreByType.anger.reason.length > 60 && (
+                        <span
+                          className={clsx(
+                            "-mt-2 block w-fit cursor-pointer text-sm font-bold opacity-75",
+                            "transition-transform duration-200 hover:scale-[0.97]",
+                          )}
+                          onClick={() =>
+                            setShowMoreMap((prev) => ({
+                              ...prev,
+                              anger: true,
+                            }))
+                          }
+                        >
+                          Show more...
+                        </span>
+                      )}
+                  </>
+                )}
               </div>
 
-              <div className="flex flex-col gap-4">
-                <div className="relative flex w-fit items-baseline gap-2">
-                  <span className="font-mont text-6xl font-black">
-                    Suggestions
+              {departmentScores[0].fixSuggestion ? (
+                <div className="flex flex-col gap-4">
+                  <div className="relative flex w-fit items-baseline gap-2">
+                    <span className="font-mont text-6xl font-black">
+                      Suggestions
+                    </span>
+                  </div>
+
+                  <span>{departmentScores[0].fixSuggestion}</span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center px-6 py-4">
+                  <span className="text-center font-montserratAlt font-black opacity-50">
+                    Partly needs more time and info to provide score reasoning*
                   </span>
                 </div>
-
-                <span>{departmentScores[0].fixSuggestion}</span>
-              </div>
+              )}
             </div>
           </div>
         </div>
