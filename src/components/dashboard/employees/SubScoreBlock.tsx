@@ -9,6 +9,7 @@ type SubScoreBlockProps = {
   prevSubScore: DepartmentSubScore | SubScore | undefined
   showMore: boolean
   onShowMore: () => void
+  inverseIndicator?: boolean
 }
 
 const SubScoreBlock = ({
@@ -18,6 +19,7 @@ const SubScoreBlock = ({
   prevSubScore,
   showMore,
   onShowMore,
+  inverseIndicator,
 }: SubScoreBlockProps) => {
   const change =
     !subScore || !prevSubScore
@@ -40,7 +42,13 @@ const SubScoreBlock = ({
               <div
                 className={clsx(
                   "absolute -right-6 -top-3 font-montserratAlt text-xs font-bold",
-                  change < 0 ? "text-green-default" : "text-red-default",
+                  inverseIndicator
+                    ? change <= 0
+                      ? "text-green-default"
+                      : "text-red-default"
+                    : change >= 0
+                      ? "text-green-default"
+                      : "text-red-default",
                 )}
               >
                 {change > 0 && "+"}
