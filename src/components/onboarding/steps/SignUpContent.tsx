@@ -89,7 +89,7 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
     const { data: departmentScoreData, error: departmentScoreError } =
       await supabase
         .from("departmentScores")
-        .upsert({ score: 50, reason: null, departmentId: departmentData.id })
+        .upsert({ score: 50, departmentId: departmentData.id })
         .select("id")
         .single()
 

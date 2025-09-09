@@ -20,9 +20,9 @@ const EmployeesList = ({ employees }: EmployeesProps) => {
         </Button>
       </div>
       <div className="flex items-center px-5 sm:px-9">
-        <p className="w-1/3 font-bold opacity-25">Name</p>
-        <p className="w-1/3 text-center font-bold opacity-25">Department</p>
-        <p className="w-1/3 text-right font-bold opacity-25">
+        <p className="w-1/3 font-bold opacity-50">Name</p>
+        <p className="w-1/3 text-center font-bold opacity-50">Department</p>
+        <p className="w-1/3 text-right font-bold opacity-50">
           Well-being Score
         </p>
       </div>

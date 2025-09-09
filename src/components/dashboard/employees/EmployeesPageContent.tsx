@@ -11,15 +11,21 @@ export type EmployeeConstructed = Partial<EmployeeType> & {
 export type EmployeesPageContentProps = {
   departments: Array<Partial<Department>> | null
   employees: Array<EmployeeConstructed> | null
+  companyId: string
 }
 
 const EmployeesPageContent = ({
   departments,
   employees,
+  companyId,
 }: EmployeesPageContentProps) => {
   return (
     <main className="realtive min-h-screen w-full py-4 sm:py-8">
-      <Departments departments={departments} employees={employees} />
+      <Departments
+        departments={departments}
+        employees={employees}
+        companyId={companyId}
+      />
       {employees && <EmployeesList employees={employees} />}
     </main>
   )

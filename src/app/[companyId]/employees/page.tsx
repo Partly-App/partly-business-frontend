@@ -39,7 +39,7 @@ const EmployeesPage = async ({ params }: { params: { companyId: string } }) => {
   }
 
   return (
-    <EmployeesPageContent departments={departments} employees={employees} />
+    <EmployeesPageContent departments={departments} employees={employees} companyId={companyId} />
   )
 }
 

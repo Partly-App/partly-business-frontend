@@ -4,15 +4,20 @@ import { getRandomColor } from "@/utils/colors"
 import clsx from "clsx"
 import useEmblaCarousel from "embla-carousel-react"
 import { useMemo, useState } from "react"
-import { Plus, User } from "react-feather"
+import { User } from "react-feather"
 import DepartmentSidebar from "./DepartmentSidebar"
 import { EmployeesPageContentProps } from "./EmployeesPageContent"
+import NewDepartment from "./NewDepartment"
 
-const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
+const Departments = ({
+  departments,
+  employees,
+  companyId,
+}: EmployeesPageContentProps) => {
   const [openedDepartmentId, setOpenedDepartmentId] = useState("")
   const [isSidebarMounted, setIsSidebarMounted] = useState(false)
 
-  const [emblaRef] = useEmblaCarousel({dragFree: true})
+  const [emblaRef] = useEmblaCarousel({ dragFree: true })
 
   const employeeCountPerDepartment = useMemo(() => {
     const departmentEmployeeCounts = new Map<string, number>()
@@ -43,16 +48,7 @@ const Departments = ({ departments, employees }: EmployeesPageContentProps) => {
       </div>
       <div className="overflow-hidden pr-5 sm:pr-9" ref={emblaRef}>
         <div className="flex gap-4 px-5 pb-2 sm:px-9">
-          <div
-            className={clsx(
-              "rounded-xl border border-white-default/50 bg-white-default/10 p-4",
-              "flex aspect-square w-28 shrink-0 items-center justify-center",
-              "cursor-pointer transition-transform hover:scale-95",
-            )}
-          >
-            <Plus size={42} className="text-purple-light" />
-          </div>
-
+          <NewDepartment companyId={companyId} />
           {departments?.map((item) => {
             const color = item.id
               ? getRandomColor(item.id, ["transparent"])
