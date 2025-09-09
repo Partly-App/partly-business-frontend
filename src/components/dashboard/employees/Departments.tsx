@@ -5,7 +5,7 @@ import clsx from "clsx"
 import useEmblaCarousel from "embla-carousel-react"
 import { useMemo, useState } from "react"
 import { User } from "react-feather"
-import DepartmentSidebar from "./DepartmentSidebar"
+import DepartmentSideModalContent from "./DepartmentSideModalContent"
 import { EmployeesPageContentProps } from "./EmployeesPageContent"
 import NewDepartment from "./NewDepartment"
 
@@ -13,7 +13,7 @@ const Departments = ({
   departments,
   employees,
   companyId,
-}: EmployeesPageContentProps) => {
+}: Omit<EmployeesPageContentProps, "scores">) => {
   const [openedDepartmentId, setOpenedDepartmentId] = useState("")
   const [isSidebarMounted, setIsSidebarMounted] = useState(false)
 
@@ -87,7 +87,7 @@ const Departments = ({
         </div>
       </div>
       {isSidebarMounted && (
-        <DepartmentSidebar
+        <DepartmentSideModalContent
           isOpen={!!openedDepartmentId}
           title={
             departments?.find((item) => item.id == openedDepartmentId)?.name

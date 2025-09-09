@@ -5,9 +5,15 @@ import { EmployeeConstructed } from "./EmployeesPageContent"
 
 type EmployeeRowProps = {
   employee: EmployeeConstructed
+  onClick: (id: string) => void
+  score: number
 }
 
-const EmployeeRow = ({ employee }: EmployeeRowProps) => {
+const EmployeeRow = ({
+  employee,
+  onClick,
+  score,
+}: EmployeeRowProps) => {
   return (
     <div className="flex items-center gap-4 py-1">
       <div
@@ -15,6 +21,7 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
           "w-full cursor-pointer rounded-xl px-2 py-3 transition-colors",
           "flex items-center hover:bg-white-default/10",
         )}
+        onClick={() => onClick(employee.profile.id!)}
       >
         <div className="flex w-1/3 items-center gap-3">
           <Image
@@ -40,7 +47,7 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
         </div>
 
         <div className="flex w-1/3 justify-end pr-2">
-          <WellBeingScore mini size={64} score={50} />
+          <WellBeingScore mini size={64} score={score} />
         </div>
       </div>
     </div>

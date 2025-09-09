@@ -4,9 +4,28 @@ import { EmployeeConstructed } from "./EmployeesPageContent"
 
 type EmployeesProps = {
   employees: Array<EmployeeConstructed>
+  scores:
+    | {
+        score: number
+        userId: string
+      }[]
+    | null
 }
 
-const EmployeesList = ({ employees }: EmployeesProps) => {
+const EmployeesList = ({ employees, scores }: EmployeesProps) => {
+
+  const scoreByUserMap = useMemo(() => {
+    if (!scores) return {}
+    return scores.reduce(
+      (acc, curr) => {
+        if (!(curr.userId in acc)) {
+          acc[curr.userId] = curr.score
+        }
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+  }, [scores])
   return (
     <div className="mt-8">
       <div className="mb-4 flex items-center gap-2 px-5 sm:px-9">
@@ -29,7 +48,11 @@ const EmployeesList = ({ employees }: EmployeesProps) => {
       <div className="flex flex-col px-3 sm:px-7">
         {employees?.map((item) => (
           <div key={item.id}>
-            <EmployeeRow employee={item} />
+              <EmployeeRow
+                employee={item}
+                onClick={openSidebar}
+                score={scoreByUserMap[item.profile.id!]}
+              />
             <div className="mx-auto h-[1px] w-[98%] bg-white-default/10" />
           </div>
         ))}

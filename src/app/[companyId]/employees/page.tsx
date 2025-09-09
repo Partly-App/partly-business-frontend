@@ -38,8 +38,25 @@ const EmployeesPage = async ({ params }: { params: { companyId: string } }) => {
     console.log("Error fetching employees: ", employeesError)
   }
 
+  const userIds = employees?.map((item) => item.profile.id) || []
+
+  const { data: scores, error: scoresError } = await supabaseServer
+    .from("scores")
+    .select("score, userId")
+    .order("createdAt", { ascending: false })
+    .in("userId", userIds)
+
+  if (!scores || scoresError) {
+    console.log("Error getting scores for employee list: ", scoresError)
+  }
+
   return (
-    <EmployeesPageContent departments={departments} employees={employees} companyId={companyId} />
+    <EmployeesPageContent
+      departments={departments}
+      employees={employees}
+      companyId={companyId}
+      scores={scores}
+    />
   )
 }
 
