@@ -3,39 +3,46 @@
 import SideSlideModal from "@/components/shared/modals/SideSlideModal"
 import { useSupabase } from "@/components/shared/providers"
 import { SCORE_TYPES } from "@/constants/employee"
-import { DepartmentScore, DepartmentSubScore } from "@/types/employee"
+import { Profile, Score, SubScore } from "@/types/profile"
 import clsx from "clsx"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import WellBeingScore from "../WellBeingScore"
+import { EmployeeConstructed } from "./EmployeesPageContent"
 import SubScoreBlock from "./SubScoreBlock"
 
-type DepartmentSideModalContentProps = {
-  id: string
-  title?: string
+type EmployeeSideModalContentProps = {
   isOpen: boolean
+  title?: string | null
+  id: string | null
+  employee?: EmployeeConstructed
   onClose: () => void
   onExited: () => void
 }
 
-const DepartmentSideModalContent = ({
-  id,
+const EmployeeSideModalContent = ({
   title,
+  id,
+  employee,
+  onExited,
   isOpen,
   onClose,
-  onExited,
-}: DepartmentSideModalContentProps) => {
-  const [departmentScores, setDepartmentScores] =
-    useState<Array<DepartmentScore> | null>(null)
+}: EmployeeSideModalContentProps) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [profile, setProfile] = useState<Partial<Profile> | null>(null)
+  const [employeeScores, setEmployeeScores] = useState<Array<Score> | null>(
+    null,
+  )
   const [currentSubScores, setCurrentSubScores] =
-    useState<Array<DepartmentSubScore> | null>(null)
-  const [prevSubScores, setPrevSubScores] =
-    useState<Array<DepartmentSubScore> | null>(null)
+    useState<Array<SubScore> | null>(null)
+  const [prevSubScores, setPrevSubScores] = useState<Array<SubScore> | null>(
+    null,
+  )
   const [showMoreMap, setShowMoreMap] = useState({
     anger: false,
     anxiety: false,
     confidence: false,
   })
-  const [isLoading, setIsLoading] = useState(true)
+  const [positionValue, setPositionValue] = useState(employee?.role || "")
 
   const supabase = useSupabase()
 
@@ -65,31 +72,49 @@ const DepartmentSideModalContent = ({
     }
   }, [prevSubScores])
 
-  const getScores = useCallback(async () => {
+  const getEmployeeData = useCallback(async () => {
     if (!id) return
 
     setIsLoading(true)
 
-    const { data, error } = await supabase
-      .from("departmentScores")
-      .select("*")
-      .eq("departmentId", id)
-      .order("createdAt", { ascending: false })
-      .limit(2)
+    const { data: profileData, error: profileError } = await supabase
+      .from("profiles")
+      .select("avatarUrl, fullName, id")
+      .eq("id", id)
+      .single()
 
-    if (!data?.length || error) {
-      console.error("Error fetching department scores: ", error)
+    if (!profileData || profileError) {
+      console.error(
+        "Error getting profile of an employee: ",
+        profileError,
+        profileData,
+      )
       setIsLoading(false)
       return
     }
 
-    setDepartmentScores(data)
+    setProfile(profileData)
+
+    const { data, error } = await supabase
+      .from("scores")
+      .select("*")
+      .eq("userId", id)
+      .order("createdAt", { ascending: false })
+      .limit(2)
+
+    if (!data?.length || error) {
+      console.error("Error fetching employee scores: ", error)
+      setIsLoading(false)
+      return
+    }
+
+    setEmployeeScores(data)
 
     const { data: currentSubScoresData, error: currentSubScoresError } =
       await supabase
-        .from("departmentSubScores")
+        .from("subScores")
         .select("*")
-        .eq("departmentScoreId", data[0].id)
+        .eq("scoreId", data[0].id)
         .in("type", SCORE_TYPES)
 
     if (!currentSubScoresData?.length || currentSubScoresError) {
@@ -105,9 +130,9 @@ const DepartmentSideModalContent = ({
     if (!!data[1]?.id) {
       const { data: prevSubScoresData, error: prevSubScoresError } =
         await supabase
-          .from("departmentSubScores")
+          .from("subScores")
           .select("*")
-          .eq("departmentScoreId", data[1].id)
+          .eq("scoreId", data[1].id)
           .in("type", SCORE_TYPES)
 
       if (prevSubScoresError) {
@@ -121,20 +146,18 @@ const DepartmentSideModalContent = ({
   }, [supabase, id])
 
   useEffect(() => {
-    if (!id) return
-
-    getScores()
-  }, [getScores, id])
+    getEmployeeData()
+  }, [getEmployeeData])
 
   return (
     <SideSlideModal
-      title={title}
+      title={title || ""}
       isOpen={isOpen}
       isLoading={isLoading}
       onClose={onClose}
       onExited={onExited}
     >
-      {departmentScores && currentSubScores && (
+      {employeeScores && currentSubScores && (
         <div className="mb-10 mt-6">
           <span
             className={clsx(
@@ -146,8 +169,8 @@ const DepartmentSideModalContent = ({
           </span>
 
           <WellBeingScore
-            prevScore={departmentScores[1]?.score}
-            score={departmentScores[0].score}
+            prevScore={employeeScores[1]?.score}
+            score={employeeScores[0].score}
             size={320}
             className="mx-auto -mt-2 mb-6"
           />
@@ -169,7 +192,6 @@ const DepartmentSideModalContent = ({
               />
 
               <SubScoreBlock
-                inverseIndicator
                 label="Anxiety"
                 colorClass="text-purple-default"
                 subScore={currentSubScoreByType?.anxiety}
@@ -184,7 +206,6 @@ const DepartmentSideModalContent = ({
               />
 
               <SubScoreBlock
-                inverseIndicator
                 label="Anger"
                 colorClass="text-red-default"
                 subScore={currentSubScoreByType?.anger}
@@ -198,7 +219,7 @@ const DepartmentSideModalContent = ({
                 }
               />
 
-              {departmentScores[0].fixSuggestion ? (
+              {employeeScores[0].fixSuggestion ? (
                 <div className="flex flex-col gap-4">
                   <div className="relative flex w-fit items-baseline gap-2">
                     <span className="font-mont text-6xl font-black">
@@ -206,7 +227,7 @@ const DepartmentSideModalContent = ({
                     </span>
                   </div>
 
-                  <span>{departmentScores[0].fixSuggestion}</span>
+                  <span>{employeeScores[0].fixSuggestion}</span>
                 </div>
               ) : (
                 <div className="flex items-center justify-center px-6 py-4">
@@ -223,4 +244,4 @@ const DepartmentSideModalContent = ({
   )
 }
 
-export default DepartmentSideModalContent
+export default EmployeeSideModalContent

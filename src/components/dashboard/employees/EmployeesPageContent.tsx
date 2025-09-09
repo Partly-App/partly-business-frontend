@@ -12,12 +12,19 @@ export type EmployeesPageContentProps = {
   departments: Array<Partial<Department>> | null
   employees: Array<EmployeeConstructed> | null
   companyId: string
+  scores:
+    | {
+        score: number
+        userId: string
+      }[]
+    | null
 }
 
 const EmployeesPageContent = ({
   departments,
   employees,
   companyId,
+  scores,
 }: EmployeesPageContentProps) => {
   return (
     <main className="realtive min-h-screen w-full py-4 sm:py-8">
@@ -26,7 +33,8 @@ const EmployeesPageContent = ({
         employees={employees}
         companyId={companyId}
       />
-      {employees && <EmployeesList employees={employees} />}
+      {employees && <EmployeesList employees={employees} scores={scores} />}
+      <div className="mx-auto w-64 px-4"></div>
     </main>
   )
 }
