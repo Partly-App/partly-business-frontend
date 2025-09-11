@@ -6,16 +6,31 @@ import { ChangeEvent, InputHTMLAttributes, useState } from "react"
 type InputProps = {
   value: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
-} & Omit<InputHTMLAttributes<HTMLInputElement>, "value">
+  size?: "S" | "M"
+  className?: string
+} & Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "size">
 
-const Input = ({ value, onChange, ...props }: InputProps) => {
+const sizeMap = {
+  S: "px-2 py-1.5",
+  M: "px-3 py-2.5",
+}
+
+const Input = ({
+  value,
+  onChange,
+  size = "M",
+  className,
+  ...props
+}: InputProps) => {
   const [hidePassword, setHidePassword] = useState(true)
 
   return (
     <label
       className={clsx(
-        "rounded-lg border-2 border-transparent bg-white-mellow px-3 py-2.5 transition-colors",
+        "rounded-lg border-2 border-transparent bg-white-mellow transition-colors",
         "flex w-full items-center justify-between gap-4 focus-within:border-purple-default",
+        sizeMap[size],
+        className,
       )}
     >
       <input
