@@ -25,6 +25,7 @@ const EmployeesPage = async ({ params }: { params: { companyId: string } }) => {
           name
         ),
         role,
+        companyId,
         profile:userId (
           id,
           fullName,
