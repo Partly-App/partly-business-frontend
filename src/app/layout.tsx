@@ -1,4 +1,5 @@
 import { SupabaseProvider } from "@/components/shared/providers"
+import { ToastProvider } from "@/context/ToastContext"
 import clsx from "clsx"
 import type { Metadata } from "next"
 import { Inter, Montserrat_Alternates } from "next/font/google"
@@ -28,7 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={clsx(inter.variable, montserratAlt.variable)}>
-        <SupabaseProvider>{children}</SupabaseProvider>
+        <ToastProvider>
+          <SupabaseProvider>{children}</SupabaseProvider>
+        </ToastProvider>
       </body>
     </html>
   )
