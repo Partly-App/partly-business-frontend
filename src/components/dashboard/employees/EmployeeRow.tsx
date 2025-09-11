@@ -109,14 +109,16 @@ const EmployeeRow = ({
               </ListboxOptions>
             </Listbox>
           ) : employee.department ? (
-            <span className="font-bold">{employee.department.name}</span>
+            <span className="font-medium">{employee.department.name}</span>
           ) : (
-            <span className="font-sm font-bold opacity-25">No department</span>
+            <span className="font-sm font-medium opacity-25">
+              No department
+            </span>
           )}
           {isBeingEdited ? (
             <div className="my-2 h-[2px] w-16 bg-white-default/25"></div>
           ) : (
-            <span className="px-1 font-bold leading-none opacity-50">/</span>
+            <span className="px-1 font-medium leading-none opacity-50">/</span>
           )}
           {isBeingEdited ? (
             <Input
@@ -127,9 +129,9 @@ const EmployeeRow = ({
               className="w-full max-w-56"
             />
           ) : employee.role ? (
-            <span className="font-bold">{employee.role}</span>
+            <span className="font-medium">{employee.role}</span>
           ) : (
-            <span className="font-sm font-bold opacity-25">No role</span>
+            <span className="font-sm font-medium opacity-25">No role</span>
           )}
         </div>
 

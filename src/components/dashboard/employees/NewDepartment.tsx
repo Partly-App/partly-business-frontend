@@ -12,7 +12,13 @@ import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
 import { Plus } from "react-feather"
 
-const NewDepartment = ({ companyId }: { companyId: string }) => {
+const NewDepartment = ({
+  companyId,
+  disabled,
+}: {
+  companyId: string
+  disabled: boolean
+}) => {
   const [isNewDepOpen, setIsNewDepOpen] = useState(false)
   const [isNewDepMounted, setIsNewDepMounted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -127,16 +133,24 @@ const NewDepartment = ({ companyId }: { companyId: string }) => {
     <>
       <div
         className={clsx(
-          "rounded-xl border border-purple-light bg-white-default/5 p-4",
+          "rounded-xl border bg-white-default/5 p-4",
           "flex aspect-square w-28 shrink-0 items-center justify-center",
-          "cursor-pointer transition-transform hover:scale-95",
+          "transition-transform",
+          disabled
+            ? "cursor-default border-grey-default"
+            : "cursor-pointer border-purple-light hover:scale-95",
         )}
         onClick={() => {
-          setIsNewDepOpen(true)
-          setIsNewDepMounted(true)
+          if (!disabled) {
+            setIsNewDepOpen(true)
+            setIsNewDepMounted(true)
+          }
         }}
       >
-        <Plus size={42} className="text-purple-light" />
+        <Plus
+          size={42}
+          className={disabled ? "text-grey-default" : "text-purple-light"}
+        />
       </div>
       {isNewDepMounted && (
         <SideSlideModal

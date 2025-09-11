@@ -104,6 +104,7 @@ const EmployeesList = ({
 
     if (error) {
       console.error("Error updating employees: ", error)
+      return
     } else {
       console.log("Updated employees")
     }
@@ -131,6 +132,8 @@ const EmployeesList = ({
       .select("id, name")
     if (!data?.length || error) {
       console.error("Error fetching departments in EmployeeList: ", error)
+      setDepartments([])
+      return
     }
     setDepartments(data)
   }, [supabase])
