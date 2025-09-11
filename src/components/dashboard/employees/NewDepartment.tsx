@@ -162,7 +162,7 @@ const NewDepartment = ({ companyId }: { companyId: string }) => {
               </span>
               <Input
                 value={nameValue}
-                onChange={(v) => setNameValue(v.target.value)}
+                onChange={(v) => setNameValue(v.target.value.substring(0, 25))}
                 placeholder="Marketing"
               />
             </div>
