@@ -2,6 +2,7 @@
 
 import Button from "@/components/shared/Button"
 import Edit from "@/components/shared/icons/Edit"
+import { useToast } from "@/context/ToastContext"
 import { supabase } from "@/lib/supabaseClient"
 import { getRandomColor } from "@/utils/colors"
 import { toggleStringInArray } from "@/utils/general"
@@ -28,6 +29,7 @@ const Departments = ({
     useState<EmployeesPageContentProps["departments"]>(initialDepartments)
 
   const [emblaRef] = useEmblaCarousel({ dragFree: true })
+  const { showToast } = useToast()
 
   const employeeCountPerDepartment = useMemo(() => {
     const departmentEmployeeCounts = new Map<string, number>()
@@ -59,6 +61,11 @@ const Departments = ({
 
     if (error) {
       console.error("Error deleting departments: ", error)
+      showToast(
+        "Unexpected error on department deletion! Please, try again later.",
+        "bottom",
+        "error",
+      )
       return
     }
 
@@ -69,6 +76,8 @@ const Departments = ({
     setDepartments(newDepartments || [])
     setDepartmentsToDelete([])
     setIsBeingEdited(false)
+
+    showToast("Departments deleted!", "bottom", "success")
   }
 
   return (

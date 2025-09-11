@@ -3,6 +3,7 @@
 import SideSlideModal from "@/components/shared/modals/SideSlideModal"
 import { useSupabase } from "@/components/shared/providers"
 import { SCORE_TYPES } from "@/constants/employee"
+import { useToast } from "@/context/ToastContext"
 import { DepartmentScore, DepartmentSubScore } from "@/types/employee"
 import clsx from "clsx"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -38,6 +39,7 @@ const DepartmentSideModalContent = ({
   const [isLoading, setIsLoading] = useState(true)
 
   const supabase = useSupabase()
+  const { showToast } = useToast()
 
   const currentSubScoreByType = useMemo(() => {
     if (!currentSubScores) return null
@@ -79,6 +81,11 @@ const DepartmentSideModalContent = ({
 
     if (!data?.length || error) {
       console.error("Error fetching department scores: ", error)
+      showToast(
+        "Unexpected error while deleting a department! Please, try again later.",
+        "bottom",
+        "error",
+      )
       setIsLoading(false)
       return
     }
@@ -97,6 +104,8 @@ const DepartmentSideModalContent = ({
         "Error fetching current sub scores: ",
         currentSubScoresError,
       )
+      showToast("Unexpected error! Please, try again later.", "bottom", "error")
+
       setIsLoading(false)
     } else {
       setCurrentSubScores(currentSubScoresData)

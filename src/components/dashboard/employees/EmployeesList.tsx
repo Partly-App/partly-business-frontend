@@ -3,6 +3,7 @@
 import Button from "@/components/shared/Button"
 import Edit from "@/components/shared/icons/Edit"
 import { useSupabase } from "@/components/shared/providers"
+import { useToast } from "@/context/ToastContext"
 import { Department, Employee } from "@/types/employee"
 import clsx from "clsx"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -43,6 +44,8 @@ const EmployeesList = ({
     Partial<Department>
   > | null>(null)
   const [employees, setEmployees] = useState(initialEmployeeList)
+
+  const { showToast } = useToast()
 
   const supabase = useSupabase()
 
@@ -104,6 +107,11 @@ const EmployeesList = ({
 
     if (error) {
       console.error("Error updating employees: ", error)
+      showToast(
+        "Failed to update employees! Please, try again later.",
+        "bottom",
+        "error",
+      )
       return
     } else {
       console.log("Updated employees")
@@ -124,6 +132,8 @@ const EmployeesList = ({
           : emp
       }),
     )
+
+    showToast("Employees updated!", "bottom", "success")
   }
 
   const getDepartments = useCallback(async () => {
@@ -132,6 +142,11 @@ const EmployeesList = ({
       .select("id, name")
     if (!data?.length || error) {
       console.error("Error fetching departments in EmployeeList: ", error)
+      showToast(
+        "Failed to find your departments! Please, try again later or add departments.",
+        "bottom",
+        "error",
+      )
       setDepartments([])
       return
     }
@@ -270,7 +285,6 @@ const EmployeesList = ({
           id={openedEmployeeId}
           onClose={() => setOpenedEmployeeId("")}
           onExited={() => setIsSidebarMounted(false)}
-          employee={employees.find((item) => item.userId === openedEmployeeId)}
         />
       )}
     </>

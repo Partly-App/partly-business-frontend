@@ -3,18 +3,17 @@
 import SideSlideModal from "@/components/shared/modals/SideSlideModal"
 import { useSupabase } from "@/components/shared/providers"
 import { SCORE_TYPES } from "@/constants/employee"
-import { Profile, Score, SubScore } from "@/types/profile"
+import { useToast } from "@/context/ToastContext"
+import { Score, SubScore } from "@/types/profile"
 import clsx from "clsx"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import WellBeingScore from "../WellBeingScore"
-import { EmployeeConstructed } from "./EmployeesPageContent"
 import SubScoreBlock from "./SubScoreBlock"
 
 type EmployeeSideModalContentProps = {
   isOpen: boolean
   title?: string | null
   id: string | null
-  employee?: EmployeeConstructed
   onClose: () => void
   onExited: () => void
 }
@@ -22,13 +21,11 @@ type EmployeeSideModalContentProps = {
 const EmployeeSideModalContent = ({
   title,
   id,
-  employee,
   onExited,
   isOpen,
   onClose,
 }: EmployeeSideModalContentProps) => {
   const [isLoading, setIsLoading] = useState(true)
-  const [profile, setProfile] = useState<Partial<Profile> | null>(null)
   const [employeeScores, setEmployeeScores] = useState<Array<Score> | null>(
     null,
   )
@@ -42,9 +39,9 @@ const EmployeeSideModalContent = ({
     anxiety: false,
     confidence: false,
   })
-  const [positionValue, setPositionValue] = useState(employee?.role || "")
 
   const supabase = useSupabase()
+  const { showToast } = useToast()
 
   const currentSubScoreByType = useMemo(() => {
     if (!currentSubScores) return null
@@ -77,24 +74,6 @@ const EmployeeSideModalContent = ({
 
     setIsLoading(true)
 
-    const { data: profileData, error: profileError } = await supabase
-      .from("profiles")
-      .select("avatarUrl, fullName, id")
-      .eq("id", id)
-      .single()
-
-    if (!profileData || profileError) {
-      console.error(
-        "Error getting profile of an employee: ",
-        profileError,
-        profileData,
-      )
-      setIsLoading(false)
-      return
-    }
-
-    setProfile(profileData)
-
     const { data, error } = await supabase
       .from("scores")
       .select("*")
@@ -104,6 +83,7 @@ const EmployeeSideModalContent = ({
 
     if (!data?.length || error) {
       console.error("Error fetching employee scores: ", error)
+      showToast("Unexpected error! Please, try again later.", "bottom", "error")
       setIsLoading(false)
       return
     }
@@ -122,6 +102,8 @@ const EmployeeSideModalContent = ({
         "Error fetching current sub scores: ",
         currentSubScoresError,
       )
+      showToast("Unexpected error! Please, try again later.", "bottom", "error")
+
       setIsLoading(false)
     } else {
       setCurrentSubScores(currentSubScoresData)

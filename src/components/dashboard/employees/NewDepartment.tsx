@@ -4,6 +4,7 @@ import Button from "@/components/shared/Button"
 import Input from "@/components/shared/Input"
 import SideSlideModal from "@/components/shared/modals/SideSlideModal"
 import { useSupabase } from "@/components/shared/providers"
+import { useToast } from "@/context/ToastContext"
 import { Employee } from "@/types/employee"
 import { Profile } from "@/types/profile"
 import { toggleStringInArray } from "@/utils/general"
@@ -29,6 +30,7 @@ const NewDepartment = ({
   const [selectedIds, setSelectedIds] = useState<Array<string>>([])
 
   const supabase = useSupabase()
+  const { showToast } = useToast()
 
   const handleClose = () => {
     setIsNewDepOpen(false)
@@ -48,6 +50,7 @@ const NewDepartment = ({
 
     if (!departmentData || departmentError) {
       console.error("Error creating a department: ", departmentError)
+      showToast("Error creating a department! Please, try again later.", "bottom", "error")
       setIsLoading(false)
       handleClose()
       return
@@ -65,6 +68,8 @@ const NewDepartment = ({
         "Error creating initial department score: ",
         departmentScoreError,
       )
+      showToast("Unexpected error! Please, try again later.", "bottom", "error")
+
       handleClose()
       return
     } else {
@@ -96,6 +101,11 @@ const NewDepartment = ({
           "Error creating initial department sub scores: ",
           departmentSubScoreError,
         )
+        showToast(
+          "Unexpected error! Please, try again later.",
+          "bottom",
+          "error",
+        )
       }
     }
 
@@ -107,6 +117,8 @@ const NewDepartment = ({
     if (error) {
       console.error("Error updating departmentIds in employees: ", error)
     }
+
+    showToast("Department created!", "bottom", "success")
 
     handleClose()
   }
