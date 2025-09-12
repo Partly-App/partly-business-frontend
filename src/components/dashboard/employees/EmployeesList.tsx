@@ -5,9 +5,10 @@ import Edit from "@/components/shared/icons/Edit"
 import { useSupabase } from "@/components/shared/providers"
 import { useToast } from "@/context/ToastContext"
 import { Department, Employee } from "@/types/employee"
+import { toggleStringInArray } from "@/utils/general"
 import clsx from "clsx"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { X } from "react-feather"
+import { Trash2, X } from "react-feather"
 import EmployeeRow from "./EmployeeRow"
 import EmployeeSideModalContent from "./EmployeeSideModalContent"
 import { EmployeeConstructed } from "./EmployeesPageContent"
@@ -44,6 +45,7 @@ const EmployeesList = ({
     Partial<Department>
   > | null>(null)
   const [employees, setEmployees] = useState(initialEmployeeList)
+  const [selectedEmployees, setSelectedEmployees] = useState<Array<string>>([])
 
   const { showToast } = useToast()
 
@@ -153,6 +155,29 @@ const EmployeesList = ({
     setDepartments(data)
   }, [supabase])
 
+  const handleEmployeeDelete = async () => {
+    const { error } = await supabase
+      .from("employees")
+      .delete()
+      .in("id", selectedEmployees)
+
+    if (error) {
+      console.error("Error deleting employees: ", error)
+      showToast(
+        "Failed to delete employees. Please try again later.",
+        "bottom",
+        "error",
+      )
+      return
+    }
+
+    setEmployees((prev) =>
+      prev.filter((item) => !selectedEmployees.includes(item.id!)),
+    )
+    setSelectedEmployees([])
+    showToast("Employees deleted.", "bottom", "success")
+  }
+
   useEffect(() => {
     getDepartments()
   }, [getDepartments])
@@ -180,53 +205,78 @@ const EmployeesList = ({
   return (
     <>
       <div className="mt-8">
-        <div className="mb-4 flex items-center gap-4 px-5 sm:px-9">
-          <h1 className="font-montserratAlt text-4xl font-black leading-none">
-            Employees
-          </h1>
-          <div className={clsx("flex items-center gap-2.5")}>
-            {isBeingEdited ? (
-              <>
-                <Button
-                  containsIconOnly
-                  size="S"
-                  color="red"
-                  onClick={() => {
-                    setIsBeingEdited(false)
-                    setValues(defaultValues)
-                  }}
-                >
-                  <X size={14} className="text-white-default" />
-                </Button>
-                <Button
-                  size="S"
-                  color="green"
-                  containerClassName="!min-h-[38px]"
-                  onClick={updateEmployees}
-                >
-                  Save
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  size="XS"
-                  color="transparent"
-                  containsIconOnly
-                  onClick={() => setIsBeingEdited((prev) => !prev)}
-                >
-                  <Edit size={14} className="text-white-default" />
-                </Button>
-                <Button size="XS" color="transparent" containsIconOnly>
-                  <span className="font-montserratAlt text-2xl leading-none text-white-default">
-                    +
-                  </span>
-                </Button>
-              </>
-            )}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-8 px-5 sm:px-9">
+          <div className="flex items-center gap-4">
+            <h1 className="font-montserratAlt text-4xl font-black leading-none">
+              Employees
+            </h1>
+            <div className={clsx("flex items-center gap-2.5")}>
+              {isBeingEdited ? (
+                <>
+                  <Button
+                    containsIconOnly
+                    size="S"
+                    color="red"
+                    onClick={() => {
+                      setIsBeingEdited(false)
+                      setValues(defaultValues)
+                      setSelectedEmployees([])
+                    }}
+                  >
+                    <X size={14} className="text-white-default" />
+                  </Button>
+
+                  <Button
+                    size="S"
+                    color="green"
+                    containerClassName="!h-[38px]"
+                    onClick={updateEmployees}
+                  >
+                    Save
+                  </Button>
+
+                  <Button
+                    containsIconOnly
+                    size="S"
+                    color="white"
+                    onClick={handleEmployeeDelete}
+                    disabled={selectedEmployees.length === 0}
+                  >
+                    <Trash2 size={14} className="text-black-default" />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    size="XS"
+                    color="transparent"
+                    containsIconOnly
+                    onClick={() => setIsBeingEdited((prev) => !prev)}
+                  >
+                    <Edit size={14} className="text-white-default" />
+                  </Button>
+                  <Button size="XS" color="transparent" containsIconOnly>
+                    <span className="font-montserratAlt text-2xl leading-none text-white-default">
+                      +
+                    </span>
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
+
+          {isBeingEdited && (
+            <div className="flex items-center gap-2">
+              <span className="font-montserratAlt font-bold opacity-50">
+                Selected
+              </span>
+              <span className="font-montserratAlt font-black">
+                {selectedEmployees.length}/{employees.length}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="flex items-center px-5 sm:px-9">
+        <div className="flex items-center gap-2 px-5 sm:px-9">
           <p className="w-1/3 font-bold opacity-50">Name</p>
           <p className="w-1/3 flex-wrap text-center font-bold opacity-50">
             Department/Role
@@ -268,6 +318,12 @@ const EmployeesList = ({
                   }))
                 }
                 allDepartments={departments}
+                isSelected={selectedEmployees.includes(item.id!)}
+                onSelect={() =>
+                  setSelectedEmployees((prev) =>
+                    toggleStringInArray(prev, item.id!),
+                  )
+                }
               />
               <div className="mx-auto h-[1px] w-[98%] bg-white-default/10" />
             </div>

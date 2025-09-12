@@ -32,6 +32,7 @@ const Input = ({
         sizeMap[size],
         className,
       )}
+      onClick={(e) => e.stopPropagation()}
     >
       <input
         {...props}

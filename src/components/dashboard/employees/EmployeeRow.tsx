@@ -22,6 +22,8 @@ type EmployeeRowProps = {
   roleValue: string
   roleOnChange: (value: string) => void
   allDepartments: Array<Partial<Department>> | null
+  isSelected: boolean
+  onSelect: () => void
 }
 
 const EmployeeRow = ({
@@ -34,33 +36,66 @@ const EmployeeRow = ({
   roleValue,
   roleOnChange,
   allDepartments,
+  isSelected,
+  onSelect,
 }: EmployeeRowProps) => {
   return (
     <div className="flex items-center gap-4 py-1">
       <div
         className={clsx(
           "w-full rounded-xl px-2 py-3 transition-colors",
-          "flex items-center hover:bg-white-default/10",
+          "flex items-center gap-2 hover:bg-white-default/10",
           !isBeingEdited && "cursor-pointer",
+          isSelected && isBeingEdited && "!bg-purple-default",
         )}
-        onClick={() => !isBeingEdited && onClick(employee.profile.id!)}
+        onClick={() => {
+          if (!isBeingEdited) {
+            onClick(employee.profile.id!)
+          } else {
+            onSelect()
+          }
+        }}
       >
         <div className="flex w-1/3 items-center gap-3">
-          <Image
-            src={
-              employee.profile.avatarUrl || "/images/profile-placeholder.png"
-            }
-            width={42}
-            height={42}
-            className="rounded-xl"
-            alt=""
-          />
-          <span className="text-sm font-medium sm:text-base">
+          <div className="group relative h-11 w-11 shrink-0 overflow-hidden rounded-xl">
+            <Image
+              fill
+              src={
+                employee.profile.avatarUrl || "/images/profile-placeholder.png"
+              }
+              className="rounded-xl object-cover"
+              alt=""
+            />
+
+            {isBeingEdited && (
+              <div
+                className={clsx(
+                  "absolute flex h-full w-full items-center justify-center bg-grey-default",
+                  "cursor-pointer opacity-0 transition-opacity group-hover:opacity-100",
+                  isSelected && "opacity-100",
+                )}
+              >
+                <div
+                  className={clsx(
+                    "h-4 w-4 rounded-md border-2 border-purple-light transition-colors",
+                    isSelected && "!bg-purple-light",
+                  )}
+                />
+              </div>
+            )}
+          </div>
+
+          <span className="truncate text-sm font-medium sm:text-base">
             {employee.profile.fullName}
           </span>
         </div>
 
-        <div className="flex w-1/3 flex-wrap items-center justify-center">
+        <div
+          className={clsx(
+            "flex w-1/3 items-center justify-center",
+            isBeingEdited ? "flex-col" : "flex-wrap",
+          )}
+        >
           {isBeingEdited && allDepartments ? (
             <Listbox
               value={departmentValue}
@@ -72,6 +107,7 @@ const EmployeeRow = ({
                   "border-2 bg-white-mellow px-2 py-1.5 text-left text-white-default",
                   "transition-colors aria-expanded:border-2 aria-expanded:border-purple-default",
                 )}
+                onClick={(e) => e.stopPropagation()}
               >
                 <span className="truncate text-black-default">
                   {departmentValue?.name}
@@ -85,9 +121,9 @@ const EmployeeRow = ({
                 anchor="bottom"
                 transition
                 className={clsx(
-                  "my-1 flex !max-h-60 w-full !max-w-56 flex-col rounded-xl px-2.5 pt-2",
+                  "my-1 flex !max-h-60 flex-col rounded-xl px-2.5 pt-2",
                   "data-leave:data-closed:opacity-0 transition duration-100 ease-in focus:outline-none",
-                  "!overflow-auto bg-white-mellow !scrollbar-none",
+                  "w-[var(--button-width)] !overflow-auto bg-white-mellow shadow-md !scrollbar-none",
                 )}
               >
                 {allDepartments.map((item) => (
