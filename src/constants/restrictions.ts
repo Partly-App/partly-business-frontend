@@ -1,0 +1,2 @@
+export const MAXIMUM_ROLE_LENGTH = 40
+export const MAXIMUM_EMAIL_LENGTH = 100

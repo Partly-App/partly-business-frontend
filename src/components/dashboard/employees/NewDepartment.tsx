@@ -50,7 +50,7 @@ const NewDepartment = ({
 
     if (!departmentData || departmentError) {
       console.error("Error creating a department: ", departmentError)
-      showToast("Error creating a department! Please, try again later.", "bottom", "error")
+      showToast("Error creating a! Please, try again later.", "bottom", "error")
       setIsLoading(false)
       handleClose()
       return

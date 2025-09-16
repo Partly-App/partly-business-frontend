@@ -7,8 +7,10 @@ import { useToast } from "@/context/ToastContext"
 import { Department, Employee } from "@/types/employee"
 import { toggleStringInArray } from "@/utils/general"
 import clsx from "clsx"
+import { useParams } from "next/navigation"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Trash2, X } from "react-feather"
+import AddEmployeesSideModal from "./AddEmployeesSideModal"
 import EmployeeRow from "./EmployeeRow"
 import EmployeeSideModalContent from "./EmployeeSideModalContent"
 import { EmployeeConstructed } from "./EmployeesPageContent"
@@ -46,8 +48,12 @@ const EmployeesList = ({
   > | null>(null)
   const [employees, setEmployees] = useState(initialEmployeeList)
   const [selectedEmployees, setSelectedEmployees] = useState<Array<string>>([])
+  const [isAddEmployeeOpen, setIsAddEmployeeOpen] = useState(false)
+  const [isEmployeeSidebarMounted, setIsEmployeeSidebarMounted] =
+    useState(false)
 
   const { showToast } = useToast()
+  const { companyId } = useParams()
 
   const supabase = useSupabase()
 
@@ -142,6 +148,8 @@ const EmployeesList = ({
     const { data, error } = await supabase
       .from("departments")
       .select("id, name")
+      .eq("companyId", companyId as string)
+
     if (!data?.length || error) {
       console.error("Error fetching departments in EmployeeList: ", error)
       showToast(
@@ -255,7 +263,15 @@ const EmployeesList = ({
                   >
                     <Edit size={14} className="text-white-default" />
                   </Button>
-                  <Button size="XS" color="transparent" containsIconOnly>
+                  <Button
+                    size="XS"
+                    color="transparent"
+                    containsIconOnly
+                    onClick={() => {
+                      setIsEmployeeSidebarMounted(true)
+                      setIsAddEmployeeOpen(true)
+                    }}
+                  >
                     <span className="font-montserratAlt text-2xl leading-none text-white-default">
                       +
                     </span>
@@ -341,6 +357,14 @@ const EmployeesList = ({
           id={openedEmployeeId}
           onClose={() => setOpenedEmployeeId("")}
           onExited={() => setIsSidebarMounted(false)}
+        />
+      )}
+
+      {isEmployeeSidebarMounted && (
+        <AddEmployeesSideModal
+          isOpen={isAddEmployeeOpen}
+          onClose={() => setIsAddEmployeeOpen(false)}
+          onExited={() => setIsEmployeeSidebarMounted(false)}
         />
       )}
     </>
