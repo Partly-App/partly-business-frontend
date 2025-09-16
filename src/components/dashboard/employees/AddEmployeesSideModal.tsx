@@ -136,17 +136,8 @@ const AddEmployeesSideModal = ({
         .eq("companyId", companyId as string)
 
       if (!data?.length || error) {
-        console.error("Error fetching departments in EmployeeList: ", error)
-        showToast(
-          "Failed to find your departments! Please, try again later or add departments.",
-          "bottom",
-          "error",
-        )
-        onClose()
-        setIsLoading(false)
-        return
+        console.log("Error fetching departments in EmployeeList: ", error)
       }
-      setDepartments(data)
 
       const { data: employeeNumberData, error: employeeNumberError } =
         await supabase
@@ -369,28 +360,34 @@ const AddEmployeesSideModal = ({
                           "w-[var(--button-width)] !overflow-auto bg-white-mellow shadow-md !scrollbar-none",
                         )}
                       >
-                        {departments.map((dep) => (
-                          <ListboxOption
-                            key={dep.id}
-                            value={dep.id}
-                            className="pb-1.5"
-                          >
-                            <div
-                              className={clsx(
-                                "group mb-1 flex cursor-pointer select-none items-center gap-2 rounded-lg px-2 py-2.5",
-                                "transition-colors hover:bg-black-default/15",
-                                departments.find(
-                                  (department) =>
-                                    department.id === item.departmentId,
-                                )?.name === dep.name && "!bg-purple-default",
-                              )}
+                        {departments.length ? (
+                          departments.map((dep) => (
+                            <ListboxOption
+                              key={dep.id}
+                              value={dep.id}
+                              className="pb-1.5"
                             >
-                              <div className="truncate text-sm font-medium text-black-default">
-                                {dep.name}
+                              <div
+                                className={clsx(
+                                  "group mb-1 flex cursor-pointer select-none items-center gap-2 rounded-lg px-2 py-2.5",
+                                  "transition-colors hover:bg-black-default/15",
+                                  departments.find(
+                                    (department) =>
+                                      department.id === item.departmentId,
+                                  )?.name === dep.name && "!bg-purple-default",
+                                )}
+                              >
+                                <div className="truncate text-sm font-medium text-black-default">
+                                  {dep.name}
+                                </div>
                               </div>
-                            </div>
-                          </ListboxOption>
-                        ))}
+                            </ListboxOption>
+                          ))
+                        ) : (
+                          <p className="select-none pb-3 pt-1 text-center font-montserratAlt font-black text-black-default opacity-30">
+                            No departments
+                          </p>
+                        )}
                       </ListboxOptions>
                     </Listbox>
                   </div>
