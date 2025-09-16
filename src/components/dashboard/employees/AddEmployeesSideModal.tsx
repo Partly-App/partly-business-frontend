@@ -175,7 +175,7 @@ const AddEmployeesSideModal = ({
         .from("employees")
         .select("*", { head: true, count: "exact" })
 
-      if (!count || employeeCountError) {
+      if (employeeCountError) {
         console.error(
           "Error fetching employee count for a company: ",
           employeeNumberError,
@@ -185,12 +185,9 @@ const AddEmployeesSideModal = ({
           "bottom",
           "error",
         )
-        onClose()
-        setIsLoading(false)
-        return
       }
 
-      setCurrentEmployeeCount(count)
+      setCurrentEmployeeCount(count || 0)
     }
 
     getCompanyData()
@@ -367,7 +364,7 @@ const AddEmployeesSideModal = ({
                         anchor="bottom"
                         transition
                         className={clsx(
-                          "z-50 my-1 flex !max-h-60 flex-col rounded-xl px-2.5 pt-2",
+                          "z-50 my-1 flex !max-h-60 flex-col rounded-xl px-2.5 pt-2.5",
                           "data-leave:data-closed:opacity-0 transition duration-100 ease-in focus:outline-none",
                           "w-[var(--button-width)] !overflow-auto bg-white-mellow shadow-md !scrollbar-none",
                         )}
@@ -376,7 +373,7 @@ const AddEmployeesSideModal = ({
                           <ListboxOption
                             key={dep.id}
                             value={dep.id}
-                            className="pb-1"
+                            className="pb-1.5"
                           >
                             <div
                               className={clsx(

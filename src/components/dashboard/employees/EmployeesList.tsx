@@ -150,7 +150,7 @@ const EmployeesList = ({
       .select("id, name")
       .eq("companyId", companyId as string)
 
-    if (!data?.length || error) {
+    if (error) {
       console.error("Error fetching departments in EmployeeList: ", error)
       showToast(
         "Failed to find your departments! Please, try again later or add departments.",
@@ -212,73 +212,75 @@ const EmployeesList = ({
 
   return (
     <>
-      <div className="mt-8">
+      <div className="mt-8 flex flex-1 flex-col">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-8 px-5 sm:px-9">
           <div className="flex items-center gap-4">
             <h1 className="font-montserratAlt text-4xl font-black leading-none">
               Employees
             </h1>
-            <div className={clsx("flex items-center gap-2.5")}>
-              {isBeingEdited ? (
-                <>
-                  <Button
-                    containsIconOnly
-                    size="S"
-                    color="red"
-                    onClick={() => {
-                      setIsBeingEdited(false)
-                      setValues(defaultValues)
-                      setSelectedEmployees([])
-                    }}
-                  >
-                    <X size={14} className="text-white-default" />
-                  </Button>
+            {!!employees.length && (
+              <div className={clsx("flex items-center gap-2.5")}>
+                {isBeingEdited ? (
+                  <>
+                    <Button
+                      containsIconOnly
+                      size="S"
+                      color="red"
+                      onClick={() => {
+                        setIsBeingEdited(false)
+                        setValues(defaultValues)
+                        setSelectedEmployees([])
+                      }}
+                    >
+                      <X size={14} className="text-white-default" />
+                    </Button>
 
-                  <Button
-                    size="S"
-                    color="green"
-                    containerClassName="!h-[38px]"
-                    onClick={updateEmployees}
-                  >
-                    Save
-                  </Button>
+                    <Button
+                      size="S"
+                      color="green"
+                      containerClassName="!h-[38px]"
+                      onClick={updateEmployees}
+                    >
+                      Save
+                    </Button>
 
-                  <Button
-                    containsIconOnly
-                    size="S"
-                    color="white"
-                    onClick={handleEmployeeDelete}
-                    disabled={selectedEmployees.length === 0}
-                  >
-                    <Trash2 size={14} className="text-black-default" />
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    size="XS"
-                    color="transparent"
-                    containsIconOnly
-                    onClick={() => setIsBeingEdited((prev) => !prev)}
-                  >
-                    <Edit size={14} className="text-white-default" />
-                  </Button>
-                  <Button
-                    size="XS"
-                    color="transparent"
-                    containsIconOnly
-                    onClick={() => {
-                      setIsEmployeeSidebarMounted(true)
-                      setIsAddEmployeeOpen(true)
-                    }}
-                  >
-                    <span className="font-montserratAlt text-2xl leading-none text-white-default">
-                      +
-                    </span>
-                  </Button>
-                </>
-              )}
-            </div>
+                    <Button
+                      containsIconOnly
+                      size="S"
+                      color="white"
+                      onClick={handleEmployeeDelete}
+                      disabled={selectedEmployees.length === 0}
+                    >
+                      <Trash2 size={14} className="text-black-default" />
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      size="XS"
+                      color="transparent"
+                      containsIconOnly
+                      onClick={() => setIsBeingEdited((prev) => !prev)}
+                    >
+                      <Edit size={14} className="text-white-default" />
+                    </Button>
+                    <Button
+                      size="XS"
+                      color="transparent"
+                      containsIconOnly
+                      onClick={() => {
+                        setIsEmployeeSidebarMounted(true)
+                        setIsAddEmployeeOpen(true)
+                      }}
+                    >
+                      <span className="font-montserratAlt text-2xl leading-none text-white-default">
+                        +
+                      </span>
+                    </Button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           {isBeingEdited && (
@@ -292,59 +294,83 @@ const EmployeesList = ({
             </div>
           )}
         </div>
-        <div className="flex items-center gap-2 px-5 sm:px-9">
-          <p className="w-1/3 font-bold opacity-50">Name</p>
-          <p className="w-1/3 flex-wrap text-center font-bold opacity-50">
-            Department/Role
-          </p>
-          <p className="w-1/3 text-right font-bold opacity-50">
-            Well-being Score
-          </p>
-        </div>
-        <div className="flex flex-col px-3 sm:px-7">
-          {employees?.map((item) => (
-            <div key={item.id}>
-              <EmployeeRow
-                employee={item}
-                onClick={openSidebar}
-                score={scoreByUserMap[item.profile.id!]}
-                isBeingEdited={isBeingEdited}
-                departmentValue={values?.[item.id!].department || null}
-                departmentOnChange={(value) =>
-                  setValues((prev) => ({
-                    ...prev,
-                    [item.id!]: {
-                      ...prev?.[item.id!],
-                      id: prev?.[item.id!].id as string,
-                      role: prev?.[item.id!].role ?? null,
-                      department: value,
-                    },
-                  }))
-                }
-                roleValue={values?.[item.id!].role || ""}
-                roleOnChange={(value) =>
-                  setValues((prev) => ({
-                    ...prev,
-                    [item.id!]: {
-                      ...prev?.[item.id!],
-                      id: prev?.[item.id!].id as string,
-                      role: value,
-                      department: prev?.[item.id!].department ?? null,
-                    },
-                  }))
-                }
-                allDepartments={departments}
-                isSelected={selectedEmployees.includes(item.id!)}
-                onSelect={() =>
-                  setSelectedEmployees((prev) =>
-                    toggleStringInArray(prev, item.id!),
-                  )
-                }
-              />
-              <div className="mx-auto h-[1px] w-[98%] bg-white-default/10" />
+        {!!employees.length ? (
+          <>
+            <div className="flex items-center gap-2 px-5 sm:px-9">
+              <p className="w-1/3 font-bold opacity-50">Name</p>
+              <p className="w-1/3 flex-wrap text-center font-bold opacity-50">
+                Department/Role
+              </p>
+              <p className="w-1/3 text-right font-bold opacity-50">
+                Well-being Score
+              </p>
             </div>
-          ))}
-        </div>
+            <div className="flex flex-col px-3 sm:px-7">
+              {employees?.map((item) => (
+                <div key={item.id}>
+                  <EmployeeRow
+                    employee={item}
+                    onClick={openSidebar}
+                    score={scoreByUserMap[item.profile.id!]}
+                    isBeingEdited={isBeingEdited}
+                    departmentValue={values?.[item.id!].department || null}
+                    departmentOnChange={(value) =>
+                      setValues((prev) => ({
+                        ...prev,
+                        [item.id!]: {
+                          ...prev?.[item.id!],
+                          id: prev?.[item.id!].id as string,
+                          role: prev?.[item.id!].role ?? null,
+                          department: value,
+                        },
+                      }))
+                    }
+                    roleValue={values?.[item.id!].role || ""}
+                    roleOnChange={(value) =>
+                      setValues((prev) => ({
+                        ...prev,
+                        [item.id!]: {
+                          ...prev?.[item.id!],
+                          id: prev?.[item.id!].id as string,
+                          role: value,
+                          department: prev?.[item.id!].department ?? null,
+                        },
+                      }))
+                    }
+                    allDepartments={departments}
+                    isSelected={selectedEmployees.includes(item.id!)}
+                    onSelect={() =>
+                      setSelectedEmployees((prev) =>
+                        toggleStringInArray(prev, item.id!),
+                      )
+                    }
+                  />
+                  <div className="mx-auto h-[1px] w-[98%] bg-white-default/10" />
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-1 flex-col items-center justify-center gap-3">
+            <span className="text-center font-montserratAlt text-3xl font-black opacity-50">
+              Add employees
+            </span>
+
+            <Button
+              size="XS"
+              color="purple"
+              containsIconOnly
+              onClick={() => {
+                setIsEmployeeSidebarMounted(true)
+                setIsAddEmployeeOpen(true)
+              }}
+            >
+              <span className="font-montserratAlt text-2xl leading-none text-white-default">
+                +
+              </span>
+            </Button>
+          </div>
+        )}
       </div>
 
       {isSidebarMounted && (

@@ -84,38 +84,42 @@ const Departments = ({
     <>
       <div className="mb-2 flex items-center gap-4 px-5 sm:px-9">
         <h1 className="font-montserratAlt text-4xl font-black">Departments</h1>
-        {isBeingEdited ? (
+        {!!departments?.length && (
           <>
-            <Button
-              containsIconOnly
-              size="S"
-              color="red"
-              onClick={() => {
-                setIsBeingEdited(false)
-                setDepartmentsToDelete([])
-              }}
-            >
-              <X size={14} className="text-white-default" />
-            </Button>
-            <Button
-              size="S"
-              color="green"
-              containerClassName="!min-h-[38px]"
-              onClick={handleDepartmentDelete}
-              disabled={departmentsToDelete.length === 0}
-            >
-              Delete
-            </Button>
+            {isBeingEdited ? (
+              <>
+                <Button
+                  containsIconOnly
+                  size="S"
+                  color="red"
+                  onClick={() => {
+                    setIsBeingEdited(false)
+                    setDepartmentsToDelete([])
+                  }}
+                >
+                  <X size={14} className="text-white-default" />
+                </Button>
+                <Button
+                  size="S"
+                  color="green"
+                  containerClassName="!min-h-[38px]"
+                  onClick={handleDepartmentDelete}
+                  disabled={departmentsToDelete.length === 0}
+                >
+                  Delete
+                </Button>
+              </>
+            ) : (
+              <Button
+                size="XS"
+                color="transparent"
+                containsIconOnly
+                onClick={() => setIsBeingEdited((prev) => !prev)}
+              >
+                <Edit size={14} className="text-white-default" />
+              </Button>
+            )}
           </>
-        ) : (
-          <Button
-            size="XS"
-            color="transparent"
-            containsIconOnly
-            onClick={() => setIsBeingEdited((prev) => !prev)}
-          >
-            <Edit size={14} className="text-white-default" />
-          </Button>
         )}
       </div>
       <div className="overflow-x-hidden pr-5 sm:pr-9" ref={emblaRef}>

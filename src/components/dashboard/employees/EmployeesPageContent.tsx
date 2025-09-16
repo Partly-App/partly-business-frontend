@@ -27,7 +27,7 @@ const EmployeesPageContent = ({
   scores,
 }: EmployeesPageContentProps) => {
   return (
-    <main className="realtive min-h-screen w-full py-4 sm:py-8">
+    <main className="realtive flex min-h-screen w-full flex-col py-4 sm:py-8">
       <Departments
         departments={departments}
         employees={employees}

@@ -34,23 +34,6 @@ const SideSlideModal = ({
         appear
         as={Fragment}
         show={isOpen}
-        enter="transition-opacity duration-200"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div
-          className="fixed inset-0 z-30 bg-black-default/30"
-          onClick={onClose}
-        />
-      </Transition>
-
-      <Transition
-        appear
-        as={Fragment}
-        show={isOpen}
         enter="transition-transform duration-300"
         enterFrom="translate-x-full"
         enterTo="translate-x-0"
@@ -133,6 +116,23 @@ const SideSlideModal = ({
             )}
           </Transition>
         </div>
+      </Transition>
+
+      <Transition
+        appear
+        as={Fragment}
+        show={isOpen}
+        enter="transition-opacity duration-200"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-200"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <div
+          className="fixed inset-0 z-30 bg-black-default/30"
+          onClick={onClose}
+        />
       </Transition>
     </Portal>
   )

@@ -109,13 +109,15 @@ const NewDepartment = ({
       }
     }
 
-    const { error } = await supabase
-      .from("employees")
-      .update({ departmentId: departmentData.id })
-      .in("id", selectedIds)
+    if (!!selectedIds.length) {
+      const { error } = await supabase
+        .from("employees")
+        .update({ departmentId: departmentData.id })
+        .in("id", selectedIds)
 
-    if (error) {
-      console.error("Error updating departmentIds in employees: ", error)
+      if (error) {
+        console.error("Error updating departmentIds in employees: ", error)
+      }
     }
 
     showToast("Department created!", "bottom", "success")
@@ -176,7 +178,7 @@ const NewDepartment = ({
             color="white"
             size="M"
             containerClassName="fixed right-4 bottom-4"
-            disabled={selectedIds.length === 0 || nameValue.length === 0}
+            disabled={nameValue.length === 0}
             onClick={handleDepartmentCreation}
           >
             Create
@@ -193,81 +195,83 @@ const NewDepartment = ({
               />
             </div>
 
-            <div className="flex flex-col gap-4">
-              <div className="items-cente flex gap-3">
-                <span className="font-montserratAlt text-xl font-black">
-                  Select Employees
-                </span>
-                <span className="font-montserratAlt text-xl font-black">
-                  {selectedIds.length}/
-                  <span className="opacity-50">{employees?.length || 0}</span>
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between px-2">
-                  <span className="font-black opacity-25">Name</span>
-                  <span className="font-black opacity-25">Role</span>
+            {!!employees?.length && (
+              <div className="flex flex-col gap-4">
+                <div className="items-cente flex gap-3">
+                  <span className="font-montserratAlt text-xl font-black">
+                    Select Employees
+                  </span>
+                  <span className="font-montserratAlt text-xl font-black">
+                    {selectedIds.length}/
+                    <span className="opacity-50">{employees?.length || 0}</span>
+                  </span>
                 </div>
 
-                <div className="flex flex-col pb-16">
-                  {employees?.map((item) => (
-                    <div key={item.id}>
-                      <div
-                        className={clsx(
-                          "group w-full cursor-pointer rounded-xl p-2 transition-colors",
-                          "flex items-center gap-4 hover:bg-white-default/10",
-                          selectedIds.includes(item.id!) &&
-                            "!bg-purple-default",
-                        )}
-                        onClick={() =>
-                          setSelectedIds((prev) =>
-                            toggleStringInArray(prev, item.id!),
-                          )
-                        }
-                      >
-                        <div className="flex w-1/2 select-none items-center gap-3">
-                          <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                            <Image
-                              fill
-                              src={
-                                item.profile.avatarUrl ||
-                                "/images/profile-placeholder.png"
-                              }
-                              alt=""
-                            />
-                            <div
-                              className={clsx(
-                                "absolute flex h-full w-full items-center justify-center bg-grey-default",
-                                "opacity-0 transition-opacity group-hover:opacity-100",
-                              )}
-                            >
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between px-2">
+                    <span className="font-black opacity-25">Name</span>
+                    <span className="font-black opacity-25">Role</span>
+                  </div>
+
+                  <div className="flex flex-col pb-16">
+                    {employees?.map((item) => (
+                      <div key={item.id}>
+                        <div
+                          className={clsx(
+                            "group w-full cursor-pointer rounded-xl p-2 transition-colors",
+                            "flex items-center gap-4 hover:bg-white-default/10",
+                            selectedIds.includes(item.id!) &&
+                              "!bg-purple-default",
+                          )}
+                          onClick={() =>
+                            setSelectedIds((prev) =>
+                              toggleStringInArray(prev, item.id!),
+                            )
+                          }
+                        >
+                          <div className="flex w-1/2 select-none items-center gap-3">
+                            <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                              <Image
+                                fill
+                                src={
+                                  item.profile.avatarUrl ||
+                                  "/images/profile-placeholder.png"
+                                }
+                                alt=""
+                              />
                               <div
                                 className={clsx(
-                                  "h-4 w-4 rounded-md border-2 border-purple-light transition-colors",
-                                  selectedIds.includes(item.id!) &&
-                                    "!bg-purple-light",
+                                  "absolute flex h-full w-full items-center justify-center bg-grey-default",
+                                  "opacity-0 transition-opacity group-hover:opacity-100",
                                 )}
-                              />
+                              >
+                                <div
+                                  className={clsx(
+                                    "h-4 w-4 rounded-md border-2 border-purple-light transition-colors",
+                                    selectedIds.includes(item.id!) &&
+                                      "!bg-purple-light",
+                                  )}
+                                />
+                              </div>
                             </div>
+                            <span className="text-sm font-medium sm:text-base">
+                              {item.profile.fullName}
+                            </span>
                           </div>
-                          <span className="text-sm font-medium sm:text-base">
-                            {item.profile.fullName}
-                          </span>
-                        </div>
 
-                        <div className="flex w-1/2 justify-end pr-2">
-                          <span className="text-right font-bold opacity-50">
-                            {item.role}
-                          </span>
+                          <div className="flex w-1/2 justify-end pr-2">
+                            <span className="text-right font-bold opacity-50">
+                              {item.role}
+                            </span>
+                          </div>
                         </div>
+                        <div className="mx-auto my-1 h-[1px] w-[96%] bg-white-default/10" />
                       </div>
-                      <div className="mx-auto my-1 h-[1px] w-[96%] bg-white-default/10" />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </SideSlideModal>
       )}
