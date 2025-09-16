@@ -11,6 +11,9 @@ type SideSlideModalProps = {
   isLoading: boolean
   onClose: () => void
   onExited: () => void
+  className?: string
+  footerClassName?: string
+  footer?: ReactNode
   children: ReactNode
 }
 
@@ -20,6 +23,9 @@ const SideSlideModal = ({
   isOpen,
   onClose,
   onExited,
+  className,
+  footerClassName,
+  footer,
   children,
 }: SideSlideModalProps) => {
   return (
@@ -56,23 +62,12 @@ const SideSlideModal = ({
         <div
           className={clsx(
             "fixed bottom-0 right-0 top-0 z-50 flex h-screen w-full flex-col md:w-1/2 xl:w-1/3",
-            "overflow-y-auto bg-grey-dark p-4 shadow-lg",
+            "overflow-y-auto bg-grey-dark shadow-lg",
             "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white-default/25",
+            !!footer ? "px-4 pt-4" : "p-4",
+            className,
           )}
         >
-          <div className="flex items-center justify-between gap-6">
-            <h3 className="font-montserratAlt text-xl font-black opacity-50">
-              {title}
-            </h3>
-            <Button
-              color="transparent"
-              size="S"
-              containsIconOnly
-              onClick={onClose}
-            >
-              <X size={20} className="text-white-default" />
-            </Button>
-          </div>
           <Transition
             show={isLoading}
             enter="transition-opacity duration-300"
@@ -84,8 +79,37 @@ const SideSlideModal = ({
             as="div"
             className="absolute flex h-[90%] w-full items-center justify-center"
           >
-            <FallingMan size={120} />
+            <FallingMan size={124} />
           </Transition>
+          <div className="relative flex h-full w-full flex-col">
+            <div className="flex items-center justify-between gap-6">
+              <h3 className="font-montserratAlt text-xl font-black opacity-50">
+                {title}
+              </h3>
+              <Button
+                color="transparent"
+                size="S"
+                containsIconOnly
+                onClick={onClose}
+              >
+                <X size={20} className="text-white-default" />
+              </Button>
+            </div>
+
+            <Transition
+              show={!isLoading}
+              enter="transition-opacity duration-300 delay-100"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+              as="div"
+              className="flex flex-1 flex-col"
+            >
+              {children}
+            </Transition>
+          </div>
 
           <Transition
             show={!isLoading}
@@ -95,10 +119,18 @@ const SideSlideModal = ({
             leave="transition-opacity duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            as="div"
-            className="flex-1"
+            as={Fragment}
           >
-            {children}
+            {footer && (
+              <div
+                className={clsx(
+                  "fixed bottom-0 right-0 w-full px-4 md:w-1/2 xl:w-1/3",
+                  footerClassName,
+                )}
+              >
+                {footer}
+              </div>
+            )}
           </Transition>
         </div>
       </Transition>
