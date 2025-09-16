@@ -1,6 +1,7 @@
 "use client"
 
 import Button from "@/components/shared/Button"
+import Modal from "@/components/shared/Modal"
 import Edit from "@/components/shared/icons/Edit"
 import { useSupabase } from "@/components/shared/providers"
 import { useToast } from "@/context/ToastContext"
@@ -50,6 +51,8 @@ const EmployeesList = ({
   const [selectedEmployees, setSelectedEmployees] = useState<Array<string>>([])
   const [isAddEmployeeOpen, setIsAddEmployeeOpen] = useState(false)
   const [isEmployeeSidebarMounted, setIsEmployeeSidebarMounted] =
+    useState(false)
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
     useState(false)
 
   const { showToast } = useToast()
@@ -183,6 +186,7 @@ const EmployeesList = ({
       prev.filter((item) => !selectedEmployees.includes(item.id!)),
     )
     setSelectedEmployees([])
+    setIsDeleteConfirmationOpen(false)
     showToast("Employees deleted.", "bottom", "success")
   }
 
@@ -248,7 +252,7 @@ const EmployeesList = ({
                       containsIconOnly
                       size="S"
                       color="white"
-                      onClick={handleEmployeeDelete}
+                      onClick={() => setIsDeleteConfirmationOpen(true)}
                       disabled={selectedEmployees.length === 0}
                     >
                       <Trash2 size={14} className="text-black-default" />
@@ -393,6 +397,41 @@ const EmployeesList = ({
           onExited={() => setIsEmployeeSidebarMounted(false)}
         />
       )}
+
+      <Modal
+        isOpen={isDeleteConfirmationOpen}
+        setIsOpen={setIsDeleteConfirmationOpen}
+        title="Are you sure?"
+      >
+        <div className="mb-10 flex flex-col gap-4 pt-6">
+          <p className="text-center font-montserratAlt text-4xl font-black text-red-default">
+            You're deleting {selectedEmployees.length}
+            {selectedEmployees.length === 1 ? " employee" : " employees"}
+          </p>
+          <p className="text-center font-medium opacity-50">
+            Billing amount will be changed on the next charge
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Button
+            size="M"
+            color="white"
+            onClick={() => setIsDeleteConfirmationOpen(false)}
+            containerClassName="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            size="M"
+            color="red"
+            onClick={handleEmployeeDelete}
+            containerClassName="flex-1"
+          >
+            Delete
+          </Button>
+        </div>
+      </Modal>
     </>
   )
 }
