@@ -172,7 +172,7 @@ const EmployeeRow = ({
         </div>
 
         <div className="flex w-1/3 justify-end pr-2">
-          <WellBeingScore mini size={64} score={score} />
+          <WellBeingScore mini size={64} score={score || 50} />
         </div>
       </div>
     </div>

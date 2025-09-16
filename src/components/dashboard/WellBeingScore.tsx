@@ -73,7 +73,6 @@ const WellBeingScore = ({
           />
         ))}
 
-
         <circle
           cx={indicator.x}
           cy={indicator.y}
@@ -139,13 +138,15 @@ const WellBeingScore = ({
                 ? "At Risk"
                 : clampedScore <= 49
                   ? "Low"
-                  : clampedScore <= 69
-                    ? "Can Improve"
-                    : clampedScore <= 89
-                      ? "Doing Well"
-                      : clampedScore <= 100
-                        ? "Thriving"
-                        : "Normal"}
+                  : clampedScore === 50
+                    ? "Normal"
+                    : clampedScore <= 69
+                      ? "Can Improve"
+                      : clampedScore <= 89
+                        ? "Doing Well"
+                        : clampedScore <= 100
+                          ? "Thriving"
+                          : "Normal"}
             </div>
           )}
         </div>

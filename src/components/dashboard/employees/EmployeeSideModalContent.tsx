@@ -158,67 +158,69 @@ const EmployeeSideModalContent = ({
           />
 
           <div className="mt-10">
-            <div className="flex flex-col gap-10">
-              <SubScoreBlock
-                label="Confidence"
-                colorClass="text-yellow-default"
-                subScore={currentSubScoreByType?.confidence}
-                prevSubScore={prevSubScoreByType?.confidence}
-                showMore={showMoreMap.confidence}
-                onShowMore={() =>
-                  setShowMoreMap((prev) => ({
-                    ...prev,
-                    confidence: true,
-                  }))
-                }
-              />
+            {currentSubScores.every((item) => item.reason) ? (
+              <div className="flex flex-col gap-10">
+                <SubScoreBlock
+                  label="Confidence"
+                  colorClass="text-yellow-default"
+                  subScore={currentSubScoreByType?.confidence}
+                  prevSubScore={prevSubScoreByType?.confidence}
+                  showMore={showMoreMap.confidence}
+                  onShowMore={() =>
+                    setShowMoreMap((prev) => ({
+                      ...prev,
+                      confidence: true,
+                    }))
+                  }
+                />
 
-              <SubScoreBlock
-                label="Anxiety"
-                colorClass="text-purple-default"
-                subScore={currentSubScoreByType?.anxiety}
-                prevSubScore={prevSubScoreByType?.anxiety}
-                showMore={showMoreMap.anxiety}
-                onShowMore={() =>
-                  setShowMoreMap((prev) => ({
-                    ...prev,
-                    anxiety: true,
-                  }))
-                }
-              />
+                <SubScoreBlock
+                  label="Anxiety"
+                  colorClass="text-purple-default"
+                  subScore={currentSubScoreByType?.anxiety}
+                  prevSubScore={prevSubScoreByType?.anxiety}
+                  showMore={showMoreMap.anxiety}
+                  onShowMore={() =>
+                    setShowMoreMap((prev) => ({
+                      ...prev,
+                      anxiety: true,
+                    }))
+                  }
+                />
 
-              <SubScoreBlock
-                label="Anger"
-                colorClass="text-red-default"
-                subScore={currentSubScoreByType?.anger}
-                prevSubScore={prevSubScoreByType?.anger}
-                showMore={showMoreMap.anger}
-                onShowMore={() =>
-                  setShowMoreMap((prev) => ({
-                    ...prev,
-                    anger: true,
-                  }))
-                }
-              />
+                <SubScoreBlock
+                  label="Anger"
+                  colorClass="text-red-default"
+                  subScore={currentSubScoreByType?.anger}
+                  prevSubScore={prevSubScoreByType?.anger}
+                  showMore={showMoreMap.anger}
+                  onShowMore={() =>
+                    setShowMoreMap((prev) => ({
+                      ...prev,
+                      anger: true,
+                    }))
+                  }
+                />
 
-              {employeeScores[0].fixSuggestion ? (
-                <div className="flex flex-col gap-4">
-                  <div className="relative flex w-fit items-baseline gap-2">
-                    <span className="font-mont text-6xl font-black">
-                      Suggestions
-                    </span>
+                {employeeScores[0].fixSuggestion && (
+                  <div className="flex flex-col gap-4">
+                    <div className="relative flex w-fit items-baseline gap-2">
+                      <span className="font-mont text-6xl font-black">
+                        Suggestions
+                      </span>
+                    </div>
+
+                    <span>{employeeScores[0].fixSuggestion}</span>
                   </div>
-
-                  <span>{employeeScores[0].fixSuggestion}</span>
-                </div>
-              ) : (
-                <div className="flex items-center justify-center px-6 py-4">
-                  <span className="text-center font-montserratAlt font-black opacity-50">
-                    Partly needs more time and info to provide score reasoning*
-                  </span>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center px-6 py-4">
+                <span className="text-center font-montserratAlt font-black opacity-50">
+                  Partly needs more time and info to provide score reasoning*
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
