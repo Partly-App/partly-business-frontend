@@ -295,6 +295,41 @@ export type Database = {
           },
         ]
       }
+      invites: {
+        Row: {
+          companyId: string
+          createdAt: string
+          departmentId: string | null
+          email: string
+          id: string
+          role: string | null
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          departmentId?: string | null
+          email: string
+          id?: string
+          role?: string | null
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          departmentId?: string | null
+          email?: string
+          id?: string
+          role?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invites_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journeys: {
         Row: {
           createdAt: string
