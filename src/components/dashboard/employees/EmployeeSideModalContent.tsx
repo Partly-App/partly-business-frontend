@@ -125,7 +125,7 @@ const EmployeeSideModalContent = ({
     }
 
     setIsLoading(false)
-  }, [supabase, id])
+  }, [supabase, id, showToast])
 
   useEffect(() => {
     getEmployeeData()

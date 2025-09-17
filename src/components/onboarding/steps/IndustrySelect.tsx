@@ -40,7 +40,7 @@ const IndustrySelect = ({ onNext, data }: OnboardingStepType) => {
           your team in?
         </h1>
         <span className="text-center text-sm">
-          We'll personalize your experience based on the challenges you face
+          {"We'll personalize your experience based on the challenges you face"}
         </span>
       </div>
 

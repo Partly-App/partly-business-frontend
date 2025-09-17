@@ -137,6 +137,8 @@ const AddEmployeesSideModal = ({
 
       if (!data?.length || error) {
         console.log("Error fetching departments in EmployeeList: ", error)
+      } else {
+        setDepartments(data)
       }
 
       const { data: employeeNumberData, error: employeeNumberError } =
@@ -182,7 +184,7 @@ const AddEmployeesSideModal = ({
     }
 
     getCompanyData()
-  }, [companyId])
+  }, [companyId, onClose, showToast])
 
   useEffect(() => {
     if (employeesToInvite.length !== 0) return
@@ -190,7 +192,7 @@ const AddEmployeesSideModal = ({
     handleAddEmptyEmployee()
 
     setIsLoading(false)
-  }, [handleAddEmptyEmployee])
+  }, [handleAddEmptyEmployee, employeesToInvite.length])
 
   useEffect(() => {
     setIsLoading(true)

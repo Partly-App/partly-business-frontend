@@ -22,13 +22,13 @@ const EmployeeNumberSelect = ({ onNext, data }: OnboardingStepType) => {
 
   useEffect(() => {
     updateBg(count)
-  }, [count, MIN, MAX])
+  }, [count])
 
   return (
     <section className="mx-auto max-w-lg px-6 py-10">
       <div className="mb-12 flex flex-col items-center">
         <h1 className="mb-2 text-center font-montserratAlt text-2xl font-bold">
-          Let's build a{" "}
+          Let&apos;s build a{" "}
           <span className="font-black text-yellow-default">well-being</span>{" "}
           plan <br className="hidden xs:inline" />
           that fits your team

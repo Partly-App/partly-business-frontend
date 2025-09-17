@@ -1,6 +1,5 @@
 "use client"
 
-import Button from "@/components/shared/Button"
 import CheckCircle from "@/components/shared/icons/CheckCircle"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -52,7 +51,7 @@ const LoaderStep = ({ onNext }: OnboardingStepType) => {
     }, 500)
 
     return () => clearTimeout(startTimeout)
-  }, [activeStep])
+  }, [activeStep, onNext])
 
   return (
     <section className="mx-auto max-w-lg px-6 py-10">

@@ -127,7 +127,7 @@ const DepartmentSideModalContent = ({
     }
 
     setIsLoading(false)
-  }, [supabase, id])
+  }, [supabase, id, showToast])
 
   useEffect(() => {
     if (!id) return

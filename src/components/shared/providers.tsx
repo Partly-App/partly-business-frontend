@@ -1,4 +1,3 @@
-// app/providers.tsx
 "use client"
 
 import { createBrowserClient } from "@supabase/ssr"
@@ -6,11 +5,9 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
-  useState,
+  useState
 } from "react"
 
-// Import generated types from Supabase (run `supabase gen types typescript --project-id YOUR_ID > src/lib/database.types.ts`)
 import type { Database } from "@/types/supabase"
 import { SupabaseClient } from "@supabase/supabase-js"
 

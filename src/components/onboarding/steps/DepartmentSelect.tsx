@@ -39,7 +39,7 @@ const DepartmentSelect = ({ onNext, data }: OnboardingStepType) => {
           make up your team?
         </h1>
         <span className="text-center text-sm">
-          This will help us tailor guidance to each group's needs
+          This will help us tailor guidance to each group&apos;s needs
         </span>
       </div>
 
@@ -72,7 +72,7 @@ const DepartmentSelect = ({ onNext, data }: OnboardingStepType) => {
       </div>
 
       <span className="block text-center font-montserratAlt text-xs font-bold opacity-25">
-        Later you'll be able to add/remove departments
+        Later you&apos;ll be able to add/remove departments
       </span>
 
       <Button

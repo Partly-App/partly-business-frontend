@@ -164,7 +164,7 @@ const EmployeesList = ({
       return
     }
     setDepartments(data)
-  }, [supabase])
+  }, [supabase, companyId, showToast])
 
   const handleEmployeeDelete = async () => {
     const { error } = await supabase
@@ -405,7 +405,7 @@ const EmployeesList = ({
       >
         <div className="mb-10 flex flex-col gap-4 pt-6">
           <p className="text-center font-montserratAlt text-4xl font-black text-red-default">
-            You're deleting {selectedEmployees.length}
+            You&apos;re deleting {selectedEmployees.length}
             {selectedEmployees.length === 1 ? " employee" : " employees"}
           </p>
           <p className="text-center font-medium opacity-50">

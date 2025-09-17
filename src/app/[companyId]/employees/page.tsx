@@ -1,7 +1,7 @@
 import EmployeesPageContent from "@/components/dashboard/employees/EmployeesPageContent"
 import { createClient } from "@/lib/supabaseServer"
 
-const EmployeesPage = async ({ params }: { params: { companyId: string } }) => {
+const EmployeesPage = async ({ params }: { params: Promise<{ companyId: string }> }) => {
   const { companyId } = await params
 
   const supabaseServer = await createClient()

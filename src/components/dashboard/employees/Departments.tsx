@@ -44,7 +44,7 @@ const Departments = ({
     })
 
     return departmentEmployeeCounts
-  }, [departments, employees])
+  }, [employees])
 
   const openSidebar = (id?: string) => {
     if (id) {

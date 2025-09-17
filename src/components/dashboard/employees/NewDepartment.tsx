@@ -137,7 +137,7 @@ const NewDepartment = ({
     setEmployees(data || [])
 
     setIsLoading(false)
-  }, [supabase, companyId])
+  }, [supabase])
 
   useEffect(() => {
     getEmployeeList()
