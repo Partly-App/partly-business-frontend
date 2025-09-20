@@ -2,17 +2,24 @@
 
 import Button from "@/components/shared/Button"
 import Input from "@/components/shared/Input"
+import OverlayLoader from "@/components/shared/loaders/OverlayLoader"
 import { useSupabase } from "@/components/shared/providers"
 import { urls } from "@/constants/urls"
+import { useToast } from "@/context/ToastContext"
 import clsx from "clsx"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { OnboardingStepType } from "../types"
 
-type SignUpContentProps = OnboardingStepType
+type SignUpContentProps = OnboardingStepType & {
+  setCompanyId: Dispatch<SetStateAction<string>>
+}
 
-const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
+const SignUpContent = ({
+  data: onboardingData,
+  setCompanyId,
+  onNext,
+}: SignUpContentProps) => {
   const [data, setData] = useState({
     companyName: "",
     name: "",
@@ -29,10 +36,11 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
   }>({})
   const [isLoading, setIsLoading] = useState(false)
 
+  const { showToast } = useToast()
+
   const { numberOfEmployees, industry, whatToAchieve } = onboardingData!
 
   const supabase = useSupabase()
-  const router = useRouter()
 
   const createCompany = async () => {
     if (!whatToAchieve || !numberOfEmployees || !industry) {
@@ -42,6 +50,11 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
         whatToAchieve,
       })
       setIsLoading(false)
+      showToast(
+        "We had an error with adding data for your company, pls try again",
+        "bottom",
+        "error",
+      )
       return {
         companyId: null,
         departmentId: null,
@@ -62,6 +75,12 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
     if (!companyData || error) {
       console.error("Error creating a company: ", error)
       setIsLoading(false)
+      showToast(
+        "We had an error adding your company, pls try again",
+        "bottom",
+        "error",
+      )
+
       return {
         companyId: null,
         departmentId: null,
@@ -80,6 +99,12 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
     if (!departmentData || departmentError) {
       console.error("Error creating a department: ", departmentError)
       setIsLoading(false)
+      showToast(
+        "We had an error creating your departments, pls try again",
+        "bottom",
+        "error",
+      )
+
       return {
         companyId: companyData.id,
         departmentId: null,
@@ -130,6 +155,8 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
       }
     }
 
+    setCompanyId(companyData.id)
+
     return {
       companyId: companyData.id,
       departmentId: departmentData.id,
@@ -137,72 +164,109 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
   }
 
   const updateNewProfile = async (userId: string) => {
-    const { companyId, departmentId } = await createCompany()
+    try {
+      const { companyId, departmentId } = await createCompany()
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        fullName: data.name,
-      })
-      .eq("id", userId)
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          fullName: data.name,
+        })
+        .eq("id", userId)
 
-    if (error) {
-      console.log("Profile name update: ", error)
-      setIsLoading(false)
-      return
-    }
-
-    const { data: score, error: scoreError } = await supabase
-      .from("scores")
-      .upsert({ score: 50, reason: null, userId: userId })
-      .select("id")
-      .single()
-
-    if (scoreError) {
-      console.error("Error creating initial profile score: ", scoreError)
-    } else {
-      const { error: subScoreError } = await supabase.from("subScores").upsert([
-        {
-          score: 50,
-          reason: null,
-          scoreId: score.id,
-          type: "anxiety",
-        },
-        {
-          score: 50,
-          reason: null,
-          scoreId: score.id,
-          type: "anger",
-        },
-        {
-          score: 50,
-          reason: null,
-          scoreId: score.id,
-          type: "confidence",
-        },
-      ])
-
-      if (subScoreError) {
-        console.error(
-          "Error creating initial profile sub scores: ",
-          subScoreError,
+      if (error) {
+        console.error("Profile name update error: ", error)
+        setIsLoading(false)
+        showToast(
+          "We had an error adding admin profile, pls try again",
+          "bottom",
+          "error",
         )
+
+        throw new Error(`Profile name update error: ${error}`)
       }
-    }
 
-    if (!companyId) return
+      const { data: score, error: scoreError } = await supabase
+        .from("scores")
+        .upsert({ score: 50, fixSuggestion: null, userId: userId })
+        .select("id")
+        .single()
 
-    const { error: employeeError } = await supabase.from("employees").upsert({
-      role: "Admin",
-      companyId,
-      departmentId,
-      userId,
-    })
+      if (scoreError) {
+        console.error("Error creating initial profile score: ", scoreError)
+        setIsLoading(false)
 
-    if (employeeError) {
-      console.log("Employee profile upsert error: ", error)
-      setIsLoading(false)
-      return
+        showToast(
+          "We had an error creating your well-being scores, pls try again",
+          "bottom",
+          "error",
+        )
+
+        throw new Error(`Error creating initial profile score: ${scoreError}`)
+      } else {
+        const { error: subScoreError } = await supabase
+          .from("subScores")
+          .upsert([
+            {
+              score: 50,
+              reason: null,
+              scoreId: score.id,
+              type: "anxiety",
+            },
+            {
+              score: 50,
+              reason: null,
+              scoreId: score.id,
+              type: "anger",
+            },
+            {
+              score: 50,
+              reason: null,
+              scoreId: score.id,
+              type: "confidence",
+            },
+          ])
+
+        if (subScoreError) {
+          console.error(
+            "Error creating initial profile sub scores: ",
+            subScoreError,
+          )
+          showToast(
+            "We had an error creating your well-being sub scores, pls try again",
+            "bottom",
+            "error",
+          )
+          setIsLoading(false)
+
+          throw new Error(
+            `Error creating initial profile sub scores: ${subScoreError}`,
+          )
+        }
+      }
+
+      if (!companyId) return
+
+      const { error: employeeError } = await supabase.from("employees").upsert({
+        role: "Admin",
+        companyId,
+        departmentId,
+        userId,
+      })
+
+      if (employeeError) {
+        console.error("Employee profile upsert error: ", error)
+        setIsLoading(false)
+        showToast(
+          "We had an error creating your admin profile, pls try again",
+          "bottom",
+          "error",
+        )
+
+        throw new Error(`Employee profile upsert error: ${error}`)
+      }
+    } catch (err) {
+      throw new Error(`${err}`)
     }
   }
 
@@ -218,7 +282,7 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
     })
 
     if (error) {
-      console.log(error)
+      console.error(error)
       setIsLoading(false)
     }
   }
@@ -254,6 +318,12 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
 
     if (!signUpData || error) {
       console.error("Email Sign up error: ", error)
+      showToast(
+        "Unexpected error with email sign up, pls try again",
+        "bottom",
+        "error",
+      )
+
       setIsLoading(false)
       return
     }
@@ -271,7 +341,7 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
 
     setIsLoading(false)
 
-    router.push("/onboarding/welcome")
+    onNext()
   }
 
   // the problem here is oauth redirects you and you lose data gathered during onboarding
@@ -292,137 +362,141 @@ const SignUpContent = ({ data: onboardingData }: SignUpContentProps) => {
   // }
 
   return (
-    <section className="mx-auto max-w-lg px-6 py-10">
-      <div className="mb-12 flex flex-col items-center">
-        <h1 className="mb-2 text-center font-montserratAlt text-2xl font-bold">
-          Create your team account and{" "}
-          <span className="font-montserratAlt font-black text-yellow-default">
-            start feeling better
-          </span>
-        </h1>
-      </div>
+    <>
+      <OverlayLoader isLoading={isLoading} />
 
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <Input
-            value={data.companyName}
-            onChange={(e) =>
-              setData((prev) => ({ ...prev, companyName: e.target.value }))
-            }
-            placeholder="Company name"
-          />
-          {errors.companyName && (
-            <span className="text-xs font-medium text-red-default">
-              Company name is required
+      <section className="mx-auto max-w-lg px-6 py-10">
+        <div className="mb-12 flex flex-col items-center">
+          <h1 className="mb-2 text-center font-montserratAlt text-2xl font-bold">
+            Create your team account and{" "}
+            <span className="font-montserratAlt font-black text-yellow-default">
+              start feeling better
             </span>
-          )}
+          </h1>
         </div>
-        <div className="flex flex-col gap-1">
-          <Input
-            name="name"
-            value={data.name}
-            onChange={(e) =>
-              setData((prev) => ({ ...prev, name: e.target.value }))
-            }
-            placeholder="Your name"
-          />
-          {errors.name && (
-            <span className="text-xs font-medium text-red-default">
-              Name is required
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col gap-1">
-          <Input
-            type="email"
-            value={data.email}
-            onChange={(e) =>
-              setData((prev) => ({ ...prev, email: e.target.value }))
-            }
-            placeholder="Work email"
-          />
-          {errors.email && (
-            <span className="text-xs font-medium text-red-default">
-              Email is required
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col gap-1">
-          <Input
-            type="password"
-            value={data.password}
-            onChange={(e) =>
-              setData((prev) => ({ ...prev, password: e.target.value }))
-            }
-            placeholder="Password"
-          />
-          {errors.password && (
-            <span className="text-xs font-medium text-red-default">
-              Password is required
-            </span>
-          )}
-        </div>
-      </div>
 
-      <div className="mb-1 mt-5 flex items-center gap-1">
-        <label className="flex cursor-pointer items-center gap-2">
-          <input
-            type="checkbox"
-            className="peer hidden"
-            onChange={() => setChecked((prev) => !prev)}
-          />
-          <span
-            className={clsx(
-              "aspect-square h-4 w-4 rounded-sm bg-white-mellow transition-colors",
-              "peer-checked:border-purple-default peer-checked:bg-purple-default",
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <Input
+              value={data.companyName}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, companyName: e.target.value }))
+              }
+              placeholder="Company name"
+            />
+            {errors.companyName && (
+              <span className="text-xs font-medium text-red-default">
+                Company name is required
+              </span>
             )}
-          />
-          <span className="text-xs leading-none opacity-50">
-            I agree to Partly{" "}
-            <Link
-              href={urls.privacyPolicy}
-              className="underline transition-colors duration-100 hover:text-purple-light"
-              target="_blank"
-            >
-              Privacy Policy
-            </Link>
-            ,{" "}
-            <Link
-              href={urls.termsAndConditions}
-              className="underline transition-colors duration-100 hover:text-purple-light"
-              target="_blank"
-            >
-              Terms & Conditions
-            </Link>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Input
+              name="name"
+              value={data.name}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, name: e.target.value }))
+              }
+              placeholder="Your name"
+            />
+            {errors.name && (
+              <span className="text-xs font-medium text-red-default">
+                Name is required
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <Input
+              type="email"
+              value={data.email}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, email: e.target.value }))
+              }
+              placeholder="Work email"
+            />
+            {errors.email && (
+              <span className="text-xs font-medium text-red-default">
+                Email is required
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <Input
+              type="password"
+              value={data.password}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, password: e.target.value }))
+              }
+              placeholder="Password"
+            />
+            {errors.password && (
+              <span className="text-xs font-medium text-red-default">
+                Password is required
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="mb-1 mt-5 flex items-center gap-1">
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              className="peer hidden"
+              onChange={() => setChecked((prev) => !prev)}
+            />
+            <span
+              className={clsx(
+                "aspect-square h-4 w-4 rounded-sm bg-white-mellow transition-colors",
+                "peer-checked:border-purple-default peer-checked:bg-purple-default",
+              )}
+            />
+            <span className="text-xs leading-none opacity-50">
+              I agree to Partly{" "}
+              <Link
+                href={urls.privacyPolicy}
+                className="underline transition-colors duration-100 hover:text-purple-light"
+                target="_blank"
+              >
+                Privacy Policy
+              </Link>
+              ,{" "}
+              <Link
+                href={urls.termsAndConditions}
+                className="underline transition-colors duration-100 hover:text-purple-light"
+                target="_blank"
+              >
+                Terms & Conditions
+              </Link>
+            </span>
+          </label>
+        </div>
+        {errors.checked && (
+          <span className="text-xs font-medium text-red-default">
+            This field is required
           </span>
-        </label>
-      </div>
-      {errors.checked && (
-        <span className="text-xs font-medium text-red-default">
-          This field is required
-        </span>
-      )}
+        )}
 
-      <Button
-        size="L"
-        color="purple"
-        className="mt-12 w-full"
-        disabled={isLoading}
-        onClick={signUpNewUser}
-      >
-        Continue
-      </Button>
-
-      {/* <div className="mt-4 flex flex-col gap-4">
-        <span className="block text-center font-montserratAlt font-black opacity-25">
-          OR
-        </span>
-        <Button size="M" color="white" onClick={signInWithGoogle}>
-          <GoogleIcon size={22} />
-          Sign in with Google
+        <Button
+          size="L"
+          color="purple"
+          className="mt-12 w-full"
+          disabled={isLoading}
+          onClick={signUpNewUser}
+        >
+          Continue
         </Button>
-      </div> */}
-    </section>
+
+        {/* <div className="mt-4 flex flex-col gap-4">
+      <span className="block text-center font-montserratAlt font-black opacity-25">
+        OR
+      </span>
+      <Button size="M" color="white" onClick={signInWithGoogle}>
+        <GoogleIcon size={22} />
+        Sign in with Google
+      </Button>
+    </div> */}
+      </section>
+    </>
   )
 }
 
