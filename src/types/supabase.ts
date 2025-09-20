@@ -41,6 +41,50 @@ export type Database = {
         }
         Relationships: []
       }
+      companySubscriptions: {
+        Row: {
+          companyId: string
+          createdAt: string
+          id: string
+          paddleCustomerId: string
+          paddleSubscriptionId: string
+          periodEnd: string
+          periodStart: string
+          status: Database["public"]["Enums"]["subscriptionStatus"]
+          trialEnd: string
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          id?: string
+          paddleCustomerId: string
+          paddleSubscriptionId: string
+          periodEnd: string
+          periodStart: string
+          status: Database["public"]["Enums"]["subscriptionStatus"]
+          trialEnd: string
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          id?: string
+          paddleCustomerId?: string
+          paddleSubscriptionId?: string
+          periodEnd?: string
+          periodStart?: string
+          status?: Database["public"]["Enums"]["subscriptionStatus"]
+          trialEnd?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "companySubscriptions_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           conversationType: Database["public"]["Enums"]["conversationType"]
@@ -928,6 +972,7 @@ export type Database = {
         | "showcaseChat"
         | "choice"
         | "endGain"
+      subscriptionStatus: "active" | "canceled" | "grace"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1106,6 +1151,7 @@ export const Constants = {
         "choice",
         "endGain",
       ],
+      subscriptionStatus: ["active", "canceled", "grace"],
     },
   },
 } as const
