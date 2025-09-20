@@ -66,7 +66,7 @@ const OnboardingSuccessPageContent = ({ companyId }: { companyId: string }) => {
 
         <div className="mx-auto max-w-105 rounded-xl bg-grey-dark px-8 pb-8 pt-4">
           <h2 className="text-center font-montserratAlt text-2xl font-black">
-            What's next
+            What&apos;s next
           </h2>
 
           <div className="mx-auto flex flex-col gap-1 pt-8">

@@ -1,6 +1,7 @@
 import OnboardingSuccessPageContent from "@/components/onboarding/OnboardingSuccessPageContent"
 import { TRIAL_DAYS_AMOUNT } from "@/constants/subscription"
 import { createClient } from "@/lib/supabaseServer"
+import { Database } from "@/types/supabase"
 import { Transaction } from "@paddle/paddle-node-sdk"
 import { notFound } from "next/navigation"
 
@@ -39,7 +40,10 @@ const OnboardingSuccessPage = async ({
       periodEnd: txn!.billingPeriod?.endsAt,
       trialEnd: trialEnds,
       status: "active",
-    } as any,
+    } as Omit<
+      Database["public"]["Tables"]["companySubscriptions"]["Row"],
+      "companyId"
+    > & { companyId: string },
     { onConflict: "companyId" },
   )
 

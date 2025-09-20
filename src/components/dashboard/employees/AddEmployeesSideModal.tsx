@@ -99,7 +99,7 @@ const AddEmployeesSideModal = ({
       console.error("Error getting company name")
     }
 
-    const { data, error } = await supabase.functions.invoke("sendEmails", {
+    const { error } = await supabase.functions.invoke("sendEmails", {
       body: {
         to: employeesToInvite.map((item) => item.email),
         subject: `${companyData?.name || "Your Workplace"} Wants You to Try Partly — For Free!`,

@@ -253,7 +253,7 @@ const PaymentContent = ({
           </div>
 
           <div className="mb-4 flex items-center justify-between pt-8 font-montserratAlt text-xl font-black">
-            <span>Today's charge</span>
+            <span>Today&apos;s charge</span>
 
             <span>$0</span>
           </div>
@@ -284,7 +284,7 @@ const PaymentContent = ({
           </div>
 
           <p className="px-3 py-4 text-center text-[10px] text-grey-default">
-            By clicking 'Continue' button, you agree that today you start your{" "}
+            By clicking &apos;Continue&apos; button, you agree that today you start your{" "}
             <span className="font-black">10-day free trial</span>. After your
             trial ends,{" "}
             <span className="font-black">
