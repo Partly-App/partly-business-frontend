@@ -1,16 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import OnboardingHeader from "./OnboardingHeader"
-import DepartmentSelect from "./steps/DepartmentSelect"
-import EmployeeNumberSelect from "./steps/EmployeeNumberSelect"
-import IndustrySelect from "./steps/IndustrySelect"
-import LoaderStep from "./steps/LoaderStep"
-import ReturnOfInterest from "./steps/ReturnOfInterest"
+import PaymentContent from "./steps/PaymentContent"
 import SignUpContent from "./steps/SignUpContent"
-import WhatToAchieve from "./steps/WhatToAchieve"
-import AchivementFacts from "./steps/achivementFacts"
 import { AchivementKeys } from "./types"
+import LoaderStep from "./steps/LoaderStep"
 
 export type OnboardingData = {
   numberOfEmployees: number
@@ -20,14 +15,15 @@ export type OnboardingData = {
 }
 
 const STEPS = [
-  EmployeeNumberSelect,
-  IndustrySelect,
-  DepartmentSelect,
-  ReturnOfInterest,
-  WhatToAchieve,
-  AchivementFacts,
-  LoaderStep,
-  SignUpContent,
+  // EmployeeNumberSelect,
+  // IndustrySelect,
+  // DepartmentSelect,
+  // ReturnOfInterest,
+  // WhatToAchieve,
+  // AchivementFacts,
+  // LoaderStep,
+  // SignUpContent,
+  PaymentContent,
 ]
 
 const OnboardingPageContent = () => {
@@ -48,14 +44,14 @@ const OnboardingPageContent = () => {
     }, 500)
   }
 
-  const handleNext = (data?: Partial<OnboardingData>) => {
+  const handleNext = useCallback((data?: Partial<OnboardingData>) => {
     setData((prev) => ({ ...prev, ...data }))
     setFade("out")
     setTimeout(() => {
       setFade("in")
       setCurrentStep((prev) => prev + 1)
     }, 500)
-  }
+  }, [])
 
   const StepComponent = STEPS[currentStep]
 
@@ -71,7 +67,11 @@ const OnboardingPageContent = () => {
           fade === "in" ? "opacity-100" : "opacity-0"
         }`}
       >
-        <StepComponent onNext={handleNext} data={data} />
+        <StepComponent
+          onNext={handleNext}
+          data={data}
+          count={data.numberOfEmployees}
+        />
       </div>
     </main>
   )

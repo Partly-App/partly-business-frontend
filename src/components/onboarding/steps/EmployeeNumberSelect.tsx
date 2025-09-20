@@ -3,12 +3,10 @@
 import { useEffect, useRef, useState } from "react"
 
 import Button from "@/components/shared/Button"
+import { MAX, MIN } from "@/constants/employee"
 import { Minus, Plus } from "react-feather"
 import { OnboardingStepType } from "../types"
 import "./styles.css"
-
-const MIN = 5
-const MAX = 250
 
 const EmployeeNumberSelect = ({ onNext, data }: OnboardingStepType) => {
   const [count, setCount] = useState(data?.numberOfEmployees || 5)

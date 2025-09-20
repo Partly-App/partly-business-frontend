@@ -8,6 +8,12 @@ dependencies:
   '@headlessui/react':
     specifier: ^2.2.7
     version: 2.2.7(react-dom@19.1.0)(react@19.1.0)
+  '@paddle/paddle-js':
+    specifier: ^1.4.2
+    version: 1.4.2
+  '@paddle/paddle-node-sdk':
+    specifier: ^3.2.1
+    version: 3.2.1
   '@supabase/ssr':
     specifier: ^0.6.1
     version: 0.6.1(@supabase/supabase-js@2.55.0)
@@ -623,6 +629,15 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
     dev: true
+
+  /@paddle/paddle-js@1.4.2:
+    resolution: {integrity: sha512-pY9jYS+g3vk6ecc7GbCsVSuBEo1Yh+hxYE4i2XoY5/ZBAZLuCkQi/80hOmSBkFoaETohOpDmurILlQdgUHUcvw==}
+    dev: false
+
+  /@paddle/paddle-node-sdk@3.2.1:
+    resolution: {integrity: sha512-0IfxqYCJLHyH7oCGbPWxIPxQKw4Zi6rg04UMvmN7EqlWdJi5RXfzFAqwGXK+3tqHYzEBpo3RxiL9B+k5gCt3Hw==}
+    engines: {node: '>=20'}
+    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
