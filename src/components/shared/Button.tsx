@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import Link from "next/link"
 import React from "react"
 
 type ButtonColor =
@@ -27,6 +28,7 @@ type ButtonProps = {
   disabled?: boolean
   onClick?: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"]
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"]
+  href?: string
 }
 
 const sizeMap: Record<ButtonSize, string> = {
@@ -125,36 +127,59 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   onClick,
   type = "button",
+  href,
 }) => {
   const { bg, text, border } = colorMap[color]
 
+  const commonProps = {
+    className: clsx(
+      "flex items-center justify-center font-inter font-medium duration-300",
+      "leading-none",
+      color === "transparent"
+        ? "hover:bg-white-default/25"
+        : "hover:bg-opacity-70",
+      hasBorder && "border-2",
+      hasBorder && border,
+      containerClassName,
+      sizeMap[size],
+      fontSizeMap[size],
+      gapMap[size],
+      bg,
+      text,
+      fullRounded ? "rounded-full" : borderRadiusMap[size],
+      hasBorder && "border-2",
+      hasBorder && border,
+      disabled && "pointer-events-none opacity-50",
+      containsIconOnly && "aspect-square",
+      className,
+    ),
+    children,
+  }
+
+  if (href && !disabled) {
+    // Use Next.js Link for internal links, <a> for external
+    const isExternal = href.startsWith("http")
+    if (isExternal) {
+      return (
+        <a
+          href={href}
+          {...commonProps}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      )
+    }
+    return (
+      <Link href={href} {...commonProps}>
+        {children}
+      </Link>
+    )
+  }
+
   return (
-    <button
-      type={type}
-      disabled={disabled}
-      className={clsx(
-        "flex items-center justify-center font-inter font-medium duration-300",
-        "leading-none",
-        color === "transparent"
-          ? "hover:bg-white-default/25"
-          : "hover:bg-opacity-70",
-        hasBorder && "border-2",
-        hasBorder && border,
-        containerClassName,
-        sizeMap[size],
-        fontSizeMap[size],
-        gapMap[size],
-        bg,
-        text,
-        fullRounded ? "rounded-full" : borderRadiusMap[size],
-        hasBorder && "border-2",
-        hasBorder && border,
-        disabled && "pointer-events-none opacity-50",
-        containsIconOnly && "aspect-square",
-        className,
-      )}
-      onClick={onClick}
-    >
+    <button type={type} disabled={disabled} onClick={onClick} {...commonProps}>
       {children}
     </button>
   )
