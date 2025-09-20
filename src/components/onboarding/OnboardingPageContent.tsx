@@ -2,10 +2,16 @@
 
 import { useCallback, useState } from "react"
 import OnboardingHeader from "./OnboardingHeader"
-import PaymentContent from "./steps/PaymentContent"
-import SignUpContent from "./steps/SignUpContent"
-import { AchivementKeys } from "./types"
+import DepartmentSelect from "./steps/DepartmentSelect"
+import EmployeeNumberSelect from "./steps/EmployeeNumberSelect"
+import IndustrySelect from "./steps/IndustrySelect"
 import LoaderStep from "./steps/LoaderStep"
+import PaymentContent from "./steps/PaymentContent"
+import ReturnOfInterest from "./steps/ReturnOfInterest"
+import SignUpContent from "./steps/SignUpContent"
+import WhatToAchieve from "./steps/WhatToAchieve"
+import AchivementFacts from "./steps/achivementFacts"
+import { AchivementKeys } from "./types"
 
 export type OnboardingData = {
   numberOfEmployees: number
@@ -15,14 +21,14 @@ export type OnboardingData = {
 }
 
 const STEPS = [
-  // EmployeeNumberSelect,
-  // IndustrySelect,
-  // DepartmentSelect,
-  // ReturnOfInterest,
-  // WhatToAchieve,
-  // AchivementFacts,
-  // LoaderStep,
-  // SignUpContent,
+  EmployeeNumberSelect,
+  IndustrySelect,
+  DepartmentSelect,
+  ReturnOfInterest,
+  WhatToAchieve,
+  AchivementFacts,
+  LoaderStep,
+  SignUpContent,
   PaymentContent,
 ]
 
@@ -35,6 +41,7 @@ const OnboardingPageContent = () => {
     department: null,
     whatToAchieve: null,
   })
+  const [companyId, setCompanyId] = useState("")
 
   const handleBack = () => {
     setFade("out")
@@ -71,6 +78,8 @@ const OnboardingPageContent = () => {
           onNext={handleNext}
           data={data}
           count={data.numberOfEmployees}
+          setCompanyId={setCompanyId}
+          companyId={companyId}
         />
       </div>
     </main>
