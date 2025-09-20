@@ -23,7 +23,6 @@ const IndustrySelect = ({ onNext, data }: OnboardingStepType) => {
 
   const handleSelect = (industry: string) => {
     const isSelected = selectedIndustry.find((item) => item === industry)
-    console.log(isSelected)
 
     if (isSelected) {
       setSelectedIndustry((prev) => prev.filter((item) => item !== industry))

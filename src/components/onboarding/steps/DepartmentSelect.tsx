@@ -20,7 +20,6 @@ const DepartmentSelect = ({ onNext, data }: OnboardingStepType) => {
 
   const handleSelect = (department: string) => {
     const isSelected = selectedDepartment.find((item) => item === department)
-    console.log(isSelected)
 
     if (isSelected) {
       setSelectedDepartment((prev) =>

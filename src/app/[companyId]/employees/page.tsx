@@ -1,7 +1,11 @@
 import EmployeesPageContent from "@/components/dashboard/employees/EmployeesPageContent"
 import { createClient } from "@/lib/supabaseServer"
 
-const EmployeesPage = async ({ params }: { params: Promise<{ companyId: string }> }) => {
+const EmployeesPage = async ({
+  params,
+}: {
+  params: Promise<{ companyId: string }>
+}) => {
   const { companyId } = await params
 
   const supabaseServer = await createClient()
@@ -12,7 +16,7 @@ const EmployeesPage = async ({ params }: { params: Promise<{ companyId: string }
     .eq("companyId", companyId as string)
 
   if (error) {
-    console.log("Error fetching departments: ", error)
+    console.error("Error fetching departments: ", error)
   }
 
   const { data: employees, error: employeesError } = await supabaseServer
@@ -36,7 +40,7 @@ const EmployeesPage = async ({ params }: { params: Promise<{ companyId: string }
     .eq("companyId", companyId as string)
 
   if (!employees?.length || employeesError) {
-    console.log("Error fetching employees: ", employeesError)
+    console.error("Error fetching employees: ", employeesError)
   }
 
   const userIds = employees?.map((item) => item.profile.id) || []
@@ -48,7 +52,7 @@ const EmployeesPage = async ({ params }: { params: Promise<{ companyId: string }
     .in("userId", userIds)
 
   if (!scores || scoresError) {
-    console.log("Error getting scores for employee list: ", scoresError)
+    console.error("Error getting scores for employee list: ", scoresError)
   }
 
   return (

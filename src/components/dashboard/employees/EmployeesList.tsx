@@ -125,7 +125,7 @@ const EmployeesList = ({
       )
       return
     } else {
-      console.log("Updated employees")
+      console.error("Updated employees")
     }
 
     setEmployees((prev) =>

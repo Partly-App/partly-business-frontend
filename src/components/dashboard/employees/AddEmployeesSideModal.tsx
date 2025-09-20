@@ -112,8 +112,6 @@ const AddEmployeesSideModal = ({
       console.error(error)
       setIsLoading(false)
       return
-    } else {
-      console.log(data)
     }
 
     onClose()
@@ -136,7 +134,7 @@ const AddEmployeesSideModal = ({
         .eq("companyId", companyId as string)
 
       if (!data?.length || error) {
-        console.log("Error fetching departments in EmployeeList: ", error)
+        console.error("Error fetching departments in EmployeeList: ", error)
       } else {
         setDepartments(data)
       }
