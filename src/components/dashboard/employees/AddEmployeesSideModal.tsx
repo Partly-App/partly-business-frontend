@@ -133,9 +133,9 @@ const AddEmployeesSideModal = ({
         .select("id, name")
         .eq("companyId", companyId as string)
 
-      if (!data?.length || error) {
+      if (error) {
         console.error("Error fetching departments in EmployeeList: ", error)
-      } else {
+      } else if (!!data.length) {
         setDepartments(data)
       }
 

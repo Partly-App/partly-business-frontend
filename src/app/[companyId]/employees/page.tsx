@@ -39,7 +39,7 @@ const EmployeesPage = async ({
     )
     .eq("companyId", companyId as string)
 
-  if (!employees?.length || employeesError) {
+  if (employeesError) {
     console.error("Error fetching employees: ", employeesError)
   }
 
