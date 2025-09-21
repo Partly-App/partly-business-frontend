@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useCallback, useState } from "react"
 import OnboardingHeader from "./OnboardingHeader"
 import DepartmentSelect from "./steps/DepartmentSelect"
@@ -63,14 +64,14 @@ const OnboardingPageContent = () => {
   const StepComponent = STEPS[currentStep]
 
   return (
-    <main className="min-h-screen">
+    <main className="flex min-h-screen flex-col">
       <OnboardingHeader
         currentStep={currentStep + 1}
         totalSteps={STEPS.length}
         onBack={handleBack}
       />
       <div
-        className={`transition-opacity duration-500 ${
+        className={`flex-1 transition-opacity duration-500 ${
           fade === "in" ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -81,6 +82,26 @@ const OnboardingPageContent = () => {
           setCompanyId={setCompanyId}
           companyId={companyId}
         />
+      </div>
+
+      <div className="flex items-center justify-center gap-4 px-6 py-4">
+        <Link
+          href="https://fragrant-digit-84f.notion.site/Privacy-Policy-22a05fa90ec480edb75ee12ac613b861?source=copy_link"
+          className="text-xs font-bold opacity-25 transition-opacity hover:opacity-50"
+          target="_blank"
+        >
+          Privacy Policy
+        </Link>
+        <span className="select-none font-montserratAlt text-2xl font-black opacity-25">
+          •
+        </span>
+        <Link
+          href="https://fragrant-digit-84f.notion.site/Terms-of-Use-22a05fa90ec480fcb158fe6fe07c31e5?source=copy_link"
+          className="text-xs font-bold opacity-25 transition-opacity hover:opacity-50"
+          target="_blank"
+        >
+          Terms of Use
+        </Link>
       </div>
     </main>
   )
