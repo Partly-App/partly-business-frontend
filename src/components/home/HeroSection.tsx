@@ -87,7 +87,7 @@ const HeroSection = () => {
           <div className="flex flex-col items-center gap-1">
             <span
               className={clsx(
-                "font-montserratAlt text-4xl font-black leading-none text-purple-default",
+                "font-montserratAlt text-4xl font-black leading-none text-purple-light",
                 "sm:text-8xl md:text-2xl lg:text-9xl",
               )}
             >
@@ -105,7 +105,7 @@ const HeroSection = () => {
           <div className="flex flex-col items-center gap-1">
             <span
               className={clsx(
-                "font-montserratAlt text-4xl font-black leading-none text-purple-default",
+                "font-montserratAlt text-4xl font-black leading-none text-purple-light",
                 "sm:text-8xl md:text-2xl lg:text-9xl",
               )}
             >
@@ -123,7 +123,7 @@ const HeroSection = () => {
           <div className="flex flex-col items-center gap-1">
             <span
               className={clsx(
-                "font-montserratAlt text-4xl font-black leading-none text-purple-default",
+                "font-montserratAlt text-4xl font-black leading-none text-purple-light",
                 "sm:text-8xl md:text-2xl lg:text-9xl",
               )}
             >
@@ -141,7 +141,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="relative hidden h-[400px] w-full overflow-hidden rounded-2xl md:block">
+      <div className="relative hidden h-full max-h-[420px] w-full overflow-hidden rounded-2xl md:block">
         <Image
           key={current}
           fill
