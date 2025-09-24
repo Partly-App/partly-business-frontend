@@ -224,10 +224,10 @@ const PaymentContent = ({
               </div>
               <div className="flex flex-col gap-1.5">
                 <span className="text-sm font-medium leading-none">
-                  18 Aug 2025
+                  Get notified
                 </span>
                 <span className="text-xs opacity-50">
-                  Get a reminder when your <br />
+                  Couple of days before your <br />
                   trial ends
                 </span>
               </div>
@@ -284,9 +284,9 @@ const PaymentContent = ({
           </div>
 
           <p className="px-3 py-4 text-center text-[10px] text-grey-default">
-            By clicking &apos;Continue&apos; button, you agree that today you start your{" "}
-            <span className="font-black">10-day free trial</span>. After your
-            trial ends,{" "}
+            By clicking &apos;Continue&apos; button, you agree that today you
+            start your <span className="font-black">10-day free trial</span>.
+            After your trial ends,{" "}
             <span className="font-black">
               ${(currentPricing.price * 0.01 * count).toFixed(2)}
             </span>{" "}

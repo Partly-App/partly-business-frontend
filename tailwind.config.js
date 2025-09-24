@@ -183,6 +183,10 @@ module.exports = {
           },
           "50%": { transform: "translateY(-6px) rotateX(4deg) rotateZ(-6deg)" },
         },
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
       },
       animation: {
         appear: "appear 2s ease-out forwards",
@@ -192,6 +196,7 @@ module.exports = {
         "float-3d-a": "float-3d-a 8s ease-in-out infinite",
         "float-3d-b": "float-3d-b 8.5s ease-in-out infinite",
         "float-3d-c": "float-3d-c 9s ease-in-out infinite",
+        fadeIn: "fadeIn 1s ease-in",
       },
     },
   },
