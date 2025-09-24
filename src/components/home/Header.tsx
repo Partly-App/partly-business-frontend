@@ -26,7 +26,7 @@ const Header = () => {
           </span>
         </Link>
 
-        <Button size="M" color="purple" href="/dashboard">
+        <Button size="M" color="white" href="/dashboard">
           Dashboard
         </Button>
       </div>

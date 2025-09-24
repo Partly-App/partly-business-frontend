@@ -3,7 +3,7 @@
 import clsx from "clsx"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import AppStoreCTA from "../shared/AppStoreCTA"
+import Button from "../shared/Button"
 
 const FADE_IMAGES = [
   "/images/journeys/anger.webp",
@@ -73,7 +73,14 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <AppStoreCTA />
+          <Button
+            size="L"
+            color="purple"
+            href="/onboarding"
+            containerClassName="w-fit"
+          >
+            Start 10-day free trial
+          </Button>
         </div>
 
         <div className="grid grid-cols-3 items-center lg:gap-5">
