@@ -110,8 +110,8 @@ const WellBeingScore = ({
                     ? "text-green-default"
                     : "text-red-default",
                   size >= 240
-                    ? "-right-11 bottom-3 text-base"
-                    : "-right-9 bottom-2 text-xs",
+                    ? "-right-12 bottom-3 text-base"
+                    : "-right-10 bottom-2 text-xs",
                 )}
               >
                 {scoreDifference > 0 && "+"}
