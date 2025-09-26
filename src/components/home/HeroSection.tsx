@@ -45,7 +45,7 @@ const HeroSection = () => {
   }, [isFading])
 
   return (
-    <div className="mt-28 grid-cols-2 items-center gap-5 px-4 md:grid lg:grid-cols-3">
+    <section className="mt-28 grid-cols-2 items-center gap-5 px-4 md:grid lg:grid-cols-3">
       <div className="flex flex-col gap-5 md:col-span-1 lg:col-span-2">
         <div className="flex flex-1 flex-col justify-between rounded-2xl bg-grey-dark p-5 sm:p-8">
           <div className="mb-14 flex flex-col gap-2">
@@ -170,7 +170,7 @@ const HeroSection = () => {
           />
         )}
       </div>
-    </div>
+    </section>
   )
 }
 

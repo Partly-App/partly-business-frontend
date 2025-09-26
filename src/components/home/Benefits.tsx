@@ -25,8 +25,8 @@ const BENEFITS = [
 
 const Benefits = () => {
   return (
-    <div className="px-4 pb-12 pt-12">
-      <h1 className="mb-4 text-center font-montserratAlt text-12xl font-black leading-none text-purple-default">
+    <section className="px-4 pb-12 pt-12">
+      <h1 className="mb-8 text-center font-montserratAlt text-8xl font-black leading-[1.2] sm:text-16xl">
         Benefits
       </h1>
       <div
@@ -48,14 +48,14 @@ const Benefits = () => {
               height={42}
               width={42}
               alt=""
-              className="mb-6 ml-auto hidden xs:block"
+              className="pointer-events-none mb-6 ml-auto hidden select-none xs:block"
             />
             <Image
               src={item.icon}
               height={64}
               width={64}
               alt=""
-              className="mb-6 ml-auto block xs:hidden"
+              className="pointer-events-none mb-6 ml-auto block select-none xs:hidden"
             />
             <div className="flex flex-col gap-2">
               <span
@@ -73,7 +73,7 @@ const Benefits = () => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   )
 }
 
