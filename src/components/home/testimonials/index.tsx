@@ -5,10 +5,10 @@ import TESTIMONIALS_DATA from "./data.json"
 
 const Testimonials = () => {
   return (
-    <section className="py-12">
-      <div className="px-4">
-        <h2 className="mx-auto mb-12 text-center font-montserratAlt text-6xl font-black xs:text-12xl">
-          What people say <br />
+    <section className="pt-24">
+      <div className="mb-6 px-4">
+        <h2 className="mx-auto text-center font-montserratAlt text-6xl font-black xs:text-12xl">
+          What customers say <br />
           about{" "}
           <span
             style={{ textShadow: "0px 0px 7px #FFF7DF" }}

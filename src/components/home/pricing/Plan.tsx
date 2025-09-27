@@ -21,7 +21,7 @@ const Plan = ({ name, numberOfSeats, price, isMostPopular }: PlanProps) => {
         <div
           className={clsx(
             "absolute -top-3 right-4 flex items-center gap-2",
-            "rounded-md bg-red-default px-2 py-1",
+            "rounded-md bg-red-light px-2 py-1",
           )}
         >
           <Image src="/images/icons/fire.svg" height={16} width={16} alt="" />

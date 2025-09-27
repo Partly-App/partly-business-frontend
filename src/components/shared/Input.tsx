@@ -1,12 +1,14 @@
 "use client"
 
 import clsx from "clsx"
-import { ChangeEvent, InputHTMLAttributes, useState } from "react"
+import { ChangeEvent, InputHTMLAttributes, ReactNode, useState } from "react"
 
 type InputProps = {
   value: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   size?: "S" | "M"
+  leftDecorator?: ReactNode
+  rightDecorator?: ReactNode
   className?: string
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "size">
 
@@ -19,6 +21,8 @@ const Input = ({
   value,
   onChange,
   size = "M",
+  leftDecorator,
+  rightDecorator,
   className,
   ...props
 }: InputProps) => {
@@ -27,13 +31,14 @@ const Input = ({
   return (
     <label
       className={clsx(
-        "rounded-lg border-2 border-transparent bg-white-mellow transition-colors",
-        "flex w-full items-center justify-between gap-4 focus-within:border-purple-default",
+        "rounded-lg border-2 border-transparent bg-white-mellow transition-colors cursor-text",
+        "flex w-full items-center justify-between gap-3 focus-within:border-purple-default",
         sizeMap[size],
         className,
       )}
       onClick={(e) => e.stopPropagation()}
     >
+      {leftDecorator}
       <input
         {...props}
         type={
@@ -50,6 +55,7 @@ const Input = ({
           "focus:ring-0",
         )}
       />
+      {rightDecorator}
       {props.type === "password" && (
         <button
           type="button"

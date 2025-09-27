@@ -79,11 +79,41 @@ export type Database = {
           {
             foreignKeyName: "companySubscriptions_companyId_fkey"
             columns: ["companyId"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
+      }
+      contacts: {
+        Row: {
+          companyName: string
+          corporateEmail: string
+          countOfEmployees: number
+          createdAt: string
+          id: string
+          message: string | null
+          name: string
+        }
+        Insert: {
+          companyName: string
+          corporateEmail: string
+          countOfEmployees: number
+          createdAt?: string
+          id?: string
+          message?: string | null
+          name: string
+        }
+        Update: {
+          companyName?: string
+          corporateEmail?: string
+          countOfEmployees?: number
+          createdAt?: string
+          id?: string
+          message?: string | null
+          name?: string
+        }
+        Relationships: []
       }
       conversations: {
         Row: {
