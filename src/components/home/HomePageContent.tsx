@@ -2,6 +2,7 @@ import Benefits from "./Benefits"
 import Header from "./Header"
 import HeroSection from "./HeroSection"
 import Features from "./features/Features"
+import PricingSection from "./pricing/PricingSection"
 import SctructureShowcase from "./structureShowcase"
 
 const HomePageContent = () => {
@@ -12,6 +13,7 @@ const HomePageContent = () => {
       <Features />
       <SctructureShowcase />
       <Benefits />
+      <PricingSection />
     </main>
   )
 }
