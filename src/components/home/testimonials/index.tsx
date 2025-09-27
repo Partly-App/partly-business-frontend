@@ -18,7 +18,7 @@ const Testimonials = () => {
           </span>
         </h2>
       </div>
-      <Marquee speed={100} loop={0}>
+      <Marquee speed={25} loop={0}>
         {TESTIMONIALS_DATA.map((item) => (
           <Testimonial
             key={item.company + item.position}
