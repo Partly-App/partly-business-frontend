@@ -37,7 +37,7 @@ const PricingFeatures = () => {
   return (
     <div className="mx-auto max-w-xl rounded-xl bg-green-light p-5">
       <h3 className="mb-6 text-center font-montserratAlt text-3xl font-black text-black-default">
-        What's included?
+        {"What's included?"}
       </h3>
 
       <div className="mb-3 flex flex-col gap-5">
