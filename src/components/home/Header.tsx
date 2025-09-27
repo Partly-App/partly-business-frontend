@@ -6,7 +6,7 @@ import Button from "../shared/Button"
 const Header = () => {
   return (
     <div className="fixed left-0 right-0 top-6 z-20 px-4">
-      <div className="flex w-full items-center justify-between rounded-2xl bg-grey-dark py-3 pl-3 pr-4">
+      <div className="flex w-full items-center justify-between rounded-2xl bg-grey-dark/80 py-3 pl-3 pr-4 backdrop-blur-32">
         <Link href="/" className="flex cursor-pointer items-center gap-3">
           <Image
             src="/images/logo-transparent.webp"

@@ -27,7 +27,7 @@ const SctructureShowcase = () => {
 
   return (
     <section className="px-6 pt-18">
-      <h1 className="mb-8 text-center font-montserratAlt text-8xl font-black leading-[1.2] sm:text-16xl">
+      <h1 className="text-center font-montserratAlt text-8xl font-black leading-[1.2] sm:text-16xl">
         How it works
       </h1>
       <StructureRow

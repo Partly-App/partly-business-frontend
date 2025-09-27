@@ -11,6 +11,7 @@ import FallingMan from "../shared/loaders/FallingMan"
 
 import { useToast } from "@/context/ToastContext"
 import clsx from "clsx"
+import Link from "next/link"
 import * as yup from "yup"
 import { useSupabase } from "../shared/providers"
 
@@ -127,17 +128,27 @@ const ContactForm = () => {
             <h3 className="mb-3 font-montserratAlt text-6xl font-black">
               Contact us
             </h3>
-            <span>
+            <div className="max-w-80">
               Fill out the form to book a call and learn more about{" "}
               <span className="font-montserratAlt font-black text-yellow-light">
                 Partly for Business
               </span>
-            </span>
+            </div>
           </div>
 
           <div className="hidden flex-1 items-center justify-center pt-10 sm:flex">
             <FallingMan size={124} />
           </div>
+
+          <span className="text-xs">
+            <span className="opacity-50">Or write to: </span>
+            <Link
+              href="mailto:info@partly.life"
+              className="font-bold opacity-50 transition-opacity hover:opacity-100"
+            >
+              info@partly.life
+            </Link>
+          </span>
         </div>
 
         <div>

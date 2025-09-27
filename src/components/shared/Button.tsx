@@ -29,6 +29,7 @@ type ButtonProps = {
   onClick?: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"]
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"]
   href?: string
+  target?: string
 }
 
 const sizeMap: Record<ButtonSize, string> = {
@@ -128,6 +129,7 @@ export const Button: React.FC<ButtonProps> = ({
   onClick,
   type = "button",
   href,
+  target,
 }) => {
   const { bg, text, border } = colorMap[color]
 
@@ -172,7 +174,7 @@ export const Button: React.FC<ButtonProps> = ({
       )
     }
     return (
-      <Link href={href} {...commonProps}>
+      <Link href={href} target={target} {...commonProps}>
         {children}
       </Link>
     )

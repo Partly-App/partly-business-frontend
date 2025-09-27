@@ -1,5 +1,6 @@
 import Benefits from "./Benefits"
 import ContactForm from "./ContactForm"
+import Footer from "./Footer"
 import Header from "./Header"
 import HeroSection from "./HeroSection"
 import Features from "./features/Features"
@@ -18,6 +19,7 @@ const HomePageContent = () => {
       <PricingSection />
       <Testimonials />
       <ContactForm />
+      <Footer />
     </main>
   )
 }
