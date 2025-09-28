@@ -1,19 +1,21 @@
 import EmployeesPageContent from "@/components/dashboard/employees/EmployeesPageContent"
 import { createClient } from "@/lib/supabaseServer"
+import { getCompanyByUser } from "@/services/company"
+import { redirect } from "next/navigation"
 
-const EmployeesPage = async ({
-  params,
-}: {
-  params: Promise<{ companyId: string }>
-}) => {
-  const { companyId } = await params
+const EmployeesPage = async () => {
+  const companyData = await getCompanyByUser()
+
+  if (!companyData) {
+    redirect("/")
+  }
 
   const supabaseServer = await createClient()
 
   const { data: departments, error } = await supabaseServer
     .from("departments")
     .select("id, name")
-    .eq("companyId", companyId as string)
+    .eq("companyId", companyData.id as string)
 
   if (error) {
     console.error("Error fetching departments: ", error)
@@ -37,7 +39,7 @@ const EmployeesPage = async ({
         )
       `,
     )
-    .eq("companyId", companyId as string)
+    .eq("companyId", companyData.id as string)
 
   if (employeesError) {
     console.error("Error fetching employees: ", employeesError)
@@ -59,7 +61,7 @@ const EmployeesPage = async ({
     <EmployeesPageContent
       departments={departments}
       employees={employees}
-      companyId={companyId}
+      companyId={companyData.id}
       scores={scores}
     />
   )

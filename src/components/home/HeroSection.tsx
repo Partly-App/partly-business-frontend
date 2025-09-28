@@ -1,9 +1,11 @@
 "use client"
 
+import { supabase } from "@/lib/supabaseClient"
 import clsx from "clsx"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import Button from "../shared/Button"
+import { getCompanyByUser } from "@/services/company"
 
 const FADE_IMAGES = [
   "/images/journeys/anger.webp",
@@ -25,6 +27,7 @@ const HeroSection = () => {
   const [isFading, setIsFading] = useState(false)
 
   useEffect(() => {
+
     const visibleTimeout = setTimeout(() => {
       setPrev(current)
       setCurrent((prevIndex) => (prevIndex + 1) % FADE_IMAGES.length)

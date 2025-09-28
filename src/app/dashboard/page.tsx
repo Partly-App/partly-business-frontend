@@ -1,6 +1,14 @@
 import OverviewPageContent from "@/components/dashboard/overview/OverviewPageContent"
+import { getCompanyByUser } from "@/services/company"
+import { redirect } from "next/navigation"
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
+  const companyData = await getCompanyByUser()
+
+  if (!companyData) {
+    redirect("/")
+  }
+
   return (
     <OverviewPageContent
       mostEngagedJourney="anxiety"
