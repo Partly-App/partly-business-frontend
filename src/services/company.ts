@@ -1,12 +1,13 @@
 import { createClient } from "@/lib/supabaseServer"
+import { redirect } from "next/navigation"
 
 export const getCompanyByUser = async () => {
   const supabase = await createClient()
 
   const { data, error } = await supabase.auth.getUser()
   if (error) {
-    console.error("Couldn't get user: ", error)
-    return null
+    console.log("Couldn't get user: ", error)
+    redirect("/auth")
   }
 
   const { data: companyData, error: companyError } = await supabase

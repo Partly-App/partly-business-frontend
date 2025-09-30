@@ -6,7 +6,7 @@ const DashboardPage = async () => {
   const companyData = await getCompanyByUser()
 
   if (!companyData) {
-    redirect("/")
+    redirect("/auth")
   }
 
   return (
