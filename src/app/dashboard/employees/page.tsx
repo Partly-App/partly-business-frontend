@@ -4,9 +4,9 @@ import { getCompanyByUser } from "@/services/company"
 import { redirect } from "next/navigation"
 
 const EmployeesPage = async () => {
-  const companyData = await getCompanyByUser()
+  const data = await getCompanyByUser()
 
-  if (!companyData) {
+  if (!data?.company) {
     redirect("/")
   }
 
@@ -15,7 +15,7 @@ const EmployeesPage = async () => {
   const { data: departments, error } = await supabaseServer
     .from("departments")
     .select("id, name")
-    .eq("companyId", companyData.id as string)
+    .eq("companyId", data.company.id as string)
 
   if (error) {
     console.error("Error fetching departments: ", error)
@@ -39,7 +39,7 @@ const EmployeesPage = async () => {
         )
       `,
     )
-    .eq("companyId", companyData.id as string)
+    .eq("companyId", data.company.id as string)
 
   if (employeesError) {
     console.error("Error fetching employees: ", employeesError)
@@ -61,7 +61,7 @@ const EmployeesPage = async () => {
     <EmployeesPageContent
       departments={departments}
       employees={employees}
-      companyId={companyData.id}
+      companyId={data.company.id}
       scores={scores}
     />
   )

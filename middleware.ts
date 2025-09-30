@@ -1,6 +1,19 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
+const PUBLIC_PATHS = [
+  "/auth",
+  "/auth/reset-password",
+  "/auth/reset-password/confirm",
+  "/onboarding",
+  "/",
+]
+
+function isPublicPath(path: string) {
+  // Checks for exact match or prefix for nested paths
+  return PUBLIC_PATHS.some((pub) => path === pub || path.startsWith(pub + "/"))
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -39,15 +52,10 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth") &&
-    !request.nextUrl.pathname.startsWith("/error")
-  ) {
+  if (!user && !isPublicPath(request.nextUrl.pathname)) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
-    url.pathname = "/login"
+    url.pathname = "/auth"
     return NextResponse.redirect(url)
   }
 
@@ -65,4 +73,8 @@ export async function updateSession(request: NextRequest) {
   // of sync and terminate the user's session prematurely!
 
   return supabaseResponse
+}
+
+export const config = {
+  matcher: ["/dashboard/:path*"],
 }
