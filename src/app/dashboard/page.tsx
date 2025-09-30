@@ -11,21 +11,25 @@ const DashboardPage = async () => {
     redirect("/auth")
   }
 
+  const { data: subscriptionData, error: subscriptionDataError } =
+    await supabase
+      .from("companySubscriptions")
+      .select("*")
+      .eq("companyId", data.company.id)
+      .single()
+
+  if (subscriptionDataError) {
+    console.log("Error getting subscription data: ", subscriptionDataError)
+  }
+
+  if (!subscriptionData || subscriptionData?.status === "canceled") {
+    redirect("/onboarding")
+  }
+
   const signOut = async (reason: "not-admin" | "error") => {
     await supabase.auth.signOut()
     redirect(`/auth?sign-out-reason=${reason}`)
   }
-
-  // const { data: profileData, error: profileDataError } = await supabase
-  //   .from("profiles")
-  //   .select("id")
-  //   .eq("email", logInData.email)
-  //   .single()
-
-  // if (!profileData || profileDataError) {
-  //   showToast("There's an error getting employee data", "bottom", "error")
-  //   return
-  // }
 
   const { data: employeeData, error: employeeDataError } = await supabase
     .from("employees")

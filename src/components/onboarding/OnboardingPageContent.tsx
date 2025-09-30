@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { useCallback, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useCallback, useEffect, useState } from "react"
+import { useSupabase } from "../shared/providers"
 import OnboardingHeader from "./OnboardingHeader"
 import DepartmentSelect from "./steps/DepartmentSelect"
 import EmployeeNumberSelect from "./steps/EmployeeNumberSelect"
@@ -44,6 +46,9 @@ const OnboardingPageContent = () => {
   })
   const [companyId, setCompanyId] = useState("")
 
+  const supabase = useSupabase()
+  const router = useRouter()
+
   const handleBack = () => {
     setFade("out")
     setTimeout(() => {
@@ -62,6 +67,60 @@ const OnboardingPageContent = () => {
   }, [])
 
   const StepComponent = STEPS[currentStep]
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const { data, error } = await supabase.auth.getUser()
+      if (error) {
+        console.log("Couldn't get user for onboarding: ", error)
+        return
+      }
+
+      const { data: companyData, error: companyError } = await supabase
+        .from("employees")
+        .select("company:companyId(*)")
+        .eq("userId", data.user.id)
+        .single()
+
+      if (!companyData || companyError) {
+        console.log(
+          "Erro getting companyData in getCompanyByUser: ",
+          companyError,
+        )
+        return
+      }
+
+      const { data: subscriptionData, error: subscriptionDataError } =
+        await supabase
+          .from("companySubscriptions")
+          .select("*")
+          .eq("companyId", companyData.company.id)
+          .single()
+
+      if (subscriptionDataError) {
+        console.log(
+          "Error getting subscription data in onboarding page content: ",
+          subscriptionDataError,
+        )
+      } else if (
+        subscriptionData.status === "active" ||
+        subscriptionData.status === "grace"
+      ) {
+        router.push("/dashboard")
+      }
+
+      if (companyData) {
+        setData((prev) => ({
+          ...prev,
+          numberOfEmployees: companyData.company.numberOfEmployees,
+        }))
+
+        setCurrentStep(8)
+      }
+    }
+
+    getUserData()
+  }, [])
 
   return (
     <main className="flex min-h-screen flex-col">
