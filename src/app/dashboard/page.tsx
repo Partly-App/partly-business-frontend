@@ -1,12 +1,57 @@
 import OverviewPageContent from "@/components/dashboard/overview/OverviewPageContent"
+import { createClient } from "@/lib/supabaseServer"
 import { getCompanyByUser } from "@/services/company"
 import { redirect } from "next/navigation"
 
 const DashboardPage = async () => {
-  const companyData = await getCompanyByUser()
+  const data = await getCompanyByUser()
+  const supabase = await createClient()
 
-  if (!companyData) {
+  if (!data?.company) {
     redirect("/auth")
+  }
+
+  const signOut = async (reason: "not-admin" | "error") => {
+    await supabase.auth.signOut()
+    redirect(`/auth?sign-out-reason=${reason}`)
+  }
+
+  // const { data: profileData, error: profileDataError } = await supabase
+  //   .from("profiles")
+  //   .select("id")
+  //   .eq("email", logInData.email)
+  //   .single()
+
+  // if (!profileData || profileDataError) {
+  //   showToast("There's an error getting employee data", "bottom", "error")
+  //   return
+  // }
+
+  const { data: employeeData, error: employeeDataError } = await supabase
+    .from("employees")
+    .select("id")
+    .eq("userId", data.user.id)
+    .single()
+
+  if (!employeeData || employeeDataError) {
+    signOut("error")
+    return
+  }
+
+  const { error: isAdminError, count } = await supabase
+    .from("companies")
+    .select("id", { head: true, count: "exact" })
+    .eq("adminId", employeeData.id)
+
+  if (!count || count === 0) {
+    signOut("not-admin")
+    return
+  }
+
+  if (isAdminError) {
+    console.error(isAdminError)
+    signOut("error")
+    return
   }
 
   return (

@@ -24,5 +24,5 @@ export const getCompanyByUser = async () => {
     return null
   }
 
-  return companyData.company
+  return { company: companyData.company, user: data.user }
 }

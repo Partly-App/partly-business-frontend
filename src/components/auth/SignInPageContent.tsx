@@ -3,8 +3,8 @@
 import { useToast } from "@/context/ToastContext"
 import clsx from "clsx"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 import * as yup from "yup"
 import Button from "../shared/Button"
 import Input from "../shared/Input"
@@ -30,6 +30,9 @@ const SignInPageContent = () => {
     Partial<Record<keyof typeof logInData, string>>
   >({})
 
+  const params = useSearchParams()
+  const signOutReason = params.get("sign-out-reason")
+
   const supabase = useSupabase()
   const router = useRouter()
   const { showToast } = useToast()
@@ -38,44 +41,6 @@ const SignInPageContent = () => {
     try {
       await LoginSchema.validate(logInData, { abortEarly: false })
       setErrors({})
-
-      const { data: profileData, error: profileDataError } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("email", logInData.email)
-        .single()
-
-      if (!profileData || profileDataError) {
-        showToast("There's an error getting employee data", "bottom", "error")
-        return
-      }
-
-      const { data: employeeData, error: employeeDataError } = await supabase
-        .from("employees")
-        .select("id")
-        .eq("userId", profileData.id)
-        .single()
-
-      if (!employeeData || employeeDataError) {
-        showToast("There's an error getting employee data", "bottom", "error")
-        return
-      }
-
-      const { error: isAdminError, count } = await supabase
-        .from("companies")
-        .select("id", { head: true, count: "exact" })
-        .eq("adminId", employeeData.id)
-
-      if (!count || count === 0) {
-        showToast("User is not an admin of the company.", "bottom", "info")
-        return
-      }
-
-      if (isAdminError) {
-        console.error(isAdminError)
-        showToast("Unexpected error. Please try again", "bottom", "error")
-        return
-      }
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email: logInData.email,
@@ -125,6 +90,18 @@ const SignInPageContent = () => {
 
     router.push("/dashboard")
   }
+
+  useEffect(() => {
+    if (signOutReason === "not-admin") {
+      showToast("User is not an admin of the company.", "bottom", "info")
+    } else if (signOutReason === "error") {
+      showToast(
+        "Unexpected error happened, pls try again later.",
+        "bottom",
+        "error",
+      )
+    }
+  }, [signOutReason])
 
   return (
     <>
