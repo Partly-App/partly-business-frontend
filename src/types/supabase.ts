@@ -17,6 +17,7 @@ export type Database = {
       companies: {
         Row: {
           achivementGoals: string[] | null
+          adminId: string | null
           createdAt: string
           id: string
           industry: string[]
@@ -25,6 +26,7 @@ export type Database = {
         }
         Insert: {
           achivementGoals?: string[] | null
+          adminId?: string | null
           createdAt?: string
           id?: string
           industry: string[]
@@ -33,13 +35,22 @@ export type Database = {
         }
         Update: {
           achivementGoals?: string[] | null
+          adminId?: string | null
           createdAt?: string
           id?: string
           industry?: string[]
           name?: string
           numberOfEmployees?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "companies_adminId_fkey"
+            columns: ["adminId"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       companySubscriptions: {
         Row: {
@@ -655,6 +666,7 @@ export type Database = {
         Row: {
           avatarUrl: string | null
           currentStreak: number
+          email: string | null
           fullName: string | null
           hasPassedPathZero: boolean
           id: string
@@ -664,6 +676,7 @@ export type Database = {
         Insert: {
           avatarUrl?: string | null
           currentStreak?: number
+          email?: string | null
           fullName?: string | null
           hasPassedPathZero?: boolean
           id: string
@@ -673,6 +686,7 @@ export type Database = {
         Update: {
           avatarUrl?: string | null
           currentStreak?: number
+          email?: string | null
           fullName?: string | null
           hasPassedPathZero?: boolean
           id?: string

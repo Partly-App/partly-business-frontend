@@ -39,14 +39,52 @@ const SignInPageContent = () => {
       await LoginSchema.validate(logInData, { abortEarly: false })
       setErrors({})
 
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: profileData, error: profileDataError } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("email", logInData.email)
+        .single()
+
+      if (!profileData || profileDataError) {
+        showToast("There's an error getting employee data", "bottom", "error")
+        return
+      }
+
+      const { data: employeeData, error: employeeDataError } = await supabase
+        .from("employees")
+        .select("id")
+        .eq("userId", profileData.id)
+        .single()
+
+      if (!employeeData || employeeDataError) {
+        showToast("There's an error getting employee data", "bottom", "error")
+        return
+      }
+
+      const { error: isAdminError, count } = await supabase
+        .from("companies")
+        .select("id", { head: true, count: "exact" })
+        .eq("adminId", employeeData.id)
+
+      if (!count || count === 0) {
+        showToast("User is not an admin of the company.", "bottom", "info")
+        return
+      }
+
+      if (isAdminError) {
+        console.error(isAdminError)
+        showToast("Unexpected error. Please try again", "bottom", "error")
+        return
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: logInData.email,
         password: logInData.password,
       })
 
-      if (error) {
+      if (error || !data.user) {
         console.error("Error logging in with email: ", error)
-        if (error.status === 400) {
+        if (error?.status === 400) {
           showToast(
             "User doesn't exist, register first.",
             "bottom",
@@ -56,6 +94,7 @@ const SignInPageContent = () => {
         } else {
           showToast("Unexpected error. Please try again", "bottom", "error")
         }
+        return
       }
 
       router.push("/dashboard")

@@ -42,7 +42,7 @@ const SignUpContent = ({
 
   const supabase = useSupabase()
 
-  const createCompany = async () => {
+  const createCompany = async (userId: string) => {
     if (!whatToAchieve || !numberOfEmployees || !industry) {
       console.error("Data missing for company creation: ", {
         numberOfEmployees,
@@ -68,6 +68,7 @@ const SignUpContent = ({
         achivementGoals: whatToAchieve?.map((item) => item.label) || null,
         industry,
         numberOfEmployees,
+        adminId: userId,
       })
       .select("id")
       .single()
@@ -165,7 +166,7 @@ const SignUpContent = ({
 
   const updateNewProfile = async (userId: string) => {
     try {
-      const { companyId, departmentId } = await createCompany()
+      const { companyId, departmentId } = await createCompany(userId)
 
       const { error } = await supabase
         .from("profiles")
