@@ -15,6 +15,7 @@ import {
   THIRD_TIER_PRICE,
 } from "@/constants/pricing"
 import { useToast } from "@/context/ToastContext"
+import { Company } from "@/types/company"
 import { Environments, Paddle, initializePaddle } from "@paddle/paddle-js"
 import clsx from "clsx"
 import { useEffect, useMemo, useState } from "react"
@@ -22,10 +23,10 @@ import { Check, Info, Minus, Plus, Shield } from "react-feather"
 
 const PaymentContent = ({
   count: initialCount,
-  companyId,
+  company,
 }: {
   count: number
-  companyId: string
+  company: Company | null
 }) => {
   const [paddle, setPaddle] = useState<Paddle>()
   const [count, setCount] = useState(initialCount)
@@ -62,7 +63,10 @@ const PaymentContent = ({
     try {
       const res = await fetch("/api/payment", {
         method: "POST",
-        body: JSON.stringify({ price: currentPricing.price * count }),
+        body: JSON.stringify({
+          price: currentPricing.price * count,
+          customerId: company?.paddleCustomerId,
+        }),
       })
       const data = await res.json()
 
@@ -71,12 +75,13 @@ const PaymentContent = ({
       }
 
       paddle.Checkout.open({
-        transactionId: data.txn,
+        transactionId: data.txnId,
         settings: {
           displayMode: "overlay",
           variant: "one-page",
           theme: "dark",
-          successUrl: `${window.location.origin}/onboarding/success?txnId=${data.txn}&companyId=${companyId}`,
+          successUrl: `${window.location.origin}/onboarding/success`,
+          // successUrl: `${window.location.origin}/onboarding/success?companyId=${company?.id}`,
           showAddDiscounts: false,
         },
       })

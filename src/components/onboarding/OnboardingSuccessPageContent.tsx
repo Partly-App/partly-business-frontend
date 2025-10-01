@@ -8,7 +8,7 @@ import Dashboard from "../shared/icons/Dashboard"
 import Star from "../shared/icons/Star"
 import Users from "../shared/icons/Users"
 
-const OnboardingSuccessPageContent = ({ companyId }: { companyId: string }) => {
+const OnboardingSuccessPageContent = () => {
   return (
     <div className="mx-auto max-w-5xl px-6 pb-12 pt-6">
       <header className="flex items-center justify-between gap-6">
@@ -32,7 +32,7 @@ const OnboardingSuccessPageContent = ({ companyId }: { companyId: string }) => {
           </span>
         </Link>
 
-        <Button size="M" color="purple" href={`/${companyId}`}>
+        <Button size="M" color="purple" href="/dashboard">
           Dashboard
           <ArrowRight size={16} className="text-white-default" />
         </Button>
@@ -156,7 +156,7 @@ const OnboardingSuccessPageContent = ({ companyId }: { companyId: string }) => {
         </div>
 
         <div className="mx-auto max-w-105 pt-6">
-          <Button size="L" color="purple" href={`/${companyId}`}>
+          <Button size="L" color="purple" href="/dashboard">
             Dashboard
             <ArrowRight size={20} className="text-white-default" />
           </Button>

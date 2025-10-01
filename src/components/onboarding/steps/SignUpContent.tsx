@@ -6,18 +6,19 @@ import OverlayLoader from "@/components/shared/loaders/OverlayLoader"
 import { useSupabase } from "@/components/shared/providers"
 import { urls } from "@/constants/urls"
 import { useToast } from "@/context/ToastContext"
+import { Company } from "@/types/company"
 import clsx from "clsx"
 import Link from "next/link"
 import { Dispatch, SetStateAction, useState } from "react"
 import { OnboardingStepType } from "../types"
 
 type SignUpContentProps = OnboardingStepType & {
-  setCompanyId: Dispatch<SetStateAction<string>>
+  setCompany: Dispatch<SetStateAction<Company | null>>
 }
 
 const SignUpContent = ({
   data: onboardingData,
-  setCompanyId,
+  setCompany,
   onNext,
 }: SignUpContentProps) => {
   const [data, setData] = useState({
@@ -42,7 +43,7 @@ const SignUpContent = ({
 
   const supabase = useSupabase()
 
-  const createCompany = async (userId: string) => {
+  const createCompany = async () => {
     if (!whatToAchieve || !numberOfEmployees || !industry) {
       console.error("Data missing for company creation: ", {
         numberOfEmployees,
@@ -61,6 +62,28 @@ const SignUpContent = ({
       }
     }
 
+    const customerRes = await fetch("/api/create-customer", {
+      method: "POST",
+      body: JSON.stringify({
+        email: data.email,
+        name: data.name,
+      }),
+    })
+    const customerData = await customerRes.json()
+
+    if (!customerData) {
+      console.error("Couldn't create Paddle customer for the company")
+      showToast(
+        "We had an error adding your company, pls try again",
+        "bottom",
+        "error",
+      )
+      return {
+        companyId: null,
+        departmentId: null,
+      }
+    }
+
     const { data: companyData, error } = await supabase
       .from("companies")
       .insert({
@@ -68,9 +91,9 @@ const SignUpContent = ({
         achivementGoals: whatToAchieve?.map((item) => item.label) || null,
         industry,
         numberOfEmployees,
-        adminId: userId,
+        paddleCustomerId: customerData.id,
       })
-      .select("id")
+      .select("*")
       .single()
 
     if (!companyData || error) {
@@ -156,7 +179,7 @@ const SignUpContent = ({
       }
     }
 
-    setCompanyId(companyData.id)
+    setCompany(companyData)
 
     return {
       companyId: companyData.id,
@@ -166,7 +189,7 @@ const SignUpContent = ({
 
   const updateNewProfile = async (userId: string) => {
     try {
-      const { companyId, departmentId } = await createCompany(userId)
+      const { companyId, departmentId } = await createCompany()
 
       const { error } = await supabase
         .from("profiles")
@@ -248,12 +271,16 @@ const SignUpContent = ({
 
       if (!companyId) return
 
-      const { error: employeeError } = await supabase.from("employees").upsert({
-        role: "Admin",
-        companyId,
-        departmentId,
-        userId,
-      })
+      const { data: employeeData, error: employeeError } = await supabase
+        .from("employees")
+        .upsert({
+          role: "Admin",
+          companyId,
+          departmentId,
+          userId,
+        })
+        .select("id")
+        .single()
 
       if (employeeError) {
         console.error("Employee profile upsert error: ", error)
@@ -265,6 +292,22 @@ const SignUpContent = ({
         )
 
         throw new Error(`Employee profile upsert error: ${error}`)
+      }
+
+      const { error: companyUpdateError } = await supabase
+        .from("companies")
+        .update({ adminId: employeeData.id })
+        .eq("id", companyId)
+
+      if (companyUpdateError) {
+        console.error("Error updating company admin: ", companyUpdateError)
+        setIsLoading(false)
+        showToast(
+          "We had an error making you an admin. Please contact us at support@partly.life !",
+          "bottom",
+          "error",
+          7500,
+        )
       }
     } catch (err) {
       throw new Error(`${err}`)

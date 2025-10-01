@@ -7,8 +7,9 @@ const paddle = new Paddle(process.env.PADDLE_SANDBOX_API_KEY!, {
 
 export async function POST(req: Request) {
   const body = await req.json()
-
+await paddle.subscriptions.activate
   const txn = await paddle.transactions.create({
+    customerId: body.customerId,
     items: [
       {
         quantity: 1,
@@ -42,5 +43,5 @@ export async function POST(req: Request) {
     ],
   })
 
-  return NextResponse.json({ txn: txn.id })
+  return NextResponse.json({ txnId: txn.id })
 }

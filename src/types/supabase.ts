@@ -23,6 +23,7 @@ export type Database = {
           industry: string[]
           name: string
           numberOfEmployees: number
+          paddleCustomerId: string | null
         }
         Insert: {
           achivementGoals?: string[] | null
@@ -32,6 +33,7 @@ export type Database = {
           industry: string[]
           name: string
           numberOfEmployees: number
+          paddleCustomerId?: string | null
         }
         Update: {
           achivementGoals?: string[] | null
@@ -41,6 +43,7 @@ export type Database = {
           industry?: string[]
           name?: string
           numberOfEmployees?: number
+          paddleCustomerId?: string | null
         }
         Relationships: [
           {
@@ -62,7 +65,6 @@ export type Database = {
           periodEnd: string
           periodStart: string
           status: Database["public"]["Enums"]["subscriptionStatus"]
-          trialEnd: string
         }
         Insert: {
           companyId: string
@@ -73,7 +75,6 @@ export type Database = {
           periodEnd: string
           periodStart: string
           status: Database["public"]["Enums"]["subscriptionStatus"]
-          trialEnd: string
         }
         Update: {
           companyId?: string
@@ -84,7 +85,6 @@ export type Database = {
           periodEnd?: string
           periodStart?: string
           status?: Database["public"]["Enums"]["subscriptionStatus"]
-          trialEnd?: string
         }
         Relationships: [
           {
@@ -1016,7 +1016,7 @@ export type Database = {
         | "showcaseChat"
         | "choice"
         | "endGain"
-      subscriptionStatus: "active" | "canceled" | "grace"
+      subscriptionStatus: "active" | "inactive" | "trialing"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1195,7 +1195,7 @@ export const Constants = {
         "choice",
         "endGain",
       ],
-      subscriptionStatus: ["active", "canceled", "grace"],
+      subscriptionStatus: ["active", "inactive", "trialing"],
     },
   },
 } as const

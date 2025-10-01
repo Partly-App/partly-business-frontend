@@ -1,5 +1,6 @@
 "use client"
 
+import { Company } from "@/types/company"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
@@ -44,7 +45,7 @@ const OnboardingPageContent = () => {
     department: null,
     whatToAchieve: null,
   })
-  const [companyId, setCompanyId] = useState("")
+  const [company, setCompany] = useState<Company | null>(null)
 
   const supabase = useSupabase()
   const router = useRouter()
@@ -104,7 +105,7 @@ const OnboardingPageContent = () => {
         )
       } else if (
         subscriptionData.status === "active" ||
-        subscriptionData.status === "grace"
+        subscriptionData.status === "trialing"
       ) {
         router.push("/dashboard")
       }
@@ -138,8 +139,8 @@ const OnboardingPageContent = () => {
           onNext={handleNext}
           data={data}
           count={data.numberOfEmployees}
-          setCompanyId={setCompanyId}
-          companyId={companyId}
+          setCompany={setCompany}
+          company={company}
         />
       </div>
 
