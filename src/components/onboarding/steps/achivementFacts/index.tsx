@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { OnboardingStepType } from "../../types"
 import AnxietyFact from "./AnxietyFact"
 import ConflictFact from "./ConflictFact"
@@ -15,13 +16,17 @@ const COMPONENTS = {
 }
 
 const AchivementFacts = ({ onNext, data }: OnboardingStepType) => {
+  useEffect(() => {
+    if (!data?.whatToAchieve?.[0]) {
+      onNext()
+    }
+  }, [data?.whatToAchieve, onNext])
+
   if (!data?.whatToAchieve?.[0]) {
-    onNext()
-    return
+    return null
   }
 
   const FactComponent = COMPONENTS[data.whatToAchieve[0].key]
-
   return <FactComponent onNext={onNext} />
 }
 
