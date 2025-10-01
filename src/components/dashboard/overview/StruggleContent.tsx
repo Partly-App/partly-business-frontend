@@ -16,12 +16,12 @@ const StruggleContent = ({ currentChallenges }: StruggleContentProps) => {
 
   return (
     <>
-      <InfoContainer className="col-span-2">
+      <InfoContainer className="col-span-2 2xl:col-span-3">
         <span className="font-montserratAlt font-bold">
           Current <span className="font-black">Struggles</span>
         </span>
 
-        <div className="relative mt-4 grid flex-1 grid-cols-3 items-center justify-center gap-3">
+        <div className="relative mt-4 grid flex-1 grid-cols-2 items-center justify-center gap-3 xs:grid-cols-3">
           {currentChallenges
             .sort((a, b) => b.weight - a.weight)
             .map((item) => {
@@ -39,7 +39,7 @@ const StruggleContent = ({ currentChallenges }: StruggleContentProps) => {
                   </Modal>
                   <div
                     className={clsx(
-                      "col-span-1 flex aspect-video items-center justify-center rounded-xl p-2",
+                      "col-span-1 flex aspect-square items-center justify-center rounded-xl p-2 md:aspect-video",
                       "relative cursor-pointer transition-transform hover:scale-95",
                     )}
                     style={{ backgroundColor: struggleColor }}

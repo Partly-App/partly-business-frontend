@@ -58,15 +58,20 @@ const OverviewPageContent = ({
   return (
     <main className="realtive min-h-screen w-full px-6 py-4">
       <h1 className="mb-4 font-montserratAlt text-4xl font-black">Overview</h1>
-      <div className="mb-4 grid grid-cols-3 gap-4">
-        <InfoContainer className="col-span-2">
+      <div className="mb-4 flex grid-cols-1 flex-col gap-4 xs:grid xs:grid-cols-2 lg:grid-cols-3">
+        <InfoContainer className="col-span-1 xs:col-span-2 2xl:col-span-1">
           <span className="font-montserratAlt font-bold">
             <span className="font-black">Well-being</span> score
           </span>
-          <div className="mt-4 flex gap-8">
-            <WellBeingScore prevScore={80} score={70} size={230} />
-            <div className="flex flex-col justify-between">
-              <div className="relative flex items-center gap-2">
+          <div className="mt-4 flex flex-col gap-8 xs:flex-row">
+            <div className="hidden xs:contents">
+              <WellBeingScore prevScore={80} score={70} size={192} />
+            </div>
+            <div className="flex justify-center xs:hidden">
+              <WellBeingScore prevScore={80} score={70} size={280} />
+            </div>
+            <div className="flex flex-col justify-between gap-5">
+              <div className="relative flex w-fit items-center">
                 <span className="font-bold">Confidence</span>
                 <span className="font-montserratAlt font-black">
                   {scores.confidenceNow}/<span className="opacity-50">100</span>
@@ -137,12 +142,12 @@ const OverviewPageContent = ({
             </div>
           </div>
         </InfoContainer>
-        <InfoContainer className="flex flex-col">
+        <InfoContainer className="col-span-1 flex flex-col">
           <span className="font-montserratAlt font-bold">
             Employees / <span className="opacity-50">Departments</span>
           </span>
           <div className="mt-4 flex flex-1 items-center justify-center">
-            <span className="font-montserratAlt text-14xl font-black">
+            <span className="font-montserratAlt text-4xl font-black xs:text-14xl">
               79/<span className="opacity-50">3</span>
             </span>
           </div>
@@ -164,7 +169,7 @@ const OverviewPageContent = ({
             />
             <span
               className={clsx(
-                "font-montserratAlt text-3xl font-black xl:text-5xl",
+                "font-montserratAlt text-xl font-black xs:text-3xl xl:text-5xl",
               )}
               style={{ color: JOURNEYS_SRCS[mostEngagedJourney].color }}
             >
