@@ -22,7 +22,7 @@ const DashboardPage = async () => {
     console.log("Error getting subscription data: ", subscriptionDataError)
   }
 
-  if (!subscriptionData || subscriptionData?.status === "canceled") {
+  if (!subscriptionData || subscriptionData?.status === "inactive") {
     redirect("/onboarding")
   }
 

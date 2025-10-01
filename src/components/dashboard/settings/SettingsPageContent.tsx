@@ -56,7 +56,15 @@ const SettingsPageContent = ({
         4000,
       )
     }
-  }, [selectedIndustry, achievementGoals, company.id, supabase])
+  }, [
+    selectedIndustry,
+    achievementGoals,
+    company.id,
+    supabase,
+    company.achievementGoals,
+    company.industry,
+    showToast,
+  ])
 
   useEffect(() => {
     const timeout = setTimeout(() => {

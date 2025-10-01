@@ -121,7 +121,7 @@ const OnboardingPageContent = () => {
     }
 
     getUserData()
-  }, [])
+  }, [router, supabase])
 
   return (
     <main className="flex min-h-screen flex-col">

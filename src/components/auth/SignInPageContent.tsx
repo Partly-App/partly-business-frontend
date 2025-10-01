@@ -101,7 +101,7 @@ const SignInPageContent = () => {
         "error",
       )
     }
-  }, [signOutReason])
+  }, [signOutReason, showToast])
 
   return (
     <>

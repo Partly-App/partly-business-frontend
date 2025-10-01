@@ -182,6 +182,7 @@ export async function POST(req: Request) {
           try {
             await handleTransactionUpdate(eventData)
           } catch (err) {
+            console.error(err)
             break
           }
           break
@@ -192,6 +193,7 @@ export async function POST(req: Request) {
           try {
             await handleTransactionUpdate(eventData)
           } catch (err) {
+            console.error(err)
             break
           }
           break
