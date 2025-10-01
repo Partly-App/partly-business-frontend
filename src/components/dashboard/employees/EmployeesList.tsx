@@ -8,7 +8,6 @@ import { useToast } from "@/context/ToastContext"
 import { Department, Employee } from "@/types/employee"
 import { toggleStringInArray } from "@/utils/general"
 import clsx from "clsx"
-import { useParams } from "next/navigation"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Trash2, X } from "react-feather"
 import AddEmployeesSideModal from "./AddEmployeesSideModal"
@@ -24,6 +23,7 @@ type EmployeesProps = {
         userId: string
       }[]
     | null
+  companyId: string
 }
 
 type EmployeeMap = Record<
@@ -38,6 +38,7 @@ type EmployeeMap = Record<
 const EmployeesList = ({
   employees: initialEmployeeList,
   scores,
+  companyId,
 }: EmployeesProps) => {
   const [isSidebarMounted, setIsSidebarMounted] = useState(false)
   const [openedEmployeeId, setOpenedEmployeeId] = useState<string | null>(null)
@@ -56,7 +57,6 @@ const EmployeesList = ({
     useState(false)
 
   const { showToast } = useToast()
-  const { companyId } = useParams()
 
   const supabase = useSupabase()
 
@@ -393,6 +393,7 @@ const EmployeesList = ({
       {isEmployeeSidebarMounted && (
         <AddEmployeesSideModal
           isOpen={isAddEmployeeOpen}
+          companyId={companyId}
           onClose={() => setIsAddEmployeeOpen(false)}
           onExited={() => setIsEmployeeSidebarMounted(false)}
         />

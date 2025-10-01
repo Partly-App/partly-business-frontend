@@ -33,7 +33,13 @@ const EmployeesPageContent = ({
         employees={employees}
         companyId={companyId}
       />
-      {employees && <EmployeesList employees={employees} scores={scores} />}
+      {employees && (
+        <EmployeesList
+          employees={employees}
+          scores={scores}
+          companyId={companyId}
+        />
+      )}
       <div className="mx-auto w-64 px-4"></div>
     </main>
   )

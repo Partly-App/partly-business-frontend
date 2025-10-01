@@ -17,19 +17,20 @@ import {
   ListboxOptions,
 } from "@headlessui/react"
 import clsx from "clsx"
-import { useParams } from "next/navigation"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ChevronDown, MinusCircle, Plus } from "react-feather"
 import { v4 as uuidv4 } from "uuid"
 
 type AddEmployeesSideModalProps = {
   isOpen: boolean
+  companyId: string
   onClose: () => void
   onExited: () => void
 }
 
 const AddEmployeesSideModal = ({
   isOpen,
+  companyId,
   onClose,
   onExited,
 }: AddEmployeesSideModalProps) => {
@@ -41,7 +42,6 @@ const AddEmployeesSideModal = ({
   const [departments, setDepartments] = useState<Array<Partial<Department>>>([])
   const [currentEmployeeCount, setCurrentEmployeeCount] = useState(0)
 
-  const { companyId } = useParams()
   const { showToast } = useToast()
 
   const isDisabled = useMemo(() => {
