@@ -11,17 +11,17 @@ import Settings from "../shared/icons/Settings"
 
 const TABS = [
   {
-    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9",
+    url: "/dashboard",
     label: "Overview",
     icon: <Table size={20} className="shrink-0" />,
   },
   {
-    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/employees",
+    url: "/dashboard/employees",
     label: "Employees",
     icon: <Users size={20} className="shrink-0" />,
   },
   {
-    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/analytics",
+    url: "/dashboard/analytics",
     label: "Analytics",
     icon: <Activity size={20} className="shrink-0" />,
   },
@@ -29,12 +29,12 @@ const TABS = [
 
 const BOTTOM_TABS = [
   {
-    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/settings",
+    url: "/dashboard/settings",
     label: "Settings",
     icon: <Settings size={20} className="shrink-0" />,
   },
   {
-    url: "/45221aa1-6108-48fa-b829-f6c80d5652c9/support",
+    url: "mailto:support@partly.life",
     label: "Support",
     icon: <Support size={20} className="shrink-0" />,
   },
@@ -52,7 +52,7 @@ const Sidebar = ({
   return (
     <div
       className={clsx(
-        "fixed left-0 h-screen flex-col bg-grey-dark py-4 transition-all sm:flex hidden",
+        "fixed left-0 hidden h-screen flex-col bg-grey-dark py-4 transition-all sm:flex",
         isOpen ? "w-44" : "w-15",
       )}
     >

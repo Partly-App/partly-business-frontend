@@ -2,19 +2,7 @@ import Button from "@/components/shared/Button"
 import clsx from "clsx"
 import { useState } from "react"
 import { OnboardingStepType } from "../types"
-
-const INDUSTRIES = [
-  "Finance",
-  "IT",
-  "Healthcare",
-  "Education",
-  "Media",
-  "Legal",
-  "Government",
-  "Retail",
-  "Professional services",
-  "Other",
-]
+import { INDUSTRIES } from "@/constants/companyDetails"
 
 const IndustrySelect = ({ onNext, data }: OnboardingStepType) => {
   const [selectedIndustry, setSelectedIndustry] = useState<typeof INDUSTRIES>(
