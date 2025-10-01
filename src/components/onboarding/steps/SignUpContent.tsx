@@ -88,7 +88,7 @@ const SignUpContent = ({
       .from("companies")
       .insert({
         name: data.companyName,
-        achivementGoals: whatToAchieve?.map((item) => item.label) || null,
+        achievementGoals: whatToAchieve?.map((item) => item.label) || null,
         industry,
         numberOfEmployees,
         paddleCustomerId: customerData.id,

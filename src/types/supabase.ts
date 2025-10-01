@@ -16,7 +16,7 @@ export type Database = {
     Tables: {
       companies: {
         Row: {
-          achivementGoals: string[] | null
+          achievementGoals: string[] | null
           adminId: string | null
           createdAt: string
           id: string
@@ -26,7 +26,7 @@ export type Database = {
           paddleCustomerId: string | null
         }
         Insert: {
-          achivementGoals?: string[] | null
+          achievementGoals?: string[] | null
           adminId?: string | null
           createdAt?: string
           id?: string
@@ -36,7 +36,7 @@ export type Database = {
           paddleCustomerId?: string | null
         }
         Update: {
-          achivementGoals?: string[] | null
+          achievementGoals?: string[] | null
           adminId?: string | null
           createdAt?: string
           id?: string
@@ -61,7 +61,7 @@ export type Database = {
           createdAt: string
           id: string
           paddleCustomerId: string
-          paddleSubscriptionId: string
+          paddleSubscriptionId: string | null
           periodEnd: string
           periodStart: string
           status: Database["public"]["Enums"]["subscriptionStatus"]
@@ -71,7 +71,7 @@ export type Database = {
           createdAt?: string
           id?: string
           paddleCustomerId: string
-          paddleSubscriptionId: string
+          paddleSubscriptionId?: string | null
           periodEnd: string
           periodStart: string
           status: Database["public"]["Enums"]["subscriptionStatus"]
@@ -81,7 +81,7 @@ export type Database = {
           createdAt?: string
           id?: string
           paddleCustomerId?: string
-          paddleSubscriptionId?: string
+          paddleSubscriptionId?: string | null
           periodEnd?: string
           periodStart?: string
           status?: Database["public"]["Enums"]["subscriptionStatus"]

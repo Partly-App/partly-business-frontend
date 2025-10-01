@@ -5,7 +5,7 @@ export type OnboardingStepType = {
   data?: OnboardingData
 }
 
-export type AchivementKeys =
+export type AchievementKeys =
   | "anxiety"
   | "conflict"
   | "feedback"

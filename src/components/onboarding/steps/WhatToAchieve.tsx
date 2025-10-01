@@ -1,49 +1,23 @@
 "use client"
 
 import Button from "@/components/shared/Button"
+import { ACHIEVEMENTS } from "@/constants/companyDetails"
 import clsx from "clsx"
 import { useState } from "react"
-import { AchivementKeys, OnboardingStepType } from "../types"
-
-const ACHIEVEMENTS: Array<{ key: AchivementKeys; label: string }> = [
-  {
-    key: "tension",
-    label: "Reduce workplace tension",
-  },
-  {
-    key: "productivity",
-    label: "Increase team productivity",
-  },
-  {
-    key: "feedback",
-    label: "Foster a culture of open feedback",
-  },
-  {
-    key: "anxiety",
-    label: "Reduce team anxiety during high-pressure projects",
-  },
-  {
-    key: "conflict",
-    label: "Improve conflict resolution",
-  },
-  {
-    key: "other",
-    label: "Other",
-  },
-]
+import { AchievementKeys, OnboardingStepType } from "../types"
 
 const WhatToAchieve = ({ onNext, data }: OnboardingStepType) => {
   const [selected, setSelected] = useState<
-    Array<{ key: AchivementKeys; label: string }>
+    Array<{ key: AchievementKeys; label: string }>
   >(data?.whatToAchieve || [])
 
-  const handleSelect = (achivement: { key: AchivementKeys; label: string }) => {
-    const isSelected = selected.find((item) => item.key === achivement.key)
+  const handleSelect = (achievement: { key: AchievementKeys; label: string }) => {
+    const isSelected = selected.find((item) => item.key === achievement.key)
 
     if (isSelected) {
-      setSelected((prev) => prev.filter((item) => item.key !== achivement.key))
+      setSelected((prev) => prev.filter((item) => item.key !== achievement.key))
     } else {
-      setSelected((prev) => [...prev, achivement])
+      setSelected((prev) => [...prev, achievement])
     }
   }
 

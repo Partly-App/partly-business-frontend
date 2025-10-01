@@ -15,7 +15,7 @@ const COMPONENTS = {
   other: ProductivityFact,
 }
 
-const AchivementFacts = ({ onNext, data }: OnboardingStepType) => {
+const AchievementFacts = ({ onNext, data }: OnboardingStepType) => {
   useEffect(() => {
     if (!data?.whatToAchieve?.[0]) {
       onNext()
@@ -30,4 +30,4 @@ const AchivementFacts = ({ onNext, data }: OnboardingStepType) => {
   return <FactComponent onNext={onNext} />
 }
 
-export default AchivementFacts
+export default AchievementFacts

@@ -14,14 +14,14 @@ import PaymentContent from "./steps/PaymentContent"
 import ReturnOfInterest from "./steps/ReturnOfInterest"
 import SignUpContent from "./steps/SignUpContent"
 import WhatToAchieve from "./steps/WhatToAchieve"
-import AchivementFacts from "./steps/achivementFacts"
-import { AchivementKeys } from "./types"
+import AchievementFacts from "./steps/achievementFacts"
+import { AchievementKeys } from "./types"
 
 export type OnboardingData = {
   numberOfEmployees: number
   industry: string[] | null
   department: string[] | null
-  whatToAchieve: Array<{ key: AchivementKeys; label: string }> | null
+  whatToAchieve: Array<{ key: AchievementKeys; label: string }> | null
 }
 
 const STEPS = [
@@ -30,7 +30,7 @@ const STEPS = [
   DepartmentSelect,
   ReturnOfInterest,
   WhatToAchieve,
-  AchivementFacts,
+  AchievementFacts,
   LoaderStep,
   SignUpContent,
   PaymentContent,
