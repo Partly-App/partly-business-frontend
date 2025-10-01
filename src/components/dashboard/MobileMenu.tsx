@@ -45,6 +45,7 @@ const MobileMenu = () => {
     >
       {LINKS.map((item) => (
         <Link
+          key={item.url}
           className={clsx(
             "flex flex-col items-center gap-1 rounded-lg p-2 transition-colors",
             pathname === item.url
