@@ -5,6 +5,7 @@ import Modal from "@/components/shared/Modal"
 import Edit from "@/components/shared/icons/Edit"
 import { useSupabase } from "@/components/shared/providers"
 import { useToast } from "@/context/ToastContext"
+import { Company } from "@/types/company"
 import { Department, Employee } from "@/types/employee"
 import { toggleStringInArray } from "@/utils/general"
 import clsx from "clsx"
@@ -23,7 +24,7 @@ type EmployeesProps = {
         userId: string
       }[]
     | null
-  companyId: string
+  company: Company
 }
 
 type EmployeeMap = Record<
@@ -38,7 +39,7 @@ type EmployeeMap = Record<
 const EmployeesList = ({
   employees: initialEmployeeList,
   scores,
-  companyId,
+  company,
 }: EmployeesProps) => {
   const [isSidebarMounted, setIsSidebarMounted] = useState(false)
   const [openedEmployeeId, setOpenedEmployeeId] = useState<string | null>(null)
@@ -151,7 +152,7 @@ const EmployeesList = ({
     const { data, error } = await supabase
       .from("departments")
       .select("id, name")
-      .eq("companyId", companyId as string)
+      .eq("companyId", company.id as string)
 
     if (error) {
       console.error("Error fetching departments in EmployeeList: ", error)
@@ -164,7 +165,7 @@ const EmployeesList = ({
       return
     }
     setDepartments(data)
-  }, [supabase, companyId, showToast])
+  }, [supabase, company.id, showToast])
 
   const handleEmployeeDelete = async () => {
     const { error } = await supabase
@@ -393,7 +394,7 @@ const EmployeesList = ({
       {isEmployeeSidebarMounted && (
         <AddEmployeesSideModal
           isOpen={isAddEmployeeOpen}
-          companyId={companyId}
+          companyId={company.id}
           onClose={() => setIsAddEmployeeOpen(false)}
           onExited={() => setIsEmployeeSidebarMounted(false)}
         />

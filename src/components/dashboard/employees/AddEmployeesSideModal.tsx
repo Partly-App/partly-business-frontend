@@ -165,6 +165,7 @@ const AddEmployeesSideModal = ({
       const { count, error: employeeCountError } = await supabase
         .from("employees")
         .select("*", { head: true, count: "exact" })
+        .eq("companyId", companyId)
 
       if (employeeCountError) {
         console.error(

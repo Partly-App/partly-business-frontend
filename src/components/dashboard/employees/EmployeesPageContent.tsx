@@ -2,6 +2,7 @@ import { Department, Employee as EmployeeType } from "@/types/employee"
 import { Profile } from "@/types/profile"
 import Departments from "./Departments"
 import EmployeesList from "./EmployeesList"
+import { Company } from "@/types/company"
 
 export type EmployeeConstructed = Partial<EmployeeType> & {
   profile: Pick<Profile, "avatarUrl" | "fullName" | "id">
@@ -11,7 +12,7 @@ export type EmployeeConstructed = Partial<EmployeeType> & {
 export type EmployeesPageContentProps = {
   departments: Array<Partial<Department>> | null
   employees: Array<EmployeeConstructed> | null
-  companyId: string
+  company: Company
   scores:
     | {
         score: number
@@ -23,7 +24,7 @@ export type EmployeesPageContentProps = {
 const EmployeesPageContent = ({
   departments,
   employees,
-  companyId,
+  company,
   scores,
 }: EmployeesPageContentProps) => {
   return (
@@ -31,13 +32,13 @@ const EmployeesPageContent = ({
       <Departments
         departments={departments}
         employees={employees}
-        companyId={companyId}
+        company={company}
       />
       {employees && (
         <EmployeesList
           employees={employees}
           scores={scores}
-          companyId={companyId}
+          company={company}
         />
       )}
       <div className="mx-auto w-64 px-4"></div>

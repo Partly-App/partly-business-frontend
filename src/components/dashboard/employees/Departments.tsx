@@ -17,7 +17,7 @@ import NewDepartment from "./NewDepartment"
 const Departments = ({
   departments: initialDepartments,
   employees,
-  companyId,
+  company,
 }: Omit<EmployeesPageContentProps, "scores">) => {
   const [openedDepartmentId, setOpenedDepartmentId] = useState("")
   const [isSidebarMounted, setIsSidebarMounted] = useState(false)
@@ -124,7 +124,7 @@ const Departments = ({
       </div>
       <div className="overflow-x-hidden pr-5 sm:pr-9" ref={emblaRef}>
         <div className="flex gap-4 px-5 py-2 sm:px-9">
-          <NewDepartment companyId={companyId} disabled={isBeingEdited} />
+          <NewDepartment companyId={company.id} disabled={isBeingEdited} />
           {departments?.map((item) => {
             const color = item.id
               ? getRandomColor(item.id, ["transparent"])

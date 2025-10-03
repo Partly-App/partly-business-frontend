@@ -20,11 +20,11 @@ const TABS = [
     label: "Employees",
     icon: <Users size={20} className="shrink-0" />,
   },
-  {
-    url: "/dashboard/analytics",
-    label: "Analytics",
-    icon: <Activity size={20} className="shrink-0" />,
-  },
+  // {
+  //   url: "/dashboard/analytics",
+  //   label: "Analytics",
+  //   icon: <Activity size={20} className="shrink-0" />,
+  // },
 ]
 
 const BOTTOM_TABS = [

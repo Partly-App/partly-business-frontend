@@ -61,7 +61,7 @@ const EmployeesPage = async () => {
     <EmployeesPageContent
       departments={departments}
       employees={employees}
-      companyId={data.company.id}
+      company={data.company}
       scores={scores}
     />
   )
