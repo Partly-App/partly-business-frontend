@@ -257,6 +257,7 @@ export type Database = {
           createdAt: string
           departmentId: string | null
           id: string
+          mostEngagedJourney: Database["public"]["Enums"]["journeyTag"] | null
           role: string | null
           userId: string
         }
@@ -265,6 +266,7 @@ export type Database = {
           createdAt?: string
           departmentId?: string | null
           id?: string
+          mostEngagedJourney?: Database["public"]["Enums"]["journeyTag"] | null
           role?: string | null
           userId: string
         }
@@ -273,6 +275,7 @@ export type Database = {
           createdAt?: string
           departmentId?: string | null
           id?: string
+          mostEngagedJourney?: Database["public"]["Enums"]["journeyTag"] | null
           role?: string | null
           userId?: string
         }
