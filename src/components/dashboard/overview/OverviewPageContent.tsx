@@ -72,10 +72,13 @@ const OverviewPageContent = ({
             </div>
             <div className="flex flex-col justify-between gap-5">
               <div className="relative flex w-fit items-center">
-                <span className="font-bold">Confidence</span>
-                <span className="font-montserratAlt font-black">
-                  {scores.confidenceNow}/<span className="opacity-50">100</span>
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold">Confidence</span>
+                  <span className="font-montserratAlt font-black">
+                    {scores.confidenceNow}/
+                    <span className="opacity-50">100</span>
+                  </span>
+                </div>
                 {scores.confidencePrev > 0 && (
                   <div
                     className={clsx(
@@ -95,10 +98,13 @@ const OverviewPageContent = ({
               </div>
 
               <div className="relative flex w-fit items-center gap-2">
-                <span className="font-bold">Anxiety</span>
-                <span className="font-montserratAlt font-black">
-                  {scores.anxietyNow}/<span className="opacity-50">100</span>
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold">Anxiety</span>
+                  <span className="font-montserratAlt font-black">
+                    {scores.anxietyNow}/<span className="opacity-50">100</span>
+                  </span>
+                </div>
+
                 {scores.anxietyPrev > 0 && (
                   <div
                     className={clsx(
@@ -118,10 +124,13 @@ const OverviewPageContent = ({
               </div>
 
               <div className="relative flex w-fit items-center gap-2">
-                <span className="font-bold">Anger</span>
-                <span className="font-montserratAlt font-black">
-                  {scores.angerNow}/<span className="opacity-50">100</span>
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold">Anger</span>
+                  <span className="font-montserratAlt font-black">
+                    {scores.angerNow}/<span className="opacity-50">100</span>
+                  </span>
+                </div>
+
                 {scores.angerPrev > 0 && (
                   <div
                     className={clsx(

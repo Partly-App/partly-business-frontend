@@ -5,14 +5,21 @@ type FallingManProps = {
   size: number
   withAppear?: boolean
   delay?: number
+  className?: string
 }
 
-const FallingMan = ({ size, withAppear, delay }: FallingManProps) => {
+const FallingMan = ({
+  size,
+  withAppear,
+  delay,
+  className,
+}: FallingManProps) => {
   return (
     <div
       className={clsx(
         "pointer-events-none relative flex aspect-square w-48 flex-col items-center justify-center",
         withAppear && "animate-appear opacity-0 [animation-delay:1s]",
+        className,
       )}
     >
       <Image

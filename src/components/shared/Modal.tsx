@@ -4,6 +4,7 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react"
+import clsx from "clsx"
 import { Dispatch, Fragment, ReactNode, SetStateAction } from "react"
 import { X } from "react-feather"
 import Button from "./Button"
@@ -32,7 +33,7 @@ const Modal = ({ isOpen, setIsOpen, title, children }: ModalProps) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black-default/30" />
+          <div className="fixed inset-0 bg-black-default/50" />
         </TransitionChild>
 
         <div className="fixed inset-0 flex items-center justify-center p-4">
@@ -45,8 +46,13 @@ const Modal = ({ isOpen, setIsOpen, title, children }: ModalProps) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <DialogPanel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-grey-dark px-6 py-4 text-left align-middle shadow-xl transition-all">
-              <div className="flex items-start justify-between gap-4">
+            <DialogPanel
+              className={clsx(
+                "w-full max-w-lg transform overflow-hidden rounded-2xl relative",
+                "bg-grey-dark px-6 py-4 text-left align-middle shadow-xl transition-all",
+              )}
+            >
+              <div className="flex items-center justify-between gap-4">
                 <h3 className="text-wrap font-montserratAlt text-3xl font-black">
                   {title}
                 </h3>
