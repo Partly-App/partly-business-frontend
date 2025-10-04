@@ -9,8 +9,9 @@ import { arraysEqualUnordered, toggleArraySelection } from "@/utils/arrays"
 import { CustomerPortalSession } from "@paddle/paddle-node-sdk"
 import clsx from "clsx"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
-import { ExternalLink } from "react-feather"
+import { ExternalLink, LogOut } from "react-feather"
 
 const SettingsPageContent = ({
   customerPortal,
@@ -28,6 +29,7 @@ const SettingsPageContent = ({
 
   const supabase = useSupabase()
   const { showToast } = useToast()
+  const router = useRouter()
 
   const updateCompany = useCallback(async () => {
     if (
@@ -65,6 +67,11 @@ const SettingsPageContent = ({
     company.industry,
     showToast,
   ])
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push("/auth")
+  }
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -147,7 +154,7 @@ const SettingsPageContent = ({
           </div>
         </div>
 
-        <div className="mb-12 flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <h2 className="font-montserratAlt text-xl font-black opacity-75">
             Subscription
           </h2>
@@ -166,6 +173,18 @@ const SettingsPageContent = ({
           <span className="text-xs font-medium opacity-25">
             *This will take you to a separate portal provided by Paddle
           </span>
+        </div>
+
+        <div className="mb-12">
+          <Button
+            size="L"
+            color="red"
+            containerClassName="w-fit"
+            onClick={handleSignOut}
+          >
+            Log out
+            <LogOut size={20} className="text-black-default" />
+          </Button>
         </div>
       </div>
 
