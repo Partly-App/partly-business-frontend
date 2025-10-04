@@ -105,6 +105,7 @@ const AddEmployeesSideModal = ({
         subject: `${companyData?.name || "Your Workplace"} Wants You to Try Partly — For Free!`,
         templateName: "invite",
         sender: "Partly <info@partly.life>",
+        companyId: companyId,
       },
     })
 
@@ -256,7 +257,7 @@ const AddEmployeesSideModal = ({
                 <span className="w-8 pb-2.5 text-center font-montserratAlt text-xl font-bold leading-none opacity-50">
                   {i + 1}.
                 </span>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-1 flex-wrap items-center gap-3">
                   <div className="flex min-w-36 flex-1 flex-col gap-2">
                     <span className="font-montserratAlt font-bold leading-none">
                       Email

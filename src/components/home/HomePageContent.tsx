@@ -3,6 +3,7 @@ import ContactForm from "./ContactForm"
 import Footer from "./Footer"
 import Header from "./Header"
 import HeroSection from "./HeroSection"
+import InviteSignUp from "./InviteSignUp"
 import Features from "./features/Features"
 import PricingSection from "./pricing/PricingSection"
 import SctructureShowcase from "./structureShowcase"
@@ -20,6 +21,7 @@ const HomePageContent = () => {
       <Testimonials />
       <ContactForm />
       <Footer />
+      <InviteSignUp />
     </main>
   )
 }
