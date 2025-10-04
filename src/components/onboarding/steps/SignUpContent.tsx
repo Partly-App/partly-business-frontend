@@ -210,65 +210,6 @@ const SignUpContent = ({
         throw new Error(`Profile name update error: ${error}`)
       }
 
-      const { data: score, error: scoreError } = await supabase
-        .from("scores")
-        .upsert({ score: 50, fixSuggestion: null, userId: userId })
-        .select("id")
-        .single()
-
-      if (scoreError) {
-        console.error("Error creating initial profile score: ", scoreError)
-        setIsLoading(false)
-
-        showToast(
-          "We had an error creating your well-being scores, pls try again",
-          "bottom",
-          "error",
-        )
-
-        throw new Error(`Error creating initial profile score: ${scoreError}`)
-      } else {
-        const { error: subScoreError } = await supabase
-          .from("subScores")
-          .upsert([
-            {
-              score: 50,
-              reason: null,
-              scoreId: score.id,
-              type: "anxiety",
-            },
-            {
-              score: 50,
-              reason: null,
-              scoreId: score.id,
-              type: "anger",
-            },
-            {
-              score: 50,
-              reason: null,
-              scoreId: score.id,
-              type: "confidence",
-            },
-          ])
-
-        if (subScoreError) {
-          console.error(
-            "Error creating initial profile sub scores: ",
-            subScoreError,
-          )
-          showToast(
-            "We had an error creating your well-being sub scores, pls try again",
-            "bottom",
-            "error",
-          )
-          setIsLoading(false)
-
-          throw new Error(
-            `Error creating initial profile sub scores: ${subScoreError}`,
-          )
-        }
-      }
-
       if (!companyId) return
 
       const { data: employeeData, error: employeeError } = await supabase
@@ -337,6 +278,7 @@ const SignUpContent = ({
     const { data: signUpData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
+      
     })
 
     const newErrors: typeof errors = {
