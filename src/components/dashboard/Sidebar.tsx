@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Dispatch, SetStateAction } from "react"
-import { Activity, ChevronsLeft, Table, Users } from "react-feather"
+import { ChevronsLeft, Table, Users } from "react-feather"
 import Support from "../shared/icons/Help"
 import Settings from "../shared/icons/Settings"
 

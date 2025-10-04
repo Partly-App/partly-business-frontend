@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import Benefits from "./Benefits"
 import ContactForm from "./ContactForm"
 import Footer from "./Footer"
@@ -21,7 +22,9 @@ const HomePageContent = () => {
       <Testimonials />
       <ContactForm />
       <Footer />
-      <InviteSignUp />
+      <Suspense>
+        <InviteSignUp />
+      </Suspense>
     </main>
   )
 }
