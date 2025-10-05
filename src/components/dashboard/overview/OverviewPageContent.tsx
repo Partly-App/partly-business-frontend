@@ -7,7 +7,9 @@ import StruggleContent from "./StruggleContent"
 
 export type OverviewPageContentProps = {
   mostEngagedJourney: Journey
-  scores: {
+  score: number
+  prevScore: number
+  subScores: {
     confidenceNow: number
     confidencePrev: number
     anxietyNow: number
@@ -48,12 +50,14 @@ const JOURNEYS_SRCS: Record<
 
 const OverviewPageContent = ({
   mostEngagedJourney,
-  scores,
+  score,
+  prevScore,
+  subScores,
   currentChallenges,
 }: OverviewPageContentProps) => {
-  const anxietyChange = scores.anxietyNow - scores.anxietyPrev
-  const angerChange = scores.angerNow - scores.angerPrev
-  const confidenceChange = scores.confidenceNow - scores.confidencePrev
+  const anxietyChange = subScores.anxietyNow - subScores.anxietyPrev
+  const angerChange = subScores.angerNow - subScores.angerPrev
+  const confidenceChange = subScores.confidenceNow - subScores.confidencePrev
 
   return (
     <main className="realtive min-h-screen w-full px-6 py-4">
@@ -65,21 +69,21 @@ const OverviewPageContent = ({
           </span>
           <div className="mt-4 flex flex-col gap-8 xs:flex-row">
             <div className="hidden xs:contents">
-              <WellBeingScore prevScore={80} score={70} size={192} />
+              <WellBeingScore prevScore={prevScore} score={score} size={192} />
             </div>
             <div className="flex justify-center xs:hidden">
-              <WellBeingScore prevScore={80} score={70} size={280} />
+              <WellBeingScore prevScore={prevScore} score={score} size={280} />
             </div>
             <div className="flex flex-col justify-between gap-5">
               <div className="relative flex w-fit items-center">
                 <div className="flex items-center gap-1.5">
                   <span className="font-bold">Confidence</span>
                   <span className="font-montserratAlt font-black">
-                    {scores.confidenceNow}/
+                    {subScores.confidenceNow}/
                     <span className="opacity-50">100</span>
                   </span>
                 </div>
-                {scores.confidencePrev > 0 && (
+                {subScores.confidencePrev > 0 && (
                   <div
                     className={clsx(
                       "absolute -right-6 -top-3 font-montserratAlt text-xs font-bold",
@@ -101,11 +105,12 @@ const OverviewPageContent = ({
                 <div className="flex items-center gap-1.5">
                   <span className="font-bold">Anxiety</span>
                   <span className="font-montserratAlt font-black">
-                    {scores.anxietyNow}/<span className="opacity-50">100</span>
+                    {subScores.anxietyNow}/
+                    <span className="opacity-50">100</span>
                   </span>
                 </div>
 
-                {scores.anxietyPrev > 0 && (
+                {subScores.anxietyPrev > 0 && (
                   <div
                     className={clsx(
                       "absolute -right-6 -top-3 font-montserratAlt text-xs font-bold",
@@ -127,11 +132,11 @@ const OverviewPageContent = ({
                 <div className="flex items-center gap-1.5">
                   <span className="font-bold">Anger</span>
                   <span className="font-montserratAlt font-black">
-                    {scores.angerNow}/<span className="opacity-50">100</span>
+                    {subScores.angerNow}/<span className="opacity-50">100</span>
                   </span>
                 </div>
 
-                {scores.angerPrev > 0 && (
+                {subScores.angerPrev > 0 && (
                   <div
                     className={clsx(
                       "absolute -right-6 -top-3 font-montserratAlt text-xs font-bold",

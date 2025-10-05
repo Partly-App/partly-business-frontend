@@ -102,7 +102,7 @@ const WellBeingScore = ({
             >
               {clampedScore}
             </span>
-            {!mini && prevScore && scoreDifference !== 0 && (
+            {!mini && prevScore && scoreDifference !== 0 ? (
               <span
                 className={clsx(
                   "absolute my-auto h-fit leading-none",
@@ -125,7 +125,7 @@ const WellBeingScore = ({
                   7d
                 </span>
               </span>
-            )}
+            ) : null}
           </div>
           {!mini && (
             <div

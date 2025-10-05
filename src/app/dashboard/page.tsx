@@ -1,7 +1,22 @@
 import OverviewPageContent from "@/components/dashboard/overview/OverviewPageContent"
+import { SCORE_TYPES } from "@/constants/employee"
 import { createClient } from "@/lib/supabaseServer"
 import { getCompanyByUser } from "@/services/company"
 import { redirect } from "next/navigation"
+
+type SubScoreType = "anger" | "anxiety" | "confidence" | "shame"
+type SubScore = {
+  createdAt: string
+  id: string
+  reason: string | null
+  score: number
+  scoreId: string
+  type: SubScoreType
+}
+type SubScoresByType = Record<
+  "anxiety" | "anger" | "confidence",
+  SubScore | undefined
+>
 
 const DashboardPage = async () => {
   const data = await getCompanyByUser()
@@ -57,17 +72,113 @@ const DashboardPage = async () => {
     signOut("error")
     return
   }
+  const getScores = async () => {
+    const { data: scores, error: scoresError } = await supabase
+      .from("scores")
+      .select("*")
+      .eq("userId", data.user.id)
+      .order("createdAt", { ascending: false })
+      .limit(2)
+
+    if (!scores?.length || scoresError) {
+      console.error("Error fetching employee scores: ", scoresError)
+      return {
+        scores: null,
+        currentSubScoresData: null,
+        prevSubScoresData: null,
+      }
+    }
+
+    const { data: currentSubScoresData, error: currentSubScoresError } =
+      await supabase
+        .from("subScores")
+        .select("*")
+        .eq("scoreId", scores[0].id)
+        .in("type", SCORE_TYPES)
+
+    if (!currentSubScoresData?.length || currentSubScoresError) {
+      console.error(
+        "Error fetching current sub scores: ",
+        currentSubScoresError,
+      )
+      return {
+        scores: null,
+        currentSubScoresData: null,
+        prevSubScoresData: null,
+      }
+    }
+
+    let prevSubScores = null
+
+    if (!!scores[1]?.id) {
+      const { data: prevSubScoresData, error: prevSubScoresError } =
+        await supabase
+          .from("subScores")
+          .select("*")
+          .eq("scoreId", scores[1].id)
+          .in("type", SCORE_TYPES)
+
+      if (prevSubScoresError) {
+        console.error("Error fetching previous scores: ", prevSubScoresError)
+      } else {
+        prevSubScores = prevSubScoresData
+      }
+    }
+
+    return {
+      scores,
+      currentSubScoresData,
+      prevSubScoresData: prevSubScores,
+    }
+  }
+
+  const { scores, currentSubScoresData, prevSubScoresData } = await getScores()
+
+  const currentSubScoreByType = (): SubScoresByType | null => {
+    if (!currentSubScoresData) return null
+    const subscoresByType: Record<SubScoreType, SubScore> = Object.fromEntries(
+      currentSubScoresData.map((sub: SubScore) => [sub.type, sub]),
+    ) as Record<SubScoreType, SubScore>
+
+    return {
+      anxiety: subscoresByType["anxiety"],
+      anger: subscoresByType["anger"],
+      confidence: subscoresByType["confidence"],
+    }
+  }
+
+  const prevSubScoreByType = (): SubScoresByType | null => {
+    if (!prevSubScoresData) return null
+    const subscoresByType: Record<SubScoreType, SubScore> = Object.fromEntries(
+      prevSubScoresData.map((sub: SubScore) => [sub.type, sub]),
+    ) as Record<SubScoreType, SubScore>
+
+    return {
+      anxiety: subscoresByType["anxiety"],
+      anger: subscoresByType["anger"],
+      confidence: subscoresByType["confidence"],
+    }
+  }
+
+  const { anxiety, anger, confidence } = currentSubScoreByType() || {}
+  const {
+    anxiety: anxietyPrev,
+    anger: angerPrev,
+    confidence: confidencePrev,
+  } = prevSubScoreByType() || {}
 
   return (
     <OverviewPageContent
       mostEngagedJourney="anxiety"
-      scores={{
-        angerNow: 50,
-        angerPrev: 60,
-        anxietyNow: 40,
-        anxietyPrev: 30,
-        confidenceNow: 40,
-        confidencePrev: 60,
+      score={scores?.[0].score || 50}
+      prevScore={scores?.[1]?.score || 0}
+      subScores={{
+        angerNow: anger?.score || 50,
+        angerPrev: angerPrev?.score || 0,
+        anxietyNow: anxiety?.score || 50,
+        anxietyPrev: anxietyPrev?.score || 0,
+        confidenceNow: confidence?.score || 50,
+        confidencePrev: confidencePrev?.score || 0,
       }}
       currentChallenges={[
         {
