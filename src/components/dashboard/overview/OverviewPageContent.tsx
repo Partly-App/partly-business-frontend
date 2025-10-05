@@ -17,6 +17,8 @@ export type OverviewPageContentProps = {
     angerNow: number
     angerPrev: number
   }
+  numberOfEmployees: number
+  numberOfDepartments: number
   currentChallenges: Array<{
     label: string
     weight: number
@@ -53,6 +55,8 @@ const OverviewPageContent = ({
   score,
   prevScore,
   subScores,
+  numberOfEmployees,
+  numberOfDepartments,
   currentChallenges,
 }: OverviewPageContentProps) => {
   const anxietyChange = subScores.anxietyNow - subScores.anxietyPrev
@@ -162,7 +166,8 @@ const OverviewPageContent = ({
           </span>
           <div className="mt-4 flex flex-1 items-center justify-center">
             <span className="font-montserratAlt text-4xl font-black xs:text-14xl">
-              79/<span className="opacity-50">3</span>
+              {numberOfEmployees}/
+              <span className="opacity-50">{numberOfDepartments}</span>
             </span>
           </div>
         </InfoContainer>

@@ -167,6 +167,28 @@ const DashboardPage = async () => {
     confidence: confidencePrev,
   } = prevSubScoreByType() || {}
 
+  const {
+    data: employees,
+    error: employeesError,
+    count: employeeCount,
+  } = await supabase
+    .from("employees")
+    .select("mostEngagedJourney", { count: "exact" })
+    .eq("companyId", data.company.id)
+
+  if (employeesError) {
+    console.error("Error fetching employees ", employeeDataError)
+  }
+
+  const { error: departmentsError, count: departmentsCount } = await supabase
+    .from("departments")
+    .select("id", { head: true, count: "exact" })
+    .eq("companyId", data.company.id)
+
+  if (departmentsError) {
+    console.error("error fetchin department count: ", departmentsError)
+  }
+
   return (
     <OverviewPageContent
       mostEngagedJourney="anxiety"
@@ -180,6 +202,8 @@ const DashboardPage = async () => {
         confidenceNow: confidence?.score || 50,
         confidencePrev: confidencePrev?.score || 0,
       }}
+      numberOfEmployees={employeeCount || 0}
+      numberOfDepartments={departmentsCount || 0}
       currentChallenges={[
         {
           label: "Team conflict",
