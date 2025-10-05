@@ -2,6 +2,7 @@ import OverviewPageContent from "@/components/dashboard/overview/OverviewPageCon
 import { SCORE_TYPES } from "@/constants/employee"
 import { createClient } from "@/lib/supabaseServer"
 import { getCompanyByUser } from "@/services/company"
+import { Journey } from "@/types/journey"
 import { redirect } from "next/navigation"
 
 type SubScoreType = "anger" | "anxiety" | "confidence" | "shame"
@@ -189,9 +190,34 @@ const DashboardPage = async () => {
     console.error("error fetchin department count: ", departmentsError)
   }
 
+  const mostUsedJourney = (): Journey | null => {
+    if (!employees) return null
+    const counts = {
+      anxiety: 0,
+      anger: 0,
+      confidence: 0,
+      shame: 0,
+      null: 0,
+    }
+
+    for (const obj of employees) {
+      counts[obj.mostEngagedJourney as Journey]++
+    }
+
+    let most = null
+    let max = 0
+    for (const journey of ["anxiety", "anger", "confidence", null] as const) {
+      if (counts[journey as Journey] > max) {
+        max = counts[journey as Journey]
+        most = journey
+      }
+    }
+    return most
+  }
+
   return (
     <OverviewPageContent
-      mostEngagedJourney="anxiety"
+      mostEngagedJourney={mostUsedJourney()}
       score={scores?.[0].score || 50}
       prevScore={scores?.[1]?.score || 0}
       subScores={{

@@ -6,7 +6,7 @@ import WellBeingScore from "../WellBeingScore"
 import StruggleContent from "./StruggleContent"
 
 export type OverviewPageContentProps = {
-  mostEngagedJourney: Journey
+  mostEngagedJourney: Journey | null
   score: number
   prevScore: number
   subScores: {
@@ -177,23 +177,33 @@ const OverviewPageContent = ({
             Most Engaged <span className="font-black">Journey</span>
           </span>
           <div className="relative mt-4 flex flex-1 items-center justify-center gap-2">
-            <Image
-              draggable={false}
-              alt=""
-              width={42}
-              height={42}
-              src={JOURNEYS_SRCS[mostEngagedJourney].imgSrc}
-              className="shrink-0 rounded-lg border"
-              style={{ borderColor: JOURNEYS_SRCS[mostEngagedJourney].color }}
-            />
-            <span
-              className={clsx(
-                "font-montserratAlt text-xl font-black xs:text-3xl xl:text-5xl",
-              )}
-              style={{ color: JOURNEYS_SRCS[mostEngagedJourney].color }}
-            >
-              {JOURNEYS_SRCS[mostEngagedJourney].label}
-            </span>
+            {mostEngagedJourney !== null ? (
+              <>
+                <Image
+                  draggable={false}
+                  alt=""
+                  width={42}
+                  height={42}
+                  src={JOURNEYS_SRCS[mostEngagedJourney].imgSrc}
+                  className="shrink-0 rounded-lg border"
+                  style={{
+                    borderColor: JOURNEYS_SRCS[mostEngagedJourney].color,
+                  }}
+                />
+                <span
+                  className={clsx(
+                    "font-montserratAlt text-xl font-black xs:text-3xl xl:text-5xl",
+                  )}
+                  style={{ color: JOURNEYS_SRCS[mostEngagedJourney].color }}
+                >
+                  {JOURNEYS_SRCS[mostEngagedJourney].label}
+                </span>
+              </>
+            ) : (
+              <span className="text-center font-montserratAlt text-xl font-bold opacity-25">
+                Need more time to gather info
+              </span>
+            )}
           </div>
         </InfoContainer>
         <StruggleContent currentChallenges={currentChallenges} />
