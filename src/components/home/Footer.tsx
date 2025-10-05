@@ -23,6 +23,13 @@ const Footer = () => {
         >
           Terms of Use
         </Link>
+        <Link
+          href="https://fragrant-digit-84f.notion.site/Refund-Policy-28305fa90ec4806bb6d2c042703d4180?source=copy_link"
+          target="_blank"
+          className="text-sm font-bold opacity-30 transition-opacity hover:opacity-50"
+        >
+          Refund Policy
+        </Link>
       </div>
 
       <AppStoreCTA />
