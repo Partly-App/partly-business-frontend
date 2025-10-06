@@ -162,6 +162,16 @@ const OnboardingPageContent = () => {
         >
           Terms of Use
         </Link>
+        <span className="select-none font-montserratAlt text-2xl font-black opacity-25">
+          •
+        </span>
+        <Link
+          href="https://fragrant-digit-84f.notion.site/Refund-Policy-28305fa90ec4806bb6d2c042703d4180?source=copy_link"
+          target="_blank"
+          className="text-xs font-bold opacity-25 transition-opacity hover:opacity-50"
+        >
+          Refund Policy
+        </Link>
       </div>
     </main>
   )
