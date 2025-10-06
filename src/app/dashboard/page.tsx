@@ -24,7 +24,7 @@ const DashboardPage = async () => {
   const supabase = await createClient()
 
   if (!data?.company) {
-    redirect("/auth")
+    redirect("/onboarding")
   }
 
   const { data: subscriptionData, error: subscriptionDataError } =

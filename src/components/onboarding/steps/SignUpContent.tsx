@@ -62,14 +62,15 @@ const SignUpContent = ({
       }
     }
 
-    const customerRes = await fetch("/api/create-customer", {
+    const customerData = await fetch("/api/create-customer", {
       method: "POST",
       body: JSON.stringify({
         email: data.email,
         name: data.name,
       }),
     })
-    const customerData = await customerRes.json()
+      .then((k) => k.json())
+      .catch((err) => console.error(err))
 
     if (!customerData) {
       console.error("Couldn't create Paddle customer for the company")
@@ -78,6 +79,7 @@ const SignUpContent = ({
         "bottom",
         "error",
       )
+      setIsLoading(false)
       return {
         companyId: null,
         departmentId: null,
@@ -91,7 +93,7 @@ const SignUpContent = ({
         achievementGoals: whatToAchieve?.map((item) => item.label) || null,
         industry,
         numberOfEmployees,
-        paddleCustomerId: customerData.id,
+        paddleCustomerId: customerData?.id || null,
       })
       .select("*")
       .single()
@@ -275,11 +277,11 @@ const SignUpContent = ({
   const signUpNewUser = async () => {
     setIsLoading(true)
 
-    const { data: signUpData, error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      
-    })
+    const { data: existingProfile, error: existingProfileError } =
+      await supabase
+        .from("profiles")
+        .select("id", { count: "exact", head: false })
+        .eq("email", data.email)
 
     const newErrors: typeof errors = {
       companyName: !data.companyName,
@@ -302,28 +304,54 @@ const SignUpContent = ({
       return
     }
 
-    if (!signUpData || error) {
-      console.error("Email Sign up error: ", error)
-      showToast(
-        "Unexpected error with email sign up, pls try again",
-        "bottom",
-        "error",
-      )
+    if (!existingProfile || existingProfileError) {
+      const { data: signUpData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+      })
 
-      setIsLoading(false)
-      return
+      if (!signUpData || error) {
+        console.error("Email Sign up error: ", error)
+        showToast(
+          "Unexpected error with email sign up, pls try again",
+          "bottom",
+          "error",
+        )
+
+        setIsLoading(false)
+        return
+      }
+
+      const userId = signUpData.user?.id
+
+      if (!userId) {
+        console.error("No userId on signUp")
+        setIsLoading(false)
+        return
+      }
+
+      await updateNewProfile(userId)
+      await createInitialProgress(userId)
+    } else {
+      const { data: signedInUser, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password,
+        })
+
+      if (signInError) {
+        console.error("Error singing in existing user: ", signInError)
+        showToast(
+          "Unexpected error with email sign up, pls try again",
+          "bottom",
+          "error",
+        )
+        setIsLoading(false)
+        return
+      }
+
+      await updateNewProfile(signedInUser.user.id)
     }
-
-    const userId = signUpData.user?.id
-
-    if (!userId) {
-      console.error("No userId on signUp")
-      setIsLoading(false)
-      return
-    }
-
-    await updateNewProfile(userId)
-    await createInitialProgress(userId)
 
     setIsLoading(false)
 
