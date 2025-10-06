@@ -174,7 +174,7 @@ const DashboardPage = async () => {
     count: employeeCount,
   } = await supabase
     .from("employees")
-    .select("mostEngagedJourney", { count: "exact" })
+    .select("mostEngagedJourney, userId", { count: "exact" })
     .eq("companyId", data.company.id)
 
   if (employeesError) {
@@ -215,6 +215,20 @@ const DashboardPage = async () => {
     return most
   }
 
+  const userIdForStruggles = employees?.map((item) => item.userId) || []
+
+  const { data: struggles, error: strugglesError } = await supabase
+    .from("currentStruggles")
+    .select("label, severity, note, fixTitle, fixPoints, endNote")
+    .order("createdAt", { ascending: false })
+    .order("severity", { ascending: false })
+    .in("userId", userIdForStruggles)
+    .limit(6)
+
+  if (strugglesError) {
+    console.error("Error fetching struggles: ", strugglesError)
+  }
+
   return (
     <OverviewPageContent
       mostEngagedJourney={mostUsedJourney()}
@@ -230,50 +244,7 @@ const DashboardPage = async () => {
       }}
       numberOfEmployees={employeeCount || 0}
       numberOfDepartments={departmentsCount || 0}
-      currentChallenges={[
-        {
-          label: "Team conflict",
-          weight: 0.1,
-          note: "",
-          fixSubtitle: "subtitle",
-          fixTips: ["tip 1", "tip 2"],
-        },
-        {
-          label: "High stress",
-          weight: 0.3,
-          note: "",
-          fixSubtitle: "subtitle",
-          fixTips: ["tip 1", "tip 2"],
-        },
-        {
-          label: "Low focus",
-          weight: 0.5,
-          note: "",
-          fixSubtitle: "subtitle",
-          fixTips: ["tip 1", "tip 2"],
-        },
-        {
-          label: "Poor balance",
-          weight: 0.7,
-          note: "",
-          fixSubtitle: "subtitle",
-          fixTips: ["tip 1", "tip 2"],
-        },
-        {
-          label: "Missed deadlines",
-          weight: 0.9,
-          note: "",
-          fixSubtitle: "subtitle",
-          fixTips: ["tip 1", "tip 2"],
-        },
-        {
-          label: "Role confusion",
-          weight: 0.25,
-          note: "",
-          fixSubtitle: "subtitle",
-          fixTips: ["tip 1", "tip 2"],
-        },
-      ]}
+      currentStruggles={struggles}
     />
   )
 }

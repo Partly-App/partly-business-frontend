@@ -1,4 +1,5 @@
 import { Journey } from "@/types/journey"
+import { CurrentStruggle } from "@/types/profile"
 import clsx from "clsx"
 import Image from "next/image"
 import InfoContainer from "../../shared/containers/InfoContainer"
@@ -19,13 +20,7 @@ export type OverviewPageContentProps = {
   }
   numberOfEmployees: number
   numberOfDepartments: number
-  currentChallenges: Array<{
-    label: string
-    weight: number
-    note: string
-    fixSubtitle: string
-    fixTips: Array<string>
-  }>
+  currentStruggles: Array<Partial<CurrentStruggle>> | null
 }
 
 const JOURNEYS_SRCS: Record<
@@ -57,7 +52,7 @@ const OverviewPageContent = ({
   subScores,
   numberOfEmployees,
   numberOfDepartments,
-  currentChallenges,
+  currentStruggles,
 }: OverviewPageContentProps) => {
   const anxietyChange = subScores.anxietyNow - subScores.anxietyPrev
   const angerChange = subScores.angerNow - subScores.angerPrev
@@ -171,7 +166,6 @@ const OverviewPageContent = ({
             </span>
           </div>
         </InfoContainer>
-
         <InfoContainer className="col-span-1 flex flex-col">
           <span className="font-montserratAlt font-bold">
             Most Engaged <span className="font-black">Journey</span>
@@ -206,7 +200,9 @@ const OverviewPageContent = ({
             )}
           </div>
         </InfoContainer>
-        <StruggleContent currentChallenges={currentChallenges} />
+        {!!currentStruggles?.length && (
+          <StruggleContent currentStruggles={currentStruggles} />
+        )}
       </div>
       <div className="flex items-center justify-center pb-6 pt-12">
         <span className="font-montserratAlt text-xl font-bold opacity-25">

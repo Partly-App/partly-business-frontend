@@ -48,8 +48,9 @@ const Modal = ({ isOpen, setIsOpen, title, children }: ModalProps) => {
           >
             <DialogPanel
               className={clsx(
-                "w-full max-w-lg transform overflow-hidden rounded-2xl relative",
+                "relative max-h-[75vh] w-full max-w-lg transform overflow-x-hidden rounded-2xl",
                 "bg-grey-dark px-6 py-4 text-left align-middle shadow-xl transition-all",
+                "scrollbar-none",
               )}
             >
               <div className="flex items-center justify-between gap-4">

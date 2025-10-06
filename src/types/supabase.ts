@@ -155,6 +155,50 @@ export type Database = {
           },
         ]
       }
+      currentStruggles: {
+        Row: {
+          createdAt: string
+          endNote: string
+          fixPoints: string[]
+          fixTitle: string
+          id: string
+          label: string
+          note: string
+          severity: number
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          endNote: string
+          fixPoints: string[]
+          fixTitle: string
+          id?: string
+          label: string
+          note: string
+          severity: number
+          userId: string
+        }
+        Update: {
+          createdAt?: string
+          endNote?: string
+          fixPoints?: string[]
+          fixTitle?: string
+          id?: string
+          label?: string
+          note?: string
+          severity?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "currentStruggles_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       departments: {
         Row: {
           companyId: string
