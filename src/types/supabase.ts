@@ -812,6 +812,7 @@ export type Database = {
           createdAt: string
           fixSuggestion: string | null
           id: string
+          reason: string | null
           score: number
           userId: string
         }
@@ -819,6 +820,7 @@ export type Database = {
           createdAt?: string
           fixSuggestion?: string | null
           id?: string
+          reason?: string | null
           score?: number
           userId: string
         }
@@ -826,6 +828,7 @@ export type Database = {
           createdAt?: string
           fixSuggestion?: string | null
           id?: string
+          reason?: string | null
           score?: number
           userId?: string
         }
