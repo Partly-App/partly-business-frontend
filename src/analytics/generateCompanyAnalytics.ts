@@ -8,6 +8,7 @@ import { Database } from "../types/supabase"
 // This also creates department scores and subScores
 
 const EMPLOYEE_CONCURRENCY = 4
+const DEPARTMENT_CONCURRENCY = 4
 
 const getMostEngagedJourney = (
   progressData: {
@@ -296,6 +297,136 @@ const processEmployee = async (
   }
 }
 
+const processDepartment = async (
+  supabase: ReturnType<typeof createClient<Database>>,
+  company: { id: string },
+  department: { id: string },
+) => {
+  try {
+    // 1. Find all employees per department
+
+    const { data: employees, error: employeesError } = await supabase
+      .from("employees")
+      .select("userId, mostEngagedJourney")
+      .eq("departmentId", department.id)
+
+    if (employeesError) throw employeesError
+
+    // 2. Get recent 8 days' data
+    // with a bit of play room on dates
+    const eightDaysAgo = new Date(
+      Date.now() - 8 * 24 * 60 * 60 * 1000,
+    ).toISOString()
+
+    const { data: employeeScores, error: employeeScoresError } = await supabase
+      .from("scores")
+      .select("id, score, reason")
+      .in(
+        "userId",
+        employees.map((item) => item.userId),
+      )
+      .order("createdAt", { ascending: false })
+      .gte("createdAt", eightDaysAgo)
+
+    if (employeeScoresError) throw employeeScoresError
+
+    const { data: employeeSubScores, error: employeeSubScoresError } =
+      await supabase
+        .from("subScores")
+        .select("score, reason")
+        .in(
+          "scoreId",
+          employeeScores.map((item) => item.id),
+        )
+        .order("createdAt", { ascending: false })
+        .gte("createdAt", eightDaysAgo)
+
+    if (employeeSubScoresError) throw employeeSubScoresError
+
+    // 3. Call OpenAI
+    const prompt = `
+      You are a part of an emotional EdTech app analytical system aimed at companies and their employees, keep that in mind when giving advice to avoid redirecting users to other forms of education and well-being that are similar to this app. Other things are allowed.
+      Given the following data gathered from department employee analytics, create the following analytical summary for a department of employees and return ONLY the following JSON (nothing else):
+
+      {
+        "score": {
+          "score": number, // 0-100, user's overall well-being score
+          "reason": string, // The main reason behind this well-being score
+          "fixSuggestion": string // Any potential fix suggestions
+        },
+        "subScores": [
+          {
+            "type": "anxiety" | "anger" | "confidence",
+            "score": number, // 0-100 for this subscore
+            "reason": string // Explanation for this score
+          }
+        ]
+      }
+
+      Keep in mind. You are being given the data of employees of a company and you are creating data for the company well-being overview.
+
+      Analyze the employee's last 7 days as shown in the data below.
+      Provide your answer as pure minified JSON.
+      Do not include any other explanation or text.
+      Make all the text of reasons and suggestions descriptive, with decent size to it and showcase proper reasoning with examples, while not revealing any personal info.
+
+      User data:
+      EMPLOYEE SCORES: ${JSON.stringify(employeeScores)}
+      SUBSCORES: ${JSON.stringify(employeeSubScores)}
+    `
+    console.log(
+      `Creating summary for department: ${department.id} from company: ${company.id}`,
+    )
+
+    const openAiData = await requestOpenAiSummary(prompt)
+    if (!openAiData.choices) {
+      throw new Error(`OpenAI failed for department ${department.id}`)
+    }
+    console.log("OpenAI API tokens consumed:", openAiData.usage)
+
+    const fullMessage = JSON.parse(openAiData.choices[0].message.content)
+
+    // 4. Store scores/subscores/struggles
+
+    const {
+      data: departmentScoreUpdateData,
+      error: departmentScoreUpdateError,
+    } = await supabase
+      .from("departmentScores")
+      .insert({
+        departmentId: department.id,
+        score: fullMessage.score.score,
+        reason: fullMessage.score.reason,
+        fixSuggestion: fullMessage.score.fixSuggestion,
+      })
+      .select("id")
+      .single()
+
+    if (!departmentScoreUpdateData || departmentScoreUpdateError) {
+      throw departmentScoreUpdateError
+    }
+
+    const subScoresToInsert = fullMessage.subScores.map((item: SubScore) => ({
+      ...item,
+      departmentScoreId: departmentScoreUpdateData.id,
+    }))
+
+    const { error: departmentSubScoreUpdateError } = await supabase
+      .from("departmentSubScores")
+      .insert(subScoresToInsert)
+
+    if (departmentSubScoreUpdateError) {
+      console.error(
+        "Error inserting department subscores: ",
+        departmentSubScoreUpdateError,
+        department.id,
+      )
+    }
+  } catch (err) {
+    console.error(`Error processing department ${department.id}:`, err)
+  }
+}
+
 const run = async () => {
   const supabase = createClient<Database>(
     process.env.SUPABASE_URL!,
@@ -327,6 +458,26 @@ const run = async () => {
     await Promise.all(
       employees.map((emp) =>
         limit(() => processEmployee(supabase, company, emp)),
+      ),
+    )
+
+    const { data: departments, error: departmentsError } = await supabase
+      .from("departments")
+      .select("id")
+      .eq("companyId", company.id)
+
+    if (!departments || departmentsError) {
+      console.error(
+        "Error getting departments for the score creation: ",
+        departmentsError,
+      )
+      continue
+    }
+
+    const departmentsLimit = pLimit(DEPARTMENT_CONCURRENCY)
+    await Promise.all(
+      departments.map((dep) =>
+        departmentsLimit(() => processDepartment(supabase, company, dep)),
       ),
     )
   }
