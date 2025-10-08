@@ -219,7 +219,7 @@ const DashboardPage = async () => {
 
   const { data: struggles, error: strugglesError } = await supabase
     .from("currentStruggles")
-    .select("label, severity, note, fixTitle, fixPoints, endNote")
+    .select("id, label, severity, note, fixTitle, fixPoints, endNote")
     .order("createdAt", { ascending: false })
     .order("severity", { ascending: false })
     .in("userId", userIdForStruggles)

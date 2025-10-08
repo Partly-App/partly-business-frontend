@@ -114,8 +114,8 @@ const WellBeingScore = ({
                     : "-right-10 bottom-2 text-xs",
                 )}
               >
-                {scoreDifference > 0 && "+"}
-                {scoreDifference}{" "}
+                {scoreDifference >= 0 && "+"}
+                {scoreDifference || ""}{" "}
                 <span
                   className={clsx(
                     "font-medium text-white-default opacity-50",

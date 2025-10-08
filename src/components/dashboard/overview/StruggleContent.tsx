@@ -34,7 +34,7 @@ const StruggleContent = ({ currentStruggles }: StruggleContentProps) => {
               const struggleColor = getStruggleColor(weight)
 
               return (
-                <div key={item.label} className="contents">
+                <div key={item.id} className="contents">
                   <Modal
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}
