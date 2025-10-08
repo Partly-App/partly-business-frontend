@@ -175,7 +175,7 @@ const Departments = ({
                     className={clsx(color?.color, "select-none")}
                   />
                 </div>
-                <span className="select-none break-all text-center font-montserratAlt font-black">
+                <span className="select-none text-center font-montserratAlt font-black">
                   {item.name}
                 </span>
               </div>
