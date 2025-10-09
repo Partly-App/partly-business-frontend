@@ -1,8 +1,8 @@
 import { Journey } from "@/types/journey"
 import { CurrentStruggle, SubScore } from "@/types/profile"
 import { createClient } from "@supabase/supabase-js"
-import pLimit from "p-limit"
 import { Database } from "../types/supabase"
+import pLimit from "p-limit"
 
 // This creates scores, subScores and struggles ONLY for company employees
 // This also creates department scores and subScores
@@ -198,7 +198,7 @@ const processEmployee = async (
       }
 
       Keep in mind. You are being given the data of employees of a company and you are creating data for the company well-being overview.
-
+      Also keep in mind that subscores anxiety and anger count as bad if the go up, while confidence is good when it's score goes up.
       Analyze the user's last 7 days as shown in the data below.
       Provide your answer as pure minified JSON.
       Do not include any other explanation or text.
@@ -364,7 +364,7 @@ const processDepartment = async (
       }
 
       Keep in mind. You are being given the data of employees of a company and you are creating data for the company well-being overview.
-
+      Also keep in mind that subscores anxiety and anger count as bad if the go up, while confidence is good when it's score goes up
       Analyze the employee's last 7 days as shown in the data below.
       Provide your answer as pure minified JSON.
       Do not include any other explanation or text.
@@ -427,6 +427,109 @@ const processDepartment = async (
   }
 }
 
+const processCompany = async (
+  supabase: ReturnType<typeof createClient<Database>>,
+  companyId: string,
+  departments: Array<{ id: string }>,
+) => {
+  try {
+    const eightDaysAgo = new Date(
+      Date.now() - 8 * 24 * 60 * 60 * 1000,
+    ).toISOString()
+
+    const departmentIds = departments.map((item) => item.id)
+
+    const { data: departmentScores, error: depScoresError } = await supabase
+      .from("departmentScores")
+      .select("id, departmentId, score")
+      .in("departmentId", departmentIds)
+      .gte("createdAt", eightDaysAgo)
+      .order("createdAt", { ascending: false })
+
+    if (depScoresError || !departmentScores?.length) {
+      throw new Error(`No recent department scores for company ${companyId}`)
+    }
+
+    // Using the latest score for each department
+    const latestDeptScoresMap = new Map()
+    for (const ds of departmentScores) {
+      if (!latestDeptScoresMap.has(ds.departmentId)) {
+        latestDeptScoresMap.set(ds.departmentId, ds)
+      }
+    }
+    const latestDeptScores = Array.from(latestDeptScoresMap.values())
+
+    const departmentScoreIds = latestDeptScores.map((ds) => ds.id)
+    const { data: departmentSubScores, error: depSubScoresError } =
+      await supabase
+        .from("departmentSubScores")
+        .select("type, score")
+        .in("departmentScoreId", departmentScoreIds)
+
+    if (depSubScoresError) {
+      throw new Error(
+        `Error fetching department subscores for company ${companyId}: ${depSubScoresError.message}`,
+      )
+    }
+
+    // Calculating averages (example: mean company score, mean subScores by type)
+    const avg = (arr: number[]) =>
+      arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null
+
+    const companyScore = avg(latestDeptScores.map((d) => d.score))
+
+    const subScoreTypes: Array<Journey> = ["anxiety", "anger", "confidence"]
+    const companySubScores = subScoreTypes.map((type) => {
+      const allTypeSubScores = departmentSubScores
+        .filter((sub) => sub.type === type)
+        .map((sub) => sub.score)
+      return {
+        type,
+        score: avg(allTypeSubScores),
+      }
+    })
+
+    const { data: resultCompanyScore, error: companyScoreInsertError } =
+      await supabase
+        .from("companyScores")
+        .insert([
+          {
+            companyId: companyId,
+            score: companyScore as number,
+          },
+        ])
+        .select("id")
+        .single()
+
+    if (companyScoreInsertError) {
+      throw new Error(
+        `Error inserting company score for company ${companyId}: ${companyScoreInsertError.message}`,
+      )
+    }
+
+    const { error: companySubScoreInsertError } = await supabase
+      .from("companySubScores")
+      .insert(
+        companySubScores.map((item) => ({
+          ...item,
+          score: item.score as number,
+          companyScoreId: resultCompanyScore.id,
+        })),
+      )
+
+    if (companySubScoreInsertError) {
+      throw new Error(
+        `Error inserting company sub score for company ${companyId}: ${companySubScoreInsertError.message}`,
+      )
+    }
+  } catch (err) {
+    console.error(
+      `Error processing overall score for company ${companyId}:`,
+      err,
+    )
+  }
+}
+
 const run = async () => {
   const supabase = createClient<Database>(
     process.env.SUPABASE_URL!,
@@ -480,6 +583,8 @@ const run = async () => {
         departmentsLimit(() => processDepartment(supabase, company, dep)),
       ),
     )
+
+    await processCompany(supabase, company.id, departments)
   }
 }
 
