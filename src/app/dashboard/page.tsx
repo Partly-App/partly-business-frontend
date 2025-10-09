@@ -16,7 +16,7 @@ type SubScore = {
 }
 type SubScoresByType = Record<
   "anxiety" | "anger" | "confidence",
-  SubScore | undefined
+  Partial<SubScore> | undefined
 >
 
 const DashboardPage = async () => {
@@ -75,14 +75,14 @@ const DashboardPage = async () => {
   }
   const getScores = async () => {
     const { data: scores, error: scoresError } = await supabase
-      .from("scores")
-      .select("*")
-      .eq("userId", data.user.id)
+      .from("companyScores")
+      .select("id, score")
+      .eq("companyId", data.company.id)
       .order("createdAt", { ascending: false })
       .limit(2)
 
     if (!scores?.length || scoresError) {
-      console.error("Error fetching employee scores: ", scoresError)
+      console.error("Error fetching company scores: ", scoresError)
       return {
         scores: null,
         currentSubScoresData: null,
@@ -92,14 +92,14 @@ const DashboardPage = async () => {
 
     const { data: currentSubScoresData, error: currentSubScoresError } =
       await supabase
-        .from("subScores")
-        .select("*")
-        .eq("scoreId", scores[0].id)
+        .from("companySubScores")
+        .select("score, type")
+        .eq("companyScoreId", scores[0].id)
         .in("type", SCORE_TYPES)
 
     if (!currentSubScoresData?.length || currentSubScoresError) {
       console.error(
-        "Error fetching current sub scores: ",
+        "Error fetching current company sub scores: ",
         currentSubScoresError,
       )
       return {
@@ -114,13 +114,16 @@ const DashboardPage = async () => {
     if (!!scores[1]?.id) {
       const { data: prevSubScoresData, error: prevSubScoresError } =
         await supabase
-          .from("subScores")
-          .select("*")
-          .eq("scoreId", scores[1].id)
+          .from("companySubScores")
+          .select("score, type")
+          .eq("companyScoreId", scores[1].id)
           .in("type", SCORE_TYPES)
 
       if (prevSubScoresError) {
-        console.error("Error fetching previous scores: ", prevSubScoresError)
+        console.error(
+          "Error fetching previous company sub scores: ",
+          prevSubScoresError,
+        )
       } else {
         prevSubScores = prevSubScoresData
       }
@@ -137,9 +140,12 @@ const DashboardPage = async () => {
 
   const currentSubScoreByType = (): SubScoresByType | null => {
     if (!currentSubScoresData) return null
-    const subscoresByType: Record<SubScoreType, SubScore> = Object.fromEntries(
-      currentSubScoresData.map((sub: SubScore) => [sub.type, sub]),
-    ) as Record<SubScoreType, SubScore>
+    const subscoresByType: Record<
+      SubScoreType,
+      Partial<SubScore>
+    > = Object.fromEntries(
+      currentSubScoresData.map((sub: Partial<SubScore>) => [sub.type, sub]),
+    ) as Record<SubScoreType, Partial<SubScore>>
 
     return {
       anxiety: subscoresByType["anxiety"],
@@ -150,9 +156,12 @@ const DashboardPage = async () => {
 
   const prevSubScoreByType = (): SubScoresByType | null => {
     if (!prevSubScoresData) return null
-    const subscoresByType: Record<SubScoreType, SubScore> = Object.fromEntries(
-      prevSubScoresData.map((sub: SubScore) => [sub.type, sub]),
-    ) as Record<SubScoreType, SubScore>
+    const subscoresByType: Record<
+      SubScoreType,
+      Partial<SubScore>
+    > = Object.fromEntries(
+      prevSubScoresData.map((sub: Partial<SubScore>) => [sub.type, sub]),
+    ) as Record<SubScoreType, Partial<SubScore>>
 
     return {
       anxiety: subscoresByType["anxiety"],

@@ -55,6 +55,67 @@ export type Database = {
           },
         ]
       }
+      companyScores: {
+        Row: {
+          companyId: string
+          createdAt: string
+          id: string
+          score: number
+        }
+        Insert: {
+          companyId: string
+          createdAt?: string
+          id?: string
+          score: number
+        }
+        Update: {
+          companyId?: string
+          createdAt?: string
+          id?: string
+          score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "companyScore_companyId_fkey"
+            columns: ["companyId"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companySubScores: {
+        Row: {
+          companyScoreId: string
+          createdAt: string
+          id: string
+          score: number
+          type: Database["public"]["Enums"]["journeyTag"]
+        }
+        Insert: {
+          companyScoreId: string
+          createdAt?: string
+          id?: string
+          score: number
+          type: Database["public"]["Enums"]["journeyTag"]
+        }
+        Update: {
+          companyScoreId?: string
+          createdAt?: string
+          id?: string
+          score?: number
+          type?: Database["public"]["Enums"]["journeyTag"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "companySubScores_companyScoreId_fkey"
+            columns: ["companyScoreId"]
+            isOneToOne: false
+            referencedRelation: "companyScores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companySubscriptions: {
         Row: {
           companyId: string
@@ -234,6 +295,7 @@ export type Database = {
           departmentId: string
           fixSuggestion: string | null
           id: string
+          reason: string | null
           score: number
         }
         Insert: {
@@ -241,6 +303,7 @@ export type Database = {
           departmentId: string
           fixSuggestion?: string | null
           id?: string
+          reason?: string | null
           score?: number
         }
         Update: {
@@ -248,6 +311,7 @@ export type Database = {
           departmentId?: string
           fixSuggestion?: string | null
           id?: string
+          reason?: string | null
           score?: number
         }
         Relationships: [
