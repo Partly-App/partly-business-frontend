@@ -1,3 +1,4 @@
+import Footer from "@/components/home/Footer"
 import Header from "@/components/home/Header"
 import BlackText from "@/components/terms/BlackText"
 import DottedRow from "@/components/terms/DottedRow"
@@ -313,13 +314,15 @@ const PrivacyPolicyPage = () => {
         <Link href="mailto:support@partly.life">support@partly.life</Link>
       </p>
       <p className="mb-12">
-        We’re committed to addressing your privacy concerns promptly and
+        We&apos;re committed to addressing your privacy concerns promptly and
         transparently.
       </p>
 
       <p className="mb-2">
         <BlackText>Last Updated</BlackText>: October 12, 2025
       </p>
+
+      <Footer />
     </main>
   )
 }
