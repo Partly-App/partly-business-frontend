@@ -102,7 +102,7 @@ const RefundPolicyPage = () => {
 
       <Heading>7. Contact Us</Heading>
       <p className="mb-12">
-        If you have any questions about this policy, please contact us at
+        If you have any questions about this policy, please contact us at{" "}
         <Link href="mailto:support@partly.life">support@partly.life</Link>
       </p>
 
