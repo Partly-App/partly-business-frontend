@@ -86,7 +86,7 @@ const PrivacyPolicyPage = () => {
       <DottedRow>
         To personalize your experience: This includes generating daily notes
         from “Self”, personalized insights at the end of moments based on your
-        reflections, messages, and activity.
+        reflections, and activity.
       </DottedRow>
       <DottedRow>
         To provide emotional guidance: Your answers, notes, and interactions
@@ -130,8 +130,7 @@ const PrivacyPolicyPage = () => {
       </DottedRow>
       <DottedRow className="!mb-6">
         <BlackText>Supabase</BlackText>: Our backend service that stores and
-        manages your data securely, including your account, notes, reflections,
-        and chat history.
+        manages your data securely, including your account, notes, reflections.
       </DottedRow>
       <p className="mb-12">
         We do not sell or rent your personal data to any third parties. Data
@@ -146,8 +145,8 @@ const PrivacyPolicyPage = () => {
       </p>
       <DottedRow>
         If you choose to delete your account, your personal data - including
-        insights, reflections, notes, messages, and activity history - will be
-        permanently and immediately deleted from our main database.
+        insights, reflections, notes, and activity history - will be permanently
+        and immediately deleted from our main database.
       </DottedRow>
       <DottedRow>
         Some data may be retained in secure backups for up to 30 days for
@@ -193,7 +192,7 @@ const PrivacyPolicyPage = () => {
       <DottedRow>
         <BlackText>Deletion</BlackText>: You may permanently delete your account
         and all associated data through the app settings. This includes all
-        reflections, notes, messages, and personal insights.
+        reflections, notes, and personal insights.
       </DottedRow>
       <DottedRow className="!mb-6">
         <BlackText>Object to Processing</BlackText>: You may object to how your
