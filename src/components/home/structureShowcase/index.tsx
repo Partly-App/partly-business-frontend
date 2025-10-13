@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 import StructureRow from "./StructureRow"
 
 const SCREENSHOTS = [
-  "/images/showcase/chat.webp",
+  "/images/showcase/well-being.webp",
   "/images/showcase/reflect.webp",
   "/images/showcase/grow.webp",
 ]
@@ -197,7 +197,7 @@ const SctructureShowcase = () => {
         textContent={
           <>
             <h3 className="mb-4 flex-wrap font-montserratAlt text-12xl font-bold leading-[1]">
-              Reflect, Chat,{" "}
+              Reflect, Track,{" "}
               <span className="font-black text-green-default">Grow</span>
             </h3>
             <p className="">

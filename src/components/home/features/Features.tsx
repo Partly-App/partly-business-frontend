@@ -5,7 +5,7 @@ const FEATURES = [
   {
     title: "Reflect & Take Notes",
     description:
-      "Capture thoughts, track progress, and chat daily for ongoing growth",
+      "Capture thoughts, track progress and well-being for ongoing growth",
     imgSrc: "/images/features/reflect-take-notes.webp",
   },
   {
