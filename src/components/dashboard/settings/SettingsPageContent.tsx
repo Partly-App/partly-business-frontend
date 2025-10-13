@@ -3,6 +3,7 @@
 import Button from "@/components/shared/Button"
 import { useSupabase } from "@/components/shared/providers"
 import { ACHIEVEMENTS, INDUSTRIES } from "@/constants/companyDetails"
+import { urls } from "@/constants/urls"
 import { useToast } from "@/context/ToastContext"
 import { Company } from "@/types/company"
 import { arraysEqualUnordered, toggleArraySelection } from "@/utils/arrays"
@@ -190,21 +191,21 @@ const SettingsPageContent = ({
 
       <div className="flex items-center gap-4">
         <Link
-          href="https://fragrant-digit-84f.notion.site/Privacy-Policy-22a05fa90ec480edb75ee12ac613b861?source=copy_link"
+          href={urls.privacyPolicy}
           target="_blank"
           className="text-sm font-bold opacity-30 transition-opacity hover:opacity-50"
         >
           Privacy Policy
         </Link>
         <Link
-          href="https://fragrant-digit-84f.notion.site/Terms-of-Use-22a05fa90ec480fcb158fe6fe07c31e5?source=copy_link"
+          href={urls.termsOfUse}
           target="_blank"
           className="text-sm font-bold opacity-30 transition-opacity hover:opacity-50"
         >
           Terms of Use
         </Link>
         <Link
-          href="https://fragrant-digit-84f.notion.site/Refund-Policy-28305fa90ec4806bb6d2c042703d4180?source=copy_link"
+          href={urls.refundPolicy}
           target="_blank"
           className="text-sm font-bold opacity-30 transition-opacity hover:opacity-50"
         >

@@ -1,5 +1,6 @@
 "use client"
 
+import { urls } from "@/constants/urls"
 import { Company } from "@/types/company"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -146,7 +147,7 @@ const OnboardingPageContent = () => {
 
       <div className="flex items-center justify-center gap-4 px-6 py-4">
         <Link
-          href="https://fragrant-digit-84f.notion.site/Privacy-Policy-22a05fa90ec480edb75ee12ac613b861?source=copy_link"
+          href={urls.privacyPolicy}
           className="text-xs font-bold opacity-25 transition-opacity hover:opacity-50"
           target="_blank"
         >
@@ -156,7 +157,7 @@ const OnboardingPageContent = () => {
           •
         </span>
         <Link
-          href="https://fragrant-digit-84f.notion.site/Terms-of-Use-22a05fa90ec480fcb158fe6fe07c31e5?source=copy_link"
+          href={urls.termsOfUse}
           className="text-xs font-bold opacity-25 transition-opacity hover:opacity-50"
           target="_blank"
         >
@@ -166,7 +167,7 @@ const OnboardingPageContent = () => {
           •
         </span>
         <Link
-          href="https://fragrant-digit-84f.notion.site/Refund-Policy-28305fa90ec4806bb6d2c042703d4180?source=copy_link"
+          href={urls.refundPolicy}
           target="_blank"
           className="text-xs font-bold opacity-25 transition-opacity hover:opacity-50"
         >

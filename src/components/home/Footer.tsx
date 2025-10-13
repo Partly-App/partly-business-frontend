@@ -1,5 +1,6 @@
 "use client"
 
+import { urls } from "@/constants/urls"
 import Image from "next/image"
 import Link from "next/link"
 import AppStoreCTA from "../shared/AppStoreCTA"
@@ -10,21 +11,21 @@ const Footer = () => {
     <footer className="mx-auto mt-32 flex max-w-160 flex-col items-center justify-center gap-6 px-6 pb-12">
       <div className="flex items-center justify-center gap-4">
         <Link
-          href="https://fragrant-digit-84f.notion.site/Privacy-Policy-22a05fa90ec480edb75ee12ac613b861?source=copy_link"
+          href={urls.privacyPolicy}
           target="_blank"
           className="text-sm font-bold opacity-30 transition-opacity hover:opacity-50"
         >
           Privacy Policy
         </Link>
         <Link
-          href="https://fragrant-digit-84f.notion.site/Terms-of-Use-22a05fa90ec480fcb158fe6fe07c31e5?source=copy_link"
+          href={urls.termsOfUse}
           target="_blank"
           className="text-sm font-bold opacity-30 transition-opacity hover:opacity-50"
         >
           Terms of Use
         </Link>
         <Link
-          href="https://fragrant-digit-84f.notion.site/Refund-Policy-28305fa90ec4806bb6d2c042703d4180?source=copy_link"
+          href={urls.refundPolicy}
           target="_blank"
           className="text-sm font-bold opacity-30 transition-opacity hover:opacity-50"
         >

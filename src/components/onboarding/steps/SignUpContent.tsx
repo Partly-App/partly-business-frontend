@@ -475,7 +475,7 @@ const SignUpContent = ({
               </Link>
               ,{" "}
               <Link
-                href={urls.termsAndConditions}
+                href={urls.termsOfUse}
                 className="underline transition-colors duration-100 hover:text-purple-light"
                 target="_blank"
               >

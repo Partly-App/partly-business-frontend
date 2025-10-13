@@ -4,20 +4,21 @@ import BlackText from "@/components/terms/BlackText"
 import DottedRow from "@/components/terms/DottedRow"
 import Heading from "@/components/terms/Heading"
 import Link from "@/components/terms/Link"
+import { urls } from "@/constants/urls"
 
 const TermsOfUsePage = () => {
   return (
     <main className="px-8 pt-32">
       <Header />
       <h1 className="mb-8 font-montserratAlt text-8xl font-black opacity-50">
-        Privacy Policy
+        Terms of use
       </h1>
 
       <Heading>1. Acceptance of Terms</Heading>
       <p className="mb-2">
         By downloading, accessing, or using the Partly app (the “App”), you
         agree to be bound by these Terms of Use (“Terms”) and our{" "}
-        <Link href="/terms/privacy-policy">Privacy Policy</Link>. If you do not
+        <Link href={urls.privacyPolicy}>Privacy Policy</Link>. If you do not
         agree to these Terms, please do not use the App.
       </p>
       <p className="mb-12">
@@ -131,12 +132,12 @@ const TermsOfUsePage = () => {
       <Heading>8. Privacy</Heading>
       <DottedRow>
         Your use of the app is also governed by our{" "}
-        <Link href="/terms/privacy-policy">Privacy Policy</Link>, which explains
+        <Link href={urls.privacyPolicy}>Privacy Policy</Link>, which explains
         how we collect, use, and protect your personal data.
       </DottedRow>
       <DottedRow className="!mb-12">
         By using the app, you consent to the practices described in the{" "}
-        <Link href="/terms/privacy-policy">Privacy Policy</Link>.
+        <Link href={urls.privacyPolicy}>Privacy Policy</Link>.
       </DottedRow>
 
       <Heading>9. Termination & Suspension</Heading>
@@ -151,7 +152,7 @@ const TermsOfUsePage = () => {
       </DottedRow>
       <DottedRow className="!mb-12">
         User data may be deleted or retained in accordance with our{" "}
-        <Link href="/terms/privacy-policy">Privacy Policy</Link> and applicable
+        <Link href={urls.privacyPolicy}>Privacy Policy</Link> and applicable
         laws.
       </DottedRow>
 
