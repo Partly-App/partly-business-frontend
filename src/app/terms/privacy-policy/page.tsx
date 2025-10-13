@@ -86,7 +86,7 @@ const PrivacyPolicyPage = () => {
       <DottedRow>
         To personalize your experience: This includes generating daily notes
         from “Self”, personalized insights at the end of moments based on your
-        reflections, and activity.
+        reflections, and activity, well-being scores.
       </DottedRow>
       <DottedRow>
         To provide emotional guidance: Your answers, notes, and interactions

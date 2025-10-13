@@ -114,8 +114,8 @@ const TermsOfUsePage = () => {
 
       <Heading>7. AI Content Disclaimer</Heading>
       <DottedRow>
-        App&apos;s content and personalized insights provided in the app are for
-        educational and emotional support purposes only.
+        App&apos;s content, personalized insights and well-being scores provided
+        in the app are for educational purposes only.
       </DottedRow>
       <DottedRow>
         They do not constitute medical, psychological, or professional advice.
