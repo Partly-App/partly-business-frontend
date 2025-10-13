@@ -1,12 +1,12 @@
-name: Weekly Company Analytics
+name: Weekly User Analytics
 
 on:
   schedule:
-    - cron: "0 3 * * 1"
+    - cron: "0 3 * * 7"
   workflow_dispatch:
 
 jobs:
-  run-analytics:
+  run-user-analytics:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,9 +23,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Weekly Analytics
+      - name: Run Weekly User Analytics
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: pnpm exec tsx src/analytics/generateCompanyAnalytics.ts
+        run: pnpm exec tsx src/analytics/generateUserAnalytics.ts
