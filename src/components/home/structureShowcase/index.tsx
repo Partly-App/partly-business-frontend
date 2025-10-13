@@ -197,7 +197,7 @@ const SctructureShowcase = () => {
         textContent={
           <>
             <h3 className="mb-4 flex-wrap font-montserratAlt text-12xl font-bold leading-[1]">
-              Reflect, Track,{" "}
+              Track, Reflect &{" "}
               <span className="font-black text-green-default">Grow</span>
             </h3>
             <p className="">
