@@ -1,4 +1,4 @@
-import { Score, SubScore } from "@/types/profile"
+import { CurrentStruggle, Score, SubScore } from "@/types/profile"
 import { createClient } from "@supabase/supabase-js"
 import pLimit from "p-limit"
 import { Database } from "../types/supabase"
@@ -128,6 +128,16 @@ const processUser = async (
                 "score": number, // 0-100
                 "reason": string
                 }
+            ],
+            "mainStruggles": [
+              {
+                "label": string, // Title of the struggle
+                "severity": number, // 0-10 severity score (estimate this from context) (can have 1 decimal number)
+                "note": string, // Not or description of a struggle
+                "fixTitle": string, // Brief description of a fix
+                "fixPoints": string[], // Tips for the fix
+                "endNote": string, // Text to end the struggle overview with helpful words of guidance
+              }
             ]
         }
 
@@ -146,6 +156,8 @@ const processUser = async (
         - Use second person, be direct, minimum 2-3 sentences, avoid repetition in style, do not be poetic, end with sentence like: "Your heart is a compass - don’t ignore magnets."
         - Ensure analytics and writing are different from previous ones in the data and between each other.
         - For subScores: “anxiety” and “anger” up is bad, “confidence” up is good.
+        - Note for struggles should explain in depth the struggle with detail while still keeping it anonymized. No personal info.
+        - Keep struggle labels and fixTitles very short, max 3 words.
 
         User data:
         NOTES: ${JSON.stringify(notes.data)}
@@ -196,6 +208,25 @@ const processUser = async (
       console.error(
         "Error inserting user subscores: ",
         userSubScoreUpdateError,
+        userId,
+      )
+    }
+
+    const strugglesToInsert = fullMessage.mainStruggles.map(
+      (item: CurrentStruggle) => ({
+        ...item,
+        userId: userId,
+      }),
+    )
+
+    const { error: userStruggleUpdate } = await supabase
+      .from("currentStruggles")
+      .insert(strugglesToInsert)
+
+    if (userStruggleUpdate) {
+      console.error(
+        "Error inserting user current struggles: ",
+        userStruggleUpdate,
         userId,
       )
     }
