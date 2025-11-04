@@ -1,9 +1,16 @@
 import { Environment, Paddle } from "@paddle/paddle-node-sdk"
 import { NextResponse } from "next/server"
 
-const paddle = new Paddle(process.env.PADDLE_SANDBOX_API_KEY!, {
-  environment: process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT as Environment,
-})
+const ENVIRONMENT = process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT as Environment
+
+const paddle = new Paddle(
+  ENVIRONMENT === "sandbox"
+    ? process.env.PADDLE_SANDBOX_API_KEY!
+    : process.env.PADDLE_API_KEY!,
+  {
+    environment: ENVIRONMENT,
+  },
+)
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

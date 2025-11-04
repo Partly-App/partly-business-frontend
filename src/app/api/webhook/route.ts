@@ -9,9 +9,16 @@ import {
 import { createClient } from "@supabase/supabase-js"
 import { NextResponse } from "next/server"
 
-const paddle = new Paddle(process.env.PADDLE_SECRET_TOKEN!, {
-  environment: Environment.sandbox,
-})
+const ENVIRONMENT = process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT as Environment
+
+const paddle = new Paddle(
+  ENVIRONMENT === "sandbox"
+    ? process.env.PADDLE_SANDBOX_API_KEY!
+    : process.env.PADDLE_API_KEY!,
+  {
+    environment: ENVIRONMENT,
+  },
+)
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
