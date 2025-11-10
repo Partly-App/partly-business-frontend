@@ -30,7 +30,7 @@ const StruggleContent = ({ currentStruggles }: StruggleContentProps) => {
           {currentStruggles
             .sort((a, b) => (b.severity ?? 0) - (a.severity ?? 0))
             .map((item, idx) => {
-              const weight = (item.severity ?? 0) * 100
+              const weight = (item.severity ?? 0) * 10
               const struggleColor = getStruggleColor(weight)
               const key = item.id ?? idx
 

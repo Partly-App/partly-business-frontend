@@ -25,9 +25,9 @@ export const getStruggleColor = (weight: number): string => {
     .map(Number)
     .sort((a, b) => a - b)
   for (const t of thresholds) {
-    if (w <= t) {
-      return struggleColorMap[t as keyof typeof struggleColorMap]
-    }
+    if (w <= t) return struggleColorMap[t as keyof typeof struggleColorMap]
   }
+
   return struggleColorMap[100]
 }
+

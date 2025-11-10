@@ -226,9 +226,14 @@ const DashboardPage = async () => {
 
   const userIdForStruggles = employees?.map((item) => item.userId) || []
 
+  const sevenDaysAgo = new Date(
+    Date.now() - 7 * 24 * 60 * 60 * 1000,
+  ).toISOString()
+
   const { data: struggles, error: strugglesError } = await supabase
     .from("currentStruggles")
     .select("id, label, severity, note, fixTitle, fixPoints, endNote")
+    .gte("createdAt", sevenDaysAgo)
     .order("createdAt", { ascending: false })
     .order("severity", { ascending: false })
     .in("userId", userIdForStruggles)
