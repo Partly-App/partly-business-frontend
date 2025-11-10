@@ -197,7 +197,7 @@ const SctructureShowcase = () => {
         textContent={
           <>
             <h3 className="mb-4 flex-wrap font-montserratAlt text-12xl font-bold leading-[1]">
-              Track, Reflect &{" "}
+              Grow, Reflect &{" "}
               <span className="font-black text-green-default">
                 Get daily Rituals
               </span>
