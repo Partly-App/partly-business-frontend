@@ -12,7 +12,7 @@ type StruggleContentProps = {
 }
 
 const StruggleContent = ({ currentStruggles }: StruggleContentProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [openId, setOpenId] = useState<string | number | null>(null)
 
   return (
     <>
@@ -28,16 +28,17 @@ const StruggleContent = ({ currentStruggles }: StruggleContentProps) => {
 
         <div className="relative mt-4 grid flex-1 grid-cols-2 items-center justify-center gap-3 xs:grid-cols-3">
           {currentStruggles
-            .sort((a, b) => b.severity! - a.severity!)
-            .map((item) => {
-              const weight = item.severity! * 100
+            .sort((a, b) => (b.severity ?? 0) - (a.severity ?? 0))
+            .map((item, idx) => {
+              const weight = (item.severity ?? 0) * 100
               const struggleColor = getStruggleColor(weight)
+              const key = item.id ?? idx
 
               return (
-                <div key={item.id} className="contents">
+                <div key={key} className="contents">
                   <Modal
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
+                    isOpen={openId === key}
+                    setIsOpen={(open) => setOpenId(open ? key : null)}
                     title={item.label}
                   >
                     <p className="mb-6 mt-2">{item.note}</p>
@@ -45,9 +46,9 @@ const StruggleContent = ({ currentStruggles }: StruggleContentProps) => {
                       {item.fixTitle}
                     </span>
                     <ul className="pt-2">
-                      {item.fixPoints?.map((item) => (
-                        <li className="mb-0.5" key={item}>
-                          • {item}
+                      {item.fixPoints?.map((point) => (
+                        <li className="mb-0.5" key={point}>
+                          • {point}
                         </li>
                       ))}
                     </ul>
@@ -59,7 +60,7 @@ const StruggleContent = ({ currentStruggles }: StruggleContentProps) => {
                       "relative cursor-pointer transition-transform hover:scale-95",
                     )}
                     style={{ backgroundColor: struggleColor }}
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => setOpenId(key)}
                   >
                     <span className="text-center text-sm font-bold text-black-default">
                       {item.label}
