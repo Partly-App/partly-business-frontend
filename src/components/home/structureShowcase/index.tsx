@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 import StructureRow from "./StructureRow"
 
 const SCREENSHOTS = [
-  "/images/showcase/well-being.webp",
+  "/images/showcase/ritual.webp",
   "/images/showcase/reflect.webp",
   "/images/showcase/grow.webp",
 ]
@@ -198,7 +198,9 @@ const SctructureShowcase = () => {
           <>
             <h3 className="mb-4 flex-wrap font-montserratAlt text-12xl font-bold leading-[1]">
               Track, Reflect &{" "}
-              <span className="font-black text-green-default">Grow</span>
+              <span className="font-black text-green-default">
+                Get daily Rituals
+              </span>
             </h3>
             <p className="">
               All in one app <br />
