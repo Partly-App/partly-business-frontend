@@ -60,6 +60,7 @@ const EmployeeRow = ({
           <div className="group relative h-11 w-11 shrink-0 overflow-hidden rounded-xl">
             <Image
               fill
+              loader={() => employee.profile.avatarUrl || "/images/profile-placeholder.png"}
               src={
                 employee.profile.avatarUrl || "/images/profile-placeholder.png"
               }
